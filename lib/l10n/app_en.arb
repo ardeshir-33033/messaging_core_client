@@ -1,0 +1,12 @@
+{
+  "pullToRefresh": "Pull to refresh",
+  "refreshCompleted": "Refresh completed",
+  "failed": "Failed",
+  "releaseToRefresh": "Release to refresh",
+  "releaseToLoad": "Release to load",
+  "loading": "Loading...",
+  "second": "second",
+  "seconds": "seconds",
+  "minute": "minute",
+  "minutes": "minutes"
+}
