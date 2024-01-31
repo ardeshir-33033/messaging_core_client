@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:messaging_core/app/widgets/snack_bar_widget.dart';
 import 'package:messaging_core/core/utils/date_time_utils.dart';
 import 'package:messaging_core/main.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -251,5 +252,29 @@ extension BuildContextHelper on BuildContext {
   AppLocalizations get l {
     // if no locale was found, returns a default
     return AppLocalizations.of(this)!;
+  }
+
+  double get screenWidth {
+    return MediaQuery.sizeOf(this).width;
+  }
+
+  double get screenHeight {
+    return MediaQuery.sizeOf(this).height;
+  }
+
+  double heightPercentage(double percentage) {
+    return MediaQuery.sizeOf(this).height * (percentage / 100);
+  }
+
+  double widthPercentage(double percentage) {
+    return MediaQuery.sizeOf(this).width * (percentage / 100);
+  }
+
+  void showSuccessSnackBar(String title) {
+    SnackBarWidget.showSuccessSnackBar(this, title);
+  }
+
+  void showFailedSnackBar(String? title) {
+    SnackBarWidget.showFailedSnackBar(this, title);
   }
 }
