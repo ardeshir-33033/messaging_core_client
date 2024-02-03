@@ -8,8 +8,11 @@ import 'package:messaging_core/app/widgets/overlay_widget.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/enums/message_status.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
+import 'package:messaging_core/core/utils/utils.dart';
 import 'package:messaging_core/features/chat/domain/entities/contact_profile_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/chat_box_content.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/content_options_overlay_widget.dart';
 import 'package:png/core/component/dialog_box.dart';
 import 'package:png/core/statics/analytics_statics.dart';
 import 'package:png/core/theme/constants.dart';
@@ -93,7 +96,7 @@ class ChatBoxState extends State<ChatBox> {
   Widget build(BuildContext context) {
     return ContentOptionsOverlayWidget(
       overlayController: widget.overlayController,
-      contentId: widget.content.contentId,
+      contentId: widget.content.contentId.toString(),
       messageStatus: widget.content.status,
       contentType: widget.content.contentType,
       onResend: _onResend,
@@ -114,22 +117,23 @@ class ChatBoxState extends State<ChatBox> {
             return;
           }
           dismissKeyboard();
-          widget.overlayController.openOverlay(tag: widget.content.contentId);
+          widget.overlayController
+              .openOverlay(tag: widget.content.contentId.toString());
         },
         onTap: () {
           FocusManager.instance.primaryFocus?.unfocus();
         },
         child: Builder(builder: (context) {
           if (widget.content.contentType.isGeneralContent) {
-            return GeneralContentWidget(
-              content: widget.content,
-              isMine: isMine,
-              opponentProfileDisplayName:
-                  widget.opponentProfile?.displayName ?? '',
-              currentProfileDisplayName:
-                  // getIt.call<UserCertStorage>().user?.displayName ??
-                  '',
-            );
+            // return GeneralContentWidget(
+            //   content: widget.content,
+            //   isMine: isMine,
+            //   opponentProfileDisplayName:
+            //       widget.opponentProfile?.displayName ?? '',
+            //   currentProfileDisplayName:
+            //       // getIt.call<UserCertStorage>().user?.displayName ??
+            //       '',
+            // );
           }
           return Padding(
             padding: EdgeInsets.fromLTRB(
@@ -296,7 +300,7 @@ class ChatBoxState extends State<ChatBox> {
                                 ),
                               ChatBoxContent(
                                 contentModel: widget.content,
-                                keyId: Key(widget.content.contentId),
+                                keyId: Key(widget.content.contentId.toString()),
                                 isMine: isMine,
                                 senderName: getSenderName(widget.content),
                                 opponentProfile: widget.opponentProfile,
@@ -306,7 +310,7 @@ class ChatBoxState extends State<ChatBox> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                    widget.content.timestamp
+                                    widget.content.createdAt
                                         .toString()
                                         .hourAmFromDate(),
                                     style: const TextStyle(
@@ -316,17 +320,17 @@ class ChatBoxState extends State<ChatBox> {
                                     ),
                                   ),
                                   const SizedBox(width: 5),
-                                  isMine &&
-                                          widget.content.contentType !=
-                                              ContentTypeEnum.localDeleted
-                                      ? MessageStatusWidget(
-                                          content: widget.content,
-                                          lastReceived: currentChannelProvider
-                                              .lastReceived,
-                                          lastSeen:
-                                              currentChannelProvider.lastSeen,
-                                        )
-                                      : Container(),
+                                  // isMine &&
+                                  //         widget.content.contentType !=
+                                  //             ContentTypeEnum.localDeleted
+                                  //     ? MessageStatusWidget(
+                                  //         content: widget.content,
+                                  //         lastReceived: currentChannelProvider
+                                  //             .lastReceived,
+                                  //         lastSeen:
+                                  //             currentChannelProvider.lastSeen,
+                                  //       )
+                                  //     : Container(),
                                 ],
                               ),
                             ],

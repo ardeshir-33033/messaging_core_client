@@ -56,17 +56,17 @@ class _ChatPageState extends State<ChatPage>
             return Column(
               children: [
                 ContentDateWidget(
-                  timeStamp: contents[index].timestamp,
+                  timeStamp: contents[index].updatedAt,
                   showData: index == contents.length - 1
                       ? true
                       : (contents[index]
-                          .timestamp
-                          .isNotSameDateAs(contents[index + 1].timestamp)),
+                          .updatedAt
+                          .isNotSameDateAs(contents[index + 1].updatedAt)),
                 ),
                 Container(
                   width: double.infinity,
                   color:
-                      (contents[index].sequenceNumber == _repliedItemToAnimate)
+                      (contents[index].contentId == _repliedItemToAnimate)
                           ? _replyToColorAnimation.value
                           : null,
                   child: ChatBox(
@@ -92,9 +92,9 @@ class _ChatPageState extends State<ChatPage>
     if (replyContent == null) return;
     // await _currentChannelContentProvider
     //     .loadPreviousContentsUntil(replyContent.sequenceNumber);
-    _repliedItemToAnimate = replyContent.sequenceNumber;
+    _repliedItemToAnimate = replyContent.contentId;
     setState(() {});
-    _scrollToSeqNo(replyContent.sequenceNumber);
+    _scrollToSeqNo(replyContent.contentId);
     await _replyToAnimationController.forward(from: 0);
   }
 
@@ -104,7 +104,7 @@ class _ChatPageState extends State<ChatPage>
         //     .getContents()
         .reversed
         .toList()
-        .indexWhere((e) => e.sequenceNumber == seqNo);
+        .indexWhere((e) => e.contentId == seqNo);
 
     if (!ignoreScrollToFirst || scrollToIndex > 0) {
       WidgetsBinding.instance.addPostFrameCallback((timestamp) {

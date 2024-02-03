@@ -1,17 +1,22 @@
 import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/enums/message_status.dart';
+import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_payload_model.dart';
 
 class ContentModel {
-  String contentId;
+  int contentId;
   String channelId;
   String senderId;
-  int sequenceNumber;
-  DateTime timestamp;
+  ReceiverType receiverType;
+  int receiverId;
+  DateTime createdAt;
+  DateTime updatedAt;
+  int categoryId;
+  String messageText;
   ContentPayloadModel contentPayload;
   ContentTypeEnum contentType;
   MessageStatus status;
-  ContentModel? _repliedTo; //todo possibility of forge from client
+  ContentModel? _repliedTo; // todo possibility of forge from client
   bool isForwarded;
 
   set repliedTo(ContentModel? value) {
@@ -31,12 +36,16 @@ class ContentModel {
     required this.contentId,
     required this.channelId,
     required this.senderId,
-    required this.sequenceNumber,
-    required this.timestamp,
+    required this.receiverType,
+    required this.createdAt,
+    required this.updatedAt,
     required this.contentType,
     required this.contentPayload,
+    required this.messageText,
     this.isForwarded = false,
     ContentModel? repliedTo,
+    required this.categoryId,
+    required this.receiverId,
     this.status = MessageStatus
         .sent, // we didn't store message status on server. but keep in mind that if content is received to server, it's definitely 'sent'
   }) {
@@ -71,7 +80,7 @@ class ContentModel {
 
   static ContentModel fromJson(Map<String, dynamic> json,
       {bool mainContent = true}) {
-    var contentType = ContentTypeEnum.fromString(json['contentType'] ?? "");
+    var contentType = ContentTypeEnum.fromString(json['message_text'] ?? "");
     var contentPayload =
         ContentPayloadModel.create(contentType, json['contentPayload']);
     ContentModel? repliedTo = (mainContent && json['repliedTo'] != null)
@@ -82,13 +91,17 @@ class ContentModel {
       contentId: json['contentId'],
       channelId: json['channelId'],
       senderId: json['senderId'],
-      sequenceNumber: json['sequenceNumber'],
-      timestamp: DateTime.fromMillisecondsSinceEpoch(json['timestamp']),
+      createdAt: DateTime.fromMillisecondsSinceEpoch(json['created_at']),
+      updatedAt: DateTime.fromMillisecondsSinceEpoch(json['updated_at']),
       contentType: contentType,
       contentPayload: contentPayload,
       status: MessageStatus.sent,
       repliedTo: repliedTo,
       isForwarded: json['isForwarded'] ?? false,
+      receiverType: json['receiver_type'],
+      messageText: json['message_text'],
+      categoryId: json['category_id'],
+      receiverId: json['receiver_id'],
     );
   }
 
@@ -97,8 +110,8 @@ class ContentModel {
       'contentId': contentId,
       'channelId': channelId,
       'senderId': senderId,
-      'sequenceNumber': sequenceNumber,
-      'timestamp': timestamp.millisecondsSinceEpoch,
+      'updated_at': updatedAt.millisecondsSinceEpoch,
+      'created_at': createdAt.millisecondsSinceEpoch,
       'contentPayload': contentPayload.toJson(),
       'contentType': contentType.name,
       'status': status.name,
@@ -108,5 +121,14 @@ class ContentModel {
       json['repliedTo'] = _repliedTo?.toJson(mainContent: false);
     }
     return json;
+  }
+
+  List<ContentModel> listFromJson(dynamic json) {
+    if (json != null) {
+      return json.map<ContentModel>((j) {
+        return ContentModel.fromJson(j);
+      }).toList();
+    }
+    return [];
   }
 }

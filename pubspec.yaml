@@ -30,6 +30,9 @@ dependencies:
   flutter_svg: ^2.0.5
   cached_network_image: ^3.2.3
   skeleton_text: ^3.0.1
+  fluttertoast: ^8.2.1
+  url_launcher: ^6.1.11
+  flutter_linkify: ^6.0.0
 
 
 

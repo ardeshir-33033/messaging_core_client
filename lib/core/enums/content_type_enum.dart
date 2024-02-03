@@ -6,6 +6,7 @@ enum ContentTypeEnum {
   linkableText,
   image,
   file,
+  video,
   location,
   sticker,
   gif,
@@ -20,6 +21,17 @@ enum ContentTypeEnum {
   call;
 
   static ContentTypeEnum fromString(String name) {
+    name = name.substring(name.length, 3);
+    switch (name) {
+      case "mp4":
+        name = "video";
+      case "mp3":
+        name = "video";
+      case "jpg":
+        name = "image";
+      default:
+        name = "text";
+    }
     switch (name) {
       case "text":
         return text;
@@ -29,6 +41,8 @@ enum ContentTypeEnum {
         return image;
       case "file":
         return file;
+      case "video":
+        return video;
       case "location":
         return location;
       case "sticker":

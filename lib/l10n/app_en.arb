@@ -9,5 +9,18 @@
   "seconds": "seconds",
   "minute": "minute",
   "minutes": "minutes",
-  "forward": "Forward"
+  "forward": "Forward",
+  "resend": "Resend",
+  "reply": "Reply",
+  "saveImage": "Save Image",
+  "imageSavedToGallery": "Image saved to your photo gallery.",
+  "copy": "Copy",
+  "forwarded": "Forwarded",
+  "forwardedMessage": "Forwarded message",
+  "report": "Report",
+  "delete": "Delete",
+  "couldNotLaunchUrl": "Could Not Launch Url",
+  "unsupportedContentText": "Unsupported Content Text",
+  "download": "Download",
+  "localDeletedContentText": "This message was deleted"
 }
