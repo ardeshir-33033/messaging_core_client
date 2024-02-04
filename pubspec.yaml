@@ -33,6 +33,7 @@ dependencies:
   fluttertoast: ^8.2.1
   url_launcher: ^6.1.11
   flutter_linkify: ^6.0.0
+  flutter_cache_manager: ^3.3.0
 
 
 

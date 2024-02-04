@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:messaging_core/app/component/dialog_box.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
+import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/image_widget.dart';
 import 'package:messaging_core/app/widgets/overlay_widget.dart';
@@ -11,40 +13,10 @@ import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/core/utils/utils.dart';
 import 'package:messaging_core/features/chat/domain/entities/contact_profile_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
+import 'package:messaging_core/features/chat/domain/entities/text_content_payload_model.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_box_content.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/content_options_overlay_widget.dart';
-import 'package:png/core/component/dialog_box.dart';
-import 'package:png/core/statics/analytics_statics.dart';
-import 'package:png/core/theme/constants.dart';
-import 'package:png/main.dart';
-import 'package:png/models/contact_profile_model.dart';
-import 'package:png/models/content/content_model.dart';
-import 'package:png/models/content/file_content_payload_model.dart';
-import 'package:png/models/content/text_content_payload_model.dart';
-import 'package:png/models/enum/content_type_enum.dart';
-import 'package:png/models/enum/file_type.dart';
-import 'package:png/models/enum/message_status.dart';
-import 'package:png/services/providers/current_channel_content_provider.dart';
-import 'package:png/services/providers/current_channel_provider.dart';
-import 'package:png/services/storage/user_cert_storage.dart';
-import 'package:png/utils/extensions.dart';
-import 'package:png/utils/extensions/context_extensions.dart';
-import 'package:png/utils/file_helper.dart';
-import 'package:png/utils/util.dart';
-import 'package:png/views/pages/conversation_page/bottom_sheets/forward_content_sheet.dart';
-import 'package:png/views/pages/conversation_page/widgets/content_options_overlay_widget.dart';
-import 'package:png/views/theme/app_colors.dart';
-import 'package:png/views/theme/app_text_styles.dart';
-import 'package:png/views/widgets/bottom_sheets/base_bottom_sheets.dart';
-import 'package:png/views/widgets/chat/chat_box_content.dart';
-import 'package:png/views/widgets/chat/general_content_widget.dart';
-import 'package:png/views/widgets/chat/message_status_widget.dart';
-import 'package:png/views/widgets/chat/sms_content_widget.dart';
-import 'package:png/views/widgets/icon_widget.dart';
-import 'package:png/views/widgets/image_widget.dart';
-import 'package:png/views/widgets/overlay_widget.dart';
-import 'package:png/views/widgets/tag_widget.dart';
-import 'package:provider/provider.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/tag_widget.dart';
 
 class ChatBox extends StatefulWidget {
   final ContentModel content;
@@ -107,7 +79,7 @@ class ChatBoxState extends State<ChatBox> {
       onForward: _onForward,
       onReply: _onReply,
       onReport: _onReport,
-      onSaveImage: _onSaveImage,
+      // onSaveImage: _onSaveImage,
       isMine: isMine,
       child: InkWell(
         splashColor: Colors.transparent,
@@ -362,14 +334,14 @@ class ChatBoxState extends State<ChatBox> {
   String getSenderName(ContentModel content) {
     String senderName = "";
 
-    if (currentChannelProvider.members.containsKey(content.senderId)) {
-      senderName =
-          currentChannelProvider.members[content.senderId]!.profile.displayName;
-    } else {
-      senderName = currentChannelProvider
-              .removedMembers[content.senderId]?.profile.displayName ??
-          content.senderId.toHex().midEllipsis(head: 4, tail: 4);
-    }
+    // if (currentChannelProvider.members.containsKey(content.senderId)) {
+    //   senderName =
+    //       currentChannelProvider.members[content.senderId]!.profile.displayName;
+    // } else {
+    //   senderName = currentChannelProvider
+    //           .removedMembers[content.senderId]?.profile.displayName ??
+    //       content.senderId.toHex().midEllipsis(head: 4, tail: 4);
+    // }
     if (content.contentType == ContentTypeEnum.unsupported) {
       return '${tr(context).unsupportedContentFrom} $senderName';
     } else {
@@ -386,8 +358,8 @@ class ChatBoxState extends State<ChatBox> {
   }
 
   ContactProfile? get senderProfile {
-    return currentChannelProvider.members[widget.content.senderId]?.profile ??
-        currentChannelProvider.removedMembers[widget.content.senderId]?.profile;
+    // return currentChannelProvider.members[widget.content.senderId]?.profile ??
+    //     currentChannelProvider.removedMembers[widget.content.senderId]?.profile;
   }
 
   Future<void> _onCopy() async {
@@ -398,33 +370,33 @@ class ChatBoxState extends State<ChatBox> {
 
   Future<void> _onReply() async {
     _hideBox();
-    currentChannelProvider.repliedContent = widget.content;
-    currentChannelProvider.notifyListeners();
+    // currentChannelProvider.repliedContent = widget.content;
+    // currentChannelProvider.notifyListeners();
   }
 
   Future<void> _onReport() async {
     _hideBox();
     DialogBoxes(
         title: tr(context).reportQuestion,
-        icon: Assets.reportIcon,
+        icon: Assets.report,
         showIcon: true,
         descriptionWidget: TagWidget(
           text: tr(context).reportHint,
-          icon: Assets.shieldIcon,
-          iconColor: Color(0xffEB5757),
-          backgroundColor: Color(0xEB5757).withOpacity(0.08),
+          icon: Icons.shield,
+          iconColor: const Color(0xffEB5757),
+          backgroundColor: const Color(0xEB5757).withOpacity(0.08),
         ),
         mainTaskText: tr(context).yesReport,
         mainTask: () {
-          AnalyticsStatics().setAnalyticLog(
-            "reportMessage",
-            {
-              "contentId": widget.content.contentId,
-              "channelId": widget.content.channelId,
-              "sequence": widget.content.sequenceNumber,
-              "time": DateTime.now().toString()
-            },
-          );
+          // AnalyticsStatics().setAnalyticLog(
+          //   "reportMessage",
+          //   {
+          //     "contentId": widget.content.contentId,
+          //     "channelId": widget.content.channelId,
+          //     "sequence": widget.content.sequenceNumber,
+          //     "time": DateTime.now().toString()
+          //   },
+          // );
           Fluttertoast.showToast(
               msg: 'We review your report as soon as possible');
           Navigator.pop(context);
@@ -437,37 +409,37 @@ class ChatBoxState extends State<ChatBox> {
 
   Future<void> _onDeleteUnsent() async {
     _hideBox();
-    CurrentChannelContentProvider currentChannelContentProvider =
-        getIt<CurrentChannelContentProvider>();
-    currentChannelContentProvider.deleteUnsentMessage(widget.content);
+    // CurrentChannelContentProvider currentChannelContentProvider =
+    //     getIt<CurrentChannelContentProvider>();
+    // currentChannelContentProvider.deleteUnsentMessage(widget.content);
   }
 
   Future<void> _onDeleteLocal() async {
     _hideBox();
-    CurrentChannelContentProvider currentChannelContentProvider =
-        getIt<CurrentChannelContentProvider>();
-    currentChannelContentProvider.localDeleteSentMessage(widget.content);
+    // CurrentChannelContentProvider currentChannelContentProvider =
+    //     getIt<CurrentChannelContentProvider>();
+    // currentChannelContentProvider.localDeleteSentMessage(widget.content);
   }
 
   Future<void> _onResend() async {
     _hideBox();
-    context.read<CurrentChannelContentProvider>().resendContent(widget.content);
+    // context.read<CurrentChannelContentProvider>().resendContent(widget.content);
   }
 
   Future<void> _onForward() async {
     _hideBox();
-    CustomBottomSheet.showSimpleSheet(
-      context,
-      (context) => ForwardContentSheet(
-        contentModel: widget.content,
-      ),
-    );
+    // CustomBottomSheet.showSimpleSheet(
+    //   context,
+    //   (context) => ForwardContentSheet(
+    //     contentModel: widget.content,
+    //   ),
+    // );
   }
 
-  Future<void> _onSaveImage() async {
-    _hideBox();
-    saveImageInGallery(getImageCacheKey(widget.content.contentId), context);
-  }
+  // Future<void> _onSaveImage() async {
+  //   _hideBox();
+  //   saveImageInGallery(getImageCacheKey(widget.content.contentId), context);
+  // }
 
   void _hideBox() {
     widget.overlayController.dismissOverlay();
@@ -476,7 +448,8 @@ class ChatBoxState extends State<ChatBox> {
   updateIsDownloadImage() async {
     if (_isDownloadedImage) return;
     _isDownloadedImage = widget.content.contentType == ContentTypeEnum.image &&
-        await isImageCached(getImageCacheKey(widget.content.contentId));
+        await isImageCached(
+            getImageCacheKey(widget.content.contentId.toString()));
     if (_isDownloadedImage) {
       if (context.mounted) setState(() {});
     }
@@ -484,14 +457,14 @@ class ChatBoxState extends State<ChatBox> {
 
   Future<void> _onSaveFile() async {
     _hideBox();
-    FileContentPayloadModel payload =
-        widget.content.contentPayload as FileContentPayloadModel;
-    final file = await getCachedFile(
-        "${widget.content.contentId}.${payload.extension}", FileType.file);
-    if (file != null) {
-      FileHelper.saveFileInDownloads(payload.name, file);
-    } else {
-      Fluttertoast.showToast(msg: "first Download the file to save it.");
-    }
+    // FileContentPayloadModel payload =
+    //     widget.content.contentPayload as FileContentPayloadModel;
+    // final file = await getCachedFile(
+    //     "${widget.content.contentId}.${payload.extension}", FileType.file);
+    // if (file != null) {
+    //   FileHelper.saveFileInDownloads(payload.name, file);
+    // } else {
+    //   Fluttertoast.showToast(msg: "first Download the file to save it.");
+    // }
   }
 }

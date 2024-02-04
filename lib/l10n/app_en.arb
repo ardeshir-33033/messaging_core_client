@@ -20,7 +20,12 @@
   "report": "Report",
   "delete": "Delete",
   "couldNotLaunchUrl": "Could Not Launch Url",
-  "unsupportedContentText": "Unsupported Content Text",
   "download": "Download",
-  "localDeletedContentText": "This message was deleted"
+  "localDeletedContentText": "This message was deleted",
+  "reportQuestion": "Report this message?",
+  "unsupportedContentText": "Update your app to view this message",
+  "unsupportedContentFrom": "Unsupported message from",
+  "reportHint": "This message will be forwarded to Pinngle.",
+  "yesReport": "Report",
+  "noReport": "Cancel"
 }

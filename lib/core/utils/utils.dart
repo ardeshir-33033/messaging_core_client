@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:messaging_core/main.dart';
-import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void postFrameCallback(VoidCallback callback) {
@@ -44,4 +43,12 @@ Future<void> launchExternalUrl(
   } catch (e) {
     onError?.call(e);
   }
+}
+
+Future<bool> isImageCached(String key) async {
+  return await DefaultCacheManager().getFileFromCache(key) != null;
+}
+
+String getImageCacheKey(String key, {bool thumbnail = false}) {
+  return 'image_$key${thumbnail ? '_thumbnail' : ''}';
 }
