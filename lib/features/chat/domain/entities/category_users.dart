@@ -49,4 +49,13 @@ class CategoryUser {
     data['roles'] = roles;
     return data;
   }
+
+  static List<CategoryUser> listFromJson(dynamic json) {
+    if (json != null) {
+      return json.map<CategoryUser>((j) {
+        return CategoryUser.fromJson(j);
+      }).toList();
+    }
+    return [];
+  }
 }

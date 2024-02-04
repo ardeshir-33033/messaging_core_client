@@ -11,4 +11,8 @@ class Environment {
       await dotenv.load(fileName: "develop.env");
     }
   }
+
+  static String get apiBaseUrl {
+    return dotenv.get("API_BASE_URL");
+  }
 }

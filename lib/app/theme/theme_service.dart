@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:messaging_core/app/routing/cupertino_page_transition_builder.dart';
-import 'package:messaging_core/app/routing/custom_transition.dart';
+import 'package:messaging_core/app/page_routing/cupertino_page_transition_builder.dart';
+import 'package:messaging_core/app/page_routing/custom_transition.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/constants.dart';
 

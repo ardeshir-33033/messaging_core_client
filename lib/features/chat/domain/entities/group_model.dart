@@ -39,7 +39,7 @@ class GroupModel {
     return data;
   }
 
-  List<GroupModel> listFromJson(dynamic json) {
+  static List<GroupModel> listFromJson(dynamic json) {
     if (json != null) {
       return json.map<GroupModel>((j) {
         return GroupModel.fromJson(j);
