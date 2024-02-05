@@ -1,3 +1,5 @@
+import 'package:messaging_core/features/chat/domain/entities/group_users_model.dart';
+
 class GroupModel {
   int id;
   String name;
@@ -6,15 +8,22 @@ class GroupModel {
   int categoryId;
   DateTime createdAt;
   DateTime updatedAt;
+  int? unreadCount;
+  List<GroupUsersModel> groupUsers;
+  dynamic lastUnread;
 
-  GroupModel(
-      {required this.id,
-      required this.name,
-      this.avatar,
-      this.creatorUserId,
-      required this.categoryId,
-      required this.createdAt,
-      required this.updatedAt});
+  GroupModel({
+    required this.id,
+    required this.name,
+    this.avatar,
+    this.creatorUserId,
+    required this.categoryId,
+    required this.createdAt,
+    required this.updatedAt,
+    this.unreadCount,
+    this.lastUnread,
+    this.groupUsers = const [],
+  });
 
   static GroupModel fromJson(Map<String, dynamic> json) {
     return GroupModel(
@@ -23,8 +32,11 @@ class GroupModel {
         avatar: json['avatar'],
         creatorUserId: json['creator_user_id'],
         categoryId: json['category_id'],
-        createdAt: DateTime.fromMillisecondsSinceEpoch(json['created_at']),
-        updatedAt: DateTime.fromMillisecondsSinceEpoch(json['updated_at']));
+        unreadCount: json['unreadCount'],
+        lastUnread: json['lastRead'],
+        groupUsers: GroupUsersModel.listFromJson(json['users']),
+        createdAt: DateTime.parse(json['created_at']),
+        updatedAt: DateTime.parse(json['updated_at']));
   }
 
   Map<String, dynamic> toJson() {
@@ -36,6 +48,8 @@ class GroupModel {
     data['category_id'] = categoryId;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['unreadCount'] = unreadCount;
+    data['lastRead'] = lastUnread;
     return data;
   }
 

@@ -21,7 +21,7 @@ class ChatDataSourceImpl extends ChatDataSource {
   Future<ResponseModel> getUsersInCategory() async {
     ResponseModel response = await api.get(
       CategoryRouting.usersInCategory,
-      queries: [QueryModel(name: "category_id", value: "330")],
+      queries: [QueryModel(name: "category_id", value: "330"), QueryModel(name: 'login_user_id', value: '391')],
       headerEnum: HeaderEnum.bearerHeaderEnum,
       responseEnum: ResponseEnum.responseModelEnum,
     );
