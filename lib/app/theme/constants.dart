@@ -22,6 +22,8 @@ class Assets {
   static const String trash = "$_baseIconPath/trash.svg";
   static const String star = "$_baseIconPath/Star.svg";
   static const String reply = "$_baseIconPath/reply.svg";
+  static const String arrowLeftIcon = "$_baseIconPath/arrow_left_icon.svg";
 
-  /// -----------------------Icons Assets -------------------------
+
+/// -----------------------Icons Assets -------------------------
 }

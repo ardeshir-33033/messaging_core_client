@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:messaging_core/app/theme/theme_service.dart';
 import 'package:messaging_core/app/widgets/scroll_behavior.dart';
 import 'package:messaging_core/core/env/environment.dart';
+import 'package:messaging_core/features/chat/presentation/pages/chat_list_page.dart';
 import 'package:messaging_core/l10n/l10n.dart';
 import 'package:messaging_core/locator.dart';
 
@@ -42,23 +43,9 @@ class MyApp extends StatelessWidget {
           ],
           scrollBehavior: CustomScrollBehavior(),
           supportedLocales: L10n.all,
-          home: const MyHomePage(),
+          home: const ChatListPage(),
         );
       },
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
   }
 }

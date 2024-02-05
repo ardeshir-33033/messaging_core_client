@@ -27,5 +27,7 @@
   "unsupportedContentFrom": "Unsupported message from",
   "reportHint": "This message will be forwarded to Pinngle.",
   "yesReport": "Report",
-  "noReport": "Cancel"
+  "noReport": "Cancel",
+  "noMessage": "No message",
+  "chat": "Chat"
 }

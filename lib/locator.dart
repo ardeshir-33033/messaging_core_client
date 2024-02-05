@@ -9,10 +9,11 @@ import 'package:messaging_core/features/chat/presentation/manager/chat_controlle
 final locator = GetIt.instance;
 
 void injectDependencies() {
-  dataInjection();
-  repositoryInjection();
-  useCaseInjection();
   controllerInjection();
+  useCaseInjection();
+  repositoryInjection();
+
+  dataInjection();
 }
 
 void dataInjection() {

@@ -1,29 +1,32 @@
+import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/group_users_model.dart';
 
-class GroupModel {
-  int id;
-  String name;
-  String? avatar;
-  int? creatorUserId;
-  int categoryId;
-  DateTime createdAt;
-  DateTime updatedAt;
-  int? unreadCount;
-  List<GroupUsersModel> groupUsers;
-  dynamic lastUnread;
-
+class GroupModel extends ChatParentClass {
   GroupModel({
-    required this.id,
-    required this.name,
-    this.avatar,
-    this.creatorUserId,
-    required this.categoryId,
-    required this.createdAt,
-    required this.updatedAt,
-    this.unreadCount,
-    this.lastUnread,
-    this.groupUsers = const [],
-  });
+    int? id,
+    String? name,
+    String? username,
+    String? avatar,
+    int? creatorUserId,
+    int? categoryId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    int? unreadCount,
+    dynamic lastRead,
+    List<GroupUsersModel> groupUsers = const [],
+  }) : super(
+          id: id,
+          name: name,
+          username: username,
+          avatar: avatar,
+          categoryId: categoryId,
+          createdAt: createdAt,
+          updatedAt: updatedAt,
+          creatorUserId: creatorUserId,
+          unreadCount: unreadCount,
+          lastRead: lastRead,
+          groupUsers: groupUsers,
+        );
 
   static GroupModel fromJson(Map<String, dynamic> json) {
     return GroupModel(
@@ -33,7 +36,7 @@ class GroupModel {
         creatorUserId: json['creator_user_id'],
         categoryId: json['category_id'],
         unreadCount: json['unreadCount'],
-        lastUnread: json['lastRead'],
+        lastRead: json['lastRead'],
         groupUsers: GroupUsersModel.listFromJson(json['users']),
         createdAt: DateTime.parse(json['created_at']),
         updatedAt: DateTime.parse(json['updated_at']));
@@ -49,7 +52,7 @@ class GroupModel {
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     data['unreadCount'] = unreadCount;
-    data['lastRead'] = lastUnread;
+    data['lastRead'] = lastRead;
     return data;
   }
 

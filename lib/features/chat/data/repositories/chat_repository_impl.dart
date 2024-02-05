@@ -12,7 +12,7 @@ class ChatRepositoryImpl extends ChatRepository {
   @override
   Future<ResponseModel> getAllChats() async {
     try {
-      return await _chatDataSource.getGroupChatsInCategory();
+      return await _chatDataSource.getUsersInCategory();
     } catch (e) {
       return ResponseModel(
         statusCode: 510,

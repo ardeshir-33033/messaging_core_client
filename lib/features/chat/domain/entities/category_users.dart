@@ -1,27 +1,33 @@
 import 'package:messaging_core/core/enums/user_roles.dart';
+import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 
-class CategoryUser {
-  int id;
-  String name;
-  String username;
-  dynamic avatar;
-  int level;
-  String status;
-  String email;
-  String statusEmail;
-  List<UserRoles> roles;
-
+class CategoryUser extends ChatParentClass {
   CategoryUser({
-    required this.id,
-    required this.name,
-    required this.username,
-    required this.avatar,
-    required this.level,
-    required this.status,
-    required this.email,
-    required this.statusEmail,
-    required this.roles,
-  });
+    int? id,
+    String? name,
+    String? username,
+    String? avatar,
+    int? creatorUserId,
+    int? categoryId,
+    int? level,
+    String? status,
+    String? email,
+    String? statusEmail,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    List<UserRoles>? roles,
+  }) : super(
+          id: id,
+          name: name,
+          username: username,
+          avatar: avatar,
+          categoryId: categoryId,
+          level: level,
+          createdAt: createdAt,
+          updatedAt: updatedAt,
+          creatorUserId: creatorUserId,
+          roles: roles,
+        );
 
   static CategoryUser fromJson(Map<String, dynamic> json) {
     return CategoryUser(

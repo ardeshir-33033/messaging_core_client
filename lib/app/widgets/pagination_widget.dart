@@ -11,7 +11,7 @@ class PaginationWidget<T extends Object> extends StatefulWidget {
   final Widget? onEmpty;
   final int? limit;
   final int? offset;
-  final List<T> items;
+  final List items;
   final bool fetchOnInit;
 
   const PaginationWidget({
@@ -67,7 +67,8 @@ class _PaginationWidgetState<T extends Object, W extends PaginationWidget<T>>
         child: ListView.separated(
           itemBuilder: (context, index) =>
               widget.itemBuilder.call(index, widget.items[index]),
-          separatorBuilder: (context, index) => const SizedBox.shrink(),
+          separatorBuilder: (context, index) =>
+              widget.separatorBuilder?.call(index) ?? const SizedBox.shrink(),
           itemCount: widget.items.length,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),

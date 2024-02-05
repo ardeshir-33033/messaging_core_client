@@ -124,6 +124,24 @@ extension IntegerExtensions on int {
       }
     }
   }
+
+  Color colorFromId() {
+    int lastDigit = this % 10;
+    List<Color> colors = [
+      const Color(0xFFA5A6F6),
+      const Color(0xFFFFAEAE),
+      const Color(0xFF4DB1AE),
+      const Color(0xFF6F5EAE),
+      const Color(0xFF8FAEAE),
+      const Color(0xFFAE6741),
+      const Color(0xFFAE517B),
+      const Color(0xFFA7AEA2),
+      const Color(0xFF8C7F38),
+      const Color(0xFF2E461A),
+    ];
+
+    return colors[lastDigit];
+  }
 }
 
 extension StringEx on String {
