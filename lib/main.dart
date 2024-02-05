@@ -7,11 +7,13 @@ import 'package:messaging_core/app/theme/theme_service.dart';
 import 'package:messaging_core/app/widgets/scroll_behavior.dart';
 import 'package:messaging_core/core/env/environment.dart';
 import 'package:messaging_core/l10n/l10n.dart';
+import 'package:messaging_core/locator.dart';
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 void main() async {
   await Environment.initEnvironment();
+  injectDependencies();
   runApp(const MyApp());
 }
 
