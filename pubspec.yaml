@@ -34,6 +34,7 @@ dependencies:
   url_launcher: ^6.1.11
   flutter_linkify: ^6.0.0
   flutter_cache_manager: ^3.3.0
+  get: ^4.6.6
   api_handler:
     git: {url: 'https://github.com/ardeshir-33033/api_helper.git', ref: main}
 

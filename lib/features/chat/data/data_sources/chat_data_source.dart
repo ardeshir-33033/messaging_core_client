@@ -15,7 +15,9 @@ abstract class ChatDataSource {
 }
 
 class ChatDataSourceImpl extends ChatDataSource {
-  APIHandler api = APIHandler();
+  APIHandler api;
+
+  ChatDataSourceImpl(this.api);
 
   @override
   Future<ResponseModel> getUsersInCategory() async {

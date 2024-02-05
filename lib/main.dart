@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:messaging_core/app/theme/theme_service.dart';
 import 'package:messaging_core/app/widgets/scroll_behavior.dart';
 import 'package:messaging_core/core/env/environment.dart';
-import 'package:messaging_core/features/chat/data/data_sources/chat_data_source.dart';
 import 'package:messaging_core/l10n/l10n.dart';
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
-void main() async{
+void main() async {
   await Environment.initEnvironment();
   runApp(const MyApp());
 }
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       useInheritedMediaQuery: true,
       designSize: const Size(360, 640),
       builder: (context, child) {
-        return MaterialApp(
+        return GetMaterialApp(
           navigatorKey: navigatorKey,
           theme: Themes.light,
           darkTheme: Themes.dark,
@@ -55,13 +55,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  @override
-  void initState() {
-    // ChatDataSourceImpl().getGroupChatsInCategory();
-    ChatDataSourceImpl().getUsersInCategory();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold();
