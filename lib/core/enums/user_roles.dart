@@ -13,4 +13,14 @@ enum UserRoles {
         return UserRoles.user;
     }
   }
+
+  static List<UserRoles> fromList(List<dynamic> roles) {
+    List<UserRoles> result = [];
+
+    roles.forEach((element) {
+      result.add(UserRoles.fromString(element));
+    });
+
+    return result;
+  }
 }

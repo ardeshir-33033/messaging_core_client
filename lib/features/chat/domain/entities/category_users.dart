@@ -33,7 +33,7 @@ class CategoryUser {
         status: json['status'],
         email: json['email'],
         statusEmail: json['status_email'],
-        roles: [UserRoles.fromString(json['roles'])]);
+        roles: UserRoles.fromList(json['roles']));
   }
 
   Map<String, dynamic> toJson() {
