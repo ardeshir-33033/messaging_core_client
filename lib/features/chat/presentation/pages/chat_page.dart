@@ -51,6 +51,7 @@ class _ChatPageState extends State<ChatPage>
     controller.getMessages(
         widget.chat.getReceiverType(), AppGlobalData.userId, widget.chat.id!);
     scrollNotificationController = StreamController();
+    _overlayController = OverlayController();
     _initAnimations();
 
     super.initState();
@@ -98,6 +99,7 @@ class _ChatPageState extends State<ChatPage>
                       chat: widget.chat,
                       size: 40,
                     ),
+                    const SizedBox(height: 10),
                     Expanded(
                       child: GetBuilder<ChatController>(
                           id: "messages",
@@ -169,6 +171,19 @@ class _ChatPageState extends State<ChatPage>
                                                           .messages[index + 1]
                                                           .contentType
                                                           .isGeneralContent),
+                                              isLastSenderContent: index == 0
+                                                  ? true
+                                                  : (controller
+                                                  .messages[
+                                              index - 1]
+                                                  .senderId !=
+                                                  controller
+                                                      .messages[index]
+                                                      .senderId ||
+                                                  controller
+                                                      .messages[index - 1]
+                                                      .contentType
+                                                      .isGeneralContent),
                                             ),
                                           ),
                                         ],

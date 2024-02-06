@@ -22,9 +22,10 @@ class ConversationAppBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        chat.avatar.isNullOrEmpty()
-            ? _noProfileImage(context, chat)
-            : _profileImage(context),
+        // chat.avatar.isNullOrEmpty()
+        //     ?
+        _noProfileImage(context, chat),
+            // : _profileImage(context),
         const SizedBox(width: 7),
         Column(
           children: [

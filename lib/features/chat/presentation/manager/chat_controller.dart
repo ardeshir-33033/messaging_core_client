@@ -53,6 +53,7 @@ class ChatController extends GetxController {
           senderId: senderId));
       if (response.result == ResultEnum.success) {
         messages = response.data;
+        messages = messages.reversed.toList();
 
         messagesStatus.success();
         update(["messages"]);

@@ -6,8 +6,8 @@ class TextContentPayloadModel extends ContentPayloadModel {
 
   TextContentPayloadModel(this.text);
 
-  TextContentPayloadModel.fromJson(Map<String, dynamic> json)
-      : text = json['text'] ?? '';
+  TextContentPayloadModel.fromJson(String json)
+      : text = json ?? '';
 
   @override
   Map<String, dynamic> toJson() {

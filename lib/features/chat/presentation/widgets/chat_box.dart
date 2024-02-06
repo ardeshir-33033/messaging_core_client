@@ -7,10 +7,12 @@ import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/image_widget.dart';
 import 'package:messaging_core/app/widgets/overlay_widget.dart';
+import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/enums/message_status.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/core/utils/utils.dart';
+import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/contact_profile_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/text_content_payload_model.dart';
@@ -22,6 +24,7 @@ class ChatBox extends StatefulWidget {
   final ContentModel content;
   final bool isGroup;
   final bool isFirstSenderContent;
+  final bool isLastSenderContent;
   final Function() onReplyTap;
   final OverlayController overlayController;
   final ContactProfile? opponentProfile;
@@ -32,6 +35,7 @@ class ChatBox extends StatefulWidget {
     required this.isGroup,
     required this.onReplyTap,
     required this.isFirstSenderContent,
+    required this.isLastSenderContent,
     required this.overlayController,
     this.opponentProfile,
   }) : super(key: key);
@@ -109,7 +113,7 @@ class ChatBoxState extends State<ChatBox> {
           }
           return Padding(
             padding: EdgeInsets.fromLTRB(
-                12, widget.isFirstSenderContent ? 12 : 4, 12, 0),
+                8, widget.isFirstSenderContent ? 12 : 4, 8, 0),
             child: Row(
               textDirection: isMine ? TextDirection.rtl : TextDirection.ltr,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -135,95 +139,118 @@ class ChatBoxState extends State<ChatBox> {
                       textDirection:
                           isMine ? TextDirection.rtl : TextDirection.ltr,
                       mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Visibility(
                           visible: isMine == false &&
-                              widget.isFirstSenderContent &&
+                              widget.isLastSenderContent &&
                               widget.isGroup,
                           replacement: SizedBox(
                             width: (isMine || widget.isGroup == false) ? 0 : 32,
                           ),
                           child: Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 4.0),
-                            child: ImageWidget(
-                              imageUrl: senderProfile?.image ?? "",
-                              height: 24,
-                              width: 24,
+                                const EdgeInsets.symmetric(horizontal: 0.0),
+                            child:
+                                // _noProfileImage(
+                                //                         context,
+                                //                         widget.content.senderId,
+                                //                         widget.content.sender?.name ?? '',
+                                //                         35)
+                                ImageWidget(
+                              imageUrl: senderProfile ?? "",
+                              height: 35,
+                              width: 35,
                               boxShape: BoxShape.circle,
                             ),
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          constraints: BoxConstraints(
-                            maxWidth: context.widthPercentage(80),
-                          ),
-                          decoration: BoxDecoration(
-                            border: widget.content.contentType ==
-                                    ContentTypeEnum.unsupported
-                                ? Border.all(
-                                    width: 0.5,
-                                    color: const Color(0xff2F80ED),
-                                  )
-                                : null,
-                            borderRadius: widget.isFirstSenderContent
-                                ? BorderRadius.only(
-                                    topRight: isMine
-                                        ? const Radius.circular(4)
-                                        : const Radius.circular(16),
-                                    bottomLeft: const Radius.circular(16),
-                                    bottomRight: const Radius.circular(16),
-                                    topLeft: isMine
-                                        ? const Radius.circular(16)
-                                        : const Radius.circular(4),
-                                  )
-                                : BorderRadius.circular(16),
-                            color: isMine
-                                ? AppColors.primary1[300]
-                                : AppColors.primary2[100],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: isMine
-                                ? CrossAxisAlignment.end
-                                : CrossAxisAlignment.start,
-                            children: [
-                              if (widget.content.repliedTo != null)
-                                InkWell(
-                                  onTap: widget.onReplyTap,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 16.0, bottom: 14),
-                                    child: SizedBox(
-                                      height: 40,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          // const SizedBox(width: 16),
-                                          VerticalDivider(
-                                            color: widget.isGroup
-                                                ? AppColors.getColorByHash(
-                                                    widget.content.repliedTo!
-                                                        .senderId.hashCode)
-                                                : AppColors.primary1[450],
-                                            width: 2,
-                                            thickness: 1,
-                                          ),
-                                          const SizedBox(width: 7),
-                                          Flexible(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  getSenderName(
-                                                    widget.content.repliedTo!,
-                                                  ),
-                                                  style: AppTextStyles.body4
-                                                      .copyWith(
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (isSenderNameNeededOnMessage(widget.content))
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 4.0),
+                                child: Text(
+                                  widget.content.sender!.username!,
+                                  key: Key(widget.content.senderId.toString()),
+                                  style: AppTextStyles.body4.copyWith(
+                                      fontSize: 12,
+                                      color: widget.content.senderId
+                                          .colorFromId()),
+                                ),
+                              ),
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              constraints: BoxConstraints(
+                                maxWidth: context.widthPercentage(80),
+                              ),
+                              decoration: BoxDecoration(
+                                border: widget.content.contentType ==
+                                        ContentTypeEnum.unsupported
+                                    ? Border.all(
+                                        width: 0.5,
+                                        color: const Color(0xff2F80ED),
+                                      )
+                                    : null,
+                                borderRadius: widget.isLastSenderContent
+                                    ? BorderRadius.only(
+                                        topRight: const Radius.circular(16),
+                                        bottomLeft: isMine
+                                            ? const Radius.circular(16)
+                                            : const Radius.circular(4),
+                                        bottomRight: isMine
+                                            ? const Radius.circular(4)
+                                            : const Radius.circular(16),
+                                        topLeft: const Radius.circular(16))
+                                    : BorderRadius.circular(16),
+                                color: isMine
+                                    ? const Color(0xFF48A4F9).withOpacity(0.5)
+                                    : const Color(0xFFCECECE),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: isMine
+                                    ? CrossAxisAlignment.end
+                                    : CrossAxisAlignment.start,
+                                children: [
+                                  if (widget.content.repliedTo != null)
+                                    InkWell(
+                                      onTap: widget.onReplyTap,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 16.0, bottom: 14),
+                                        child: SizedBox(
+                                          height: 40,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              // const SizedBox(width: 16),
+                                              VerticalDivider(
+                                                color: widget.isGroup
+                                                    ? AppColors.getColorByHash(
+                                                        widget
+                                                            .content
+                                                            .repliedTo!
+                                                            .senderId
+                                                            .hashCode)
+                                                    : AppColors.primary1[450],
+                                                width: 2,
+                                                thickness: 1,
+                                              ),
+                                              const SizedBox(width: 7),
+                                              Flexible(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      getSenderName(
+                                                        widget
+                                                            .content.repliedTo!,
+                                                      ),
+                                                      style: AppTextStyles.body4.copyWith(
                                                           color: widget.isGroup
                                                               ? getSenderColor(
                                                                   widget
@@ -231,82 +258,77 @@ class ChatBoxState extends State<ChatBox> {
                                                               : AppColors
                                                                       .primary3[
                                                                   800]),
+                                                    ),
+                                                    Text(
+                                                      widget.content.repliedTo!
+                                                          .contentPayload
+                                                          .shortDisplayName(),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                      style: AppTextStyles
+                                                          .overline2
+                                                          .copyWith(
+                                                              color: AppColors
+                                                                      .primary3[
+                                                                  600]),
+                                                    ),
+                                                  ],
                                                 ),
-                                                Text(
-                                                  widget.content.repliedTo!
-                                                      .contentPayload
-                                                      .shortDisplayName(),
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  style: AppTextStyles.overline2
-                                                      .copyWith(
-                                                          color: AppColors
-                                                              .primary3[600]),
-                                                ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              if (widget.content.isForwarded)
-                                Container(
-                                  margin: const EdgeInsets.only(bottom: 4),
-                                  child: Text("forwarded",
-                                      style: AppTextStyles.body4.copyWith(
-                                        color: AppColors.primary1,
-                                      )),
-                                ),
-                              if (isSenderNameNeededOnMessage(widget.content))
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 4.0),
-                                  child: Text(
-                                    getSenderName(widget.content),
-                                    key: Key(widget.content.senderId),
-                                    style: AppTextStyles.body4.copyWith(
-                                        color: getSenderColor(widget.content)),
-                                  ),
-                                ),
-                              ChatBoxContent(
-                                contentModel: widget.content,
-                                keyId: Key(widget.content.contentId.toString()),
-                                isMine: isMine,
-                                senderName: getSenderName(widget.content),
-                                opponentProfile: widget.opponentProfile,
-                              ),
-                              const SizedBox(height: 5),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    widget.content.createdAt
-                                        .toString()
-                                        .hourAmFromDate(),
-                                    style: const TextStyle(
-                                      fontSize: 6,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xFF828FBB),
+                                  if (widget.content.isForwarded)
+                                    Container(
+                                      margin: const EdgeInsets.only(bottom: 4),
+                                      child: Text("forwarded",
+                                          style: AppTextStyles.body4.copyWith(
+                                            color: AppColors.primary1,
+                                          )),
                                     ),
+                                  ChatBoxContent(
+                                    contentModel: widget.content,
+                                    keyId: Key(
+                                        widget.content.contentId.toString()),
+                                    isMine: isMine,
+                                    senderName: getSenderName(widget.content),
+                                    opponentProfile: widget.opponentProfile,
                                   ),
-                                  const SizedBox(width: 5),
-                                  // isMine &&
-                                  //         widget.content.contentType !=
-                                  //             ContentTypeEnum.localDeleted
-                                  //     ? MessageStatusWidget(
-                                  //         content: widget.content,
-                                  //         lastReceived: currentChannelProvider
-                                  //             .lastReceived,
-                                  //         lastSeen:
-                                  //             currentChannelProvider.lastSeen,
-                                  //       )
-                                  //     : Container(),
+                                  const SizedBox(height: 5),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        widget.content.createdAt
+                                            .toString()
+                                            .hourAmFromDate(),
+                                        style: const TextStyle(
+                                          fontSize: 6,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xFF828FBB),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      // isMine &&
+                                      //         widget.content.contentType !=
+                                      //             ContentTypeEnum.localDeleted
+                                      //     ? MessageStatusWidget(
+                                      //         content: widget.content,
+                                      //         lastReceived: currentChannelProvider
+                                      //             .lastReceived,
+                                      //         lastSeen:
+                                      //             currentChannelProvider.lastSeen,
+                                      //       )
+                                      //     : Container(),
+                                    ],
+                                  ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         )
                       ],
                     ),
@@ -321,7 +343,7 @@ class ChatBoxState extends State<ChatBox> {
   }
 
   bool mine(ContentModel content) {
-    return userId == content.senderId;
+    return AppGlobalData.userId == content.senderId;
   }
 
   bool isSenderNameNeededOnMessage(ContentModel content) {
@@ -357,7 +379,8 @@ class ChatBoxState extends State<ChatBox> {
     }
   }
 
-  ContactProfile? get senderProfile {
+  String get senderProfile {
+    return widget.content.sender?.avatar ?? "";
     // return currentChannelProvider.members[widget.content.senderId]?.profile ??
     //     currentChannelProvider.removedMembers[widget.content.senderId]?.profile;
   }
@@ -466,5 +489,22 @@ class ChatBoxState extends State<ChatBox> {
     // } else {
     //   Fluttertoast.showToast(msg: "first Download the file to save it.");
     // }
+  }
+
+  Widget _noProfileImage(context, int userId, String name, double size) {
+    return Container(
+      height: size ?? 50,
+      width: size ?? 50,
+      decoration:
+          BoxDecoration(shape: BoxShape.circle, color: userId.colorFromId()),
+      child: Center(
+        child: Text(
+          (name?.length ?? 0) > 0
+              ? name?.substring(0, 1).toUpperCase() ?? "A"
+              : "A",
+          style: AppTextStyles.caption2.copyWith(color: Colors.white),
+        ),
+      ),
+    );
   }
 }

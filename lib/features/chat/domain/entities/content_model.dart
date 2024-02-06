@@ -1,12 +1,12 @@
 import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/enums/message_status.dart';
 import 'package:messaging_core/core/enums/receiver_type.dart';
+import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_payload_model.dart';
 
 class ContentModel {
   int contentId;
-  String channelId;
-  String senderId;
+  int senderId;
   ReceiverType receiverType;
   int receiverId;
   DateTime createdAt;
@@ -18,6 +18,7 @@ class ContentModel {
   MessageStatus status;
   ContentModel? _repliedTo; // todo possibility of forge from client
   bool isForwarded;
+  CategoryUser? sender;
 
   set repliedTo(ContentModel? value) {
     if (value == null) {
@@ -34,7 +35,6 @@ class ContentModel {
 
   ContentModel({
     required this.contentId,
-    required this.channelId,
     required this.senderId,
     required this.receiverType,
     required this.createdAt,
@@ -46,6 +46,7 @@ class ContentModel {
     ContentModel? repliedTo,
     required this.categoryId,
     required this.receiverId,
+    this.sender,
     this.status = MessageStatus
         .sent, // we didn't store message status on server. but keep in mind that if content is received to server, it's definitely 'sent'
   }) {
@@ -80,35 +81,36 @@ class ContentModel {
 
   static ContentModel fromJson(Map<String, dynamic> json,
       {bool mainContent = true}) {
-    var contentType = ContentTypeEnum.fromString(json['message_text'] ?? "");
+    var contentType = ContentTypeEnum.text;
+    // .fromString(json['message_text'] ?? "");
     var contentPayload =
-        ContentPayloadModel.create(contentType, json['contentPayload']);
+        ContentPayloadModel.create(contentType, json['message_text']);
     ContentModel? repliedTo = (mainContent && json['repliedTo'] != null)
         ? ContentModel.fromJson(json['repliedTo'], mainContent: false)
         : null;
 
     return ContentModel(
-      contentId: json['contentId'],
-      channelId: json['channelId'],
-      senderId: json['senderId'],
-      createdAt: DateTime.fromMillisecondsSinceEpoch(json['created_at']),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(json['updated_at']),
-      contentType: contentType,
-      contentPayload: contentPayload,
-      status: MessageStatus.sent,
-      repliedTo: repliedTo,
-      isForwarded: json['isForwarded'] ?? false,
-      receiverType: json['receiver_type'],
-      messageText: json['message_text'],
-      categoryId: json['category_id'],
-      receiverId: json['receiver_id'],
-    );
+        contentId: json['id'],
+        senderId: json['sender_id'],
+        createdAt: DateTime.parse(json['created_at']),
+        updatedAt: DateTime.parse(json['updated_at']),
+        contentType: contentType,
+        contentPayload: contentPayload,
+        status: MessageStatus.sent,
+        repliedTo: repliedTo,
+        isForwarded: json['isForwarded'] ?? false,
+        receiverType: ReceiverType.fromString(json['receiver_type']),
+        messageText: json['message_text'],
+        categoryId: json['category_id'],
+        receiverId: json['receiver_id'],
+        sender: json['sender'] != null
+            ? CategoryUser.fromJson(json['sender'])
+            : null);
   }
 
   toJson({bool mainContent = true}) {
     var json = {
       'contentId': contentId,
-      'channelId': channelId,
       'senderId': senderId,
       'updated_at': updatedAt.millisecondsSinceEpoch,
       'created_at': createdAt.millisecondsSinceEpoch,

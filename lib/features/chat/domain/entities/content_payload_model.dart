@@ -8,7 +8,7 @@ abstract class ContentPayloadModel {
 
   String shortDisplayName();
 
-  static create(ContentTypeEnum contentType, Map<String, dynamic> json) {
+  static create(ContentTypeEnum contentType, String json) {
     switch (contentType) {
       case ContentTypeEnum.text:
         return TextContentPayloadModel.fromJson(json);
