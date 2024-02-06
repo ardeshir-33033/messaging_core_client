@@ -1,0 +1,4 @@
+enum ReceiverType {
+  user,
+  group;
+}

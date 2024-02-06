@@ -8,7 +8,7 @@ class ChatSkeletonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return const SizedBox(
       width: double.infinity,
-      height: 50,
+      height: 100,
       child: Row(
         children: [
           SkeletonWidget.circular(width: 50, height: 50),
@@ -18,12 +18,7 @@ class ChatSkeletonWidget extends StatelessWidget {
               children: [
                 SkeletonWidget.rectangular(
                   width: double.infinity,
-                  height: 20,
-                ),
-                SizedBox(height: 10),
-                SkeletonWidget.rectangular(
-                  width: double.infinity,
-                  height: 20,
+                  height: 80,
                 ),
               ],
             ),

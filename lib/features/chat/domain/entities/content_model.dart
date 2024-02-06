@@ -123,7 +123,7 @@ class ContentModel {
     return json;
   }
 
-  List<ContentModel> listFromJson(dynamic json) {
+  static List<ContentModel> listFromJson(dynamic json) {
     if (json != null) {
       return json.map<ContentModel>((j) {
         return ContentModel.fromJson(j);

@@ -4,6 +4,7 @@ import 'package:messaging_core/features/chat/data/data_sources/chat_data_source.
 import 'package:messaging_core/features/chat/data/repositories/chat_repository_impl.dart';
 import 'package:messaging_core/features/chat/domain/repositories/chat_repository.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
+import 'package:messaging_core/features/chat/domain/use_cases/get_messages_use_case.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 
 final locator = GetIt.instance;
@@ -30,9 +31,11 @@ void repositoryInjection() {
 void useCaseInjection() {
   locator.registerLazySingleton<GetAllChatsUseCase>(
       () => GetAllChatsUseCase(locator()));
+  locator.registerLazySingleton<GetMessagesUseCase>(
+      () => GetMessagesUseCase(locator()));
 }
 
 void controllerInjection() {
-  locator
-      .registerLazySingleton<ChatController>(() => ChatController(locator()));
+  locator.registerLazySingleton<ChatController>(
+      () => ChatController(locator(), locator()));
 }

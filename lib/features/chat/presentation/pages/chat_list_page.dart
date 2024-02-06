@@ -8,7 +8,7 @@ import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_list_item.dart';
-import 'package:messaging_core/features/chat/presentation/widgets/chats_skeleton_widget.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/conversation_skeleton_widget.dart';
 import 'package:messaging_core/locator.dart';
 
 class ChatListPage extends StatefulWidget {
@@ -52,7 +52,7 @@ class _ChatListPageState extends State<ChatListPage> {
                       if (controller.chatsStatus.status == Status.loading) {
                         return ListView.separated(
                           itemBuilder: (context, index) =>
-                              const ChatSkeletonWidget(),
+                              const ConversationSkeletonWidget(),
                           itemCount: 15,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           separatorBuilder: (context, index) => Divider(

@@ -1,3 +1,4 @@
+import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/core/enums/user_roles.dart';
 import 'package:messaging_core/features/chat/domain/entities/group_users_model.dart';
 
@@ -37,4 +38,9 @@ class ChatParentClass {
     this.lastRead,
     this.groupUsers = const [],
   });
+
+  bool isGroup() => unreadCount != null;
+
+  ReceiverType getReceiverType() =>
+      isGroup() ? ReceiverType.group : ReceiverType.user;
 }

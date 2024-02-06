@@ -6,12 +6,17 @@ import 'package:api_handler/feature/api_handler/data/models/response_model.dart'
 import 'package:api_handler/feature/api_handler/presentation/presentation_usecase.dart';
 import 'package:messaging_core/app/api_routing/category_user/category_routing.dart';
 import 'package:messaging_core/app/api_routing/chat_group/chat_group_routing.dart';
+import 'package:messaging_core/app/api_routing/message/message_routing.dart';
+import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
+import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/group_model.dart';
 
 abstract class ChatDataSource {
   Future<ResponseModel> getUsersInCategory();
   Future<ResponseModel> getGroupChatsInCategory();
+  Future<ResponseModel> showMessagesInGroup(
+      ReceiverType receiverType, int senderId, int receiverId);
 }
 
 class ChatDataSourceImpl extends ChatDataSource {
@@ -23,7 +28,10 @@ class ChatDataSourceImpl extends ChatDataSource {
   Future<ResponseModel> getUsersInCategory() async {
     ResponseModel response = await api.get(
       CategoryRouting.usersInCategory,
-      queries: [QueryModel(name: "category_id", value: "330"), QueryModel(name: 'login_user_id', value: '391')],
+      queries: [
+        QueryModel(name: "category_id", value: "330"),
+        QueryModel(name: 'login_user_id', value: '391')
+      ],
       headerEnum: HeaderEnum.bearerHeaderEnum,
       responseEnum: ResponseEnum.responseModelEnum,
     );
@@ -45,6 +53,27 @@ class ChatDataSourceImpl extends ChatDataSource {
 
     if (response.result == ResultEnum.success) {
       response.data = GroupModel.listFromJson(response.data);
+    }
+    return response;
+  }
+
+  @override
+  Future<ResponseModel> showMessagesInGroup(
+      ReceiverType receiverType, int senderId, int receiverId) async {
+    ResponseModel response = await api.get(
+      MessageRouting.showMessages,
+      queries: [
+        QueryModel(name: "category_id", value: "330"),
+        QueryModel(name: "sender_id", value: senderId.toString()),
+        QueryModel(name: "receiver_id", value: receiverId.toString()),
+        QueryModel(name: "receiver_type", value: receiverType.name.toString()),
+      ],
+      headerEnum: HeaderEnum.bearerHeaderEnum,
+      responseEnum: ResponseEnum.responseModelEnum,
+    );
+
+    if (response.result == ResultEnum.success) {
+      response.data = ContentModel.listFromJson(response.data);
     }
     return response;
   }
