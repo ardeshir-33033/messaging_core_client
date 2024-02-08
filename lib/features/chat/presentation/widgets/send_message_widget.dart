@@ -5,12 +5,15 @@ import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/core/utils/text_utils.dart';
+import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/attach_file_bottom_sheet_widget.dart';
 
 class SendMessageWidget extends StatefulWidget {
-  const SendMessageWidget({super.key, required this.textController});
+  const SendMessageWidget(
+      {super.key, required this.textController, required this.chat});
 
   final TextEditingController textController;
+  final ChatParentClass chat;
 
   @override
   State<SendMessageWidget> createState() => _SendMessageWidgetState();
@@ -61,6 +64,9 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
 
   showAttachFileBottomSheet() {
     CustomBottomSheet.showSimpleSheet(
-        context, (context) => AttachFileBottomSheet());
+        context,
+        (context) => AttachFileBottomSheet(
+              chat: widget.chat,
+            ));
   }
 }

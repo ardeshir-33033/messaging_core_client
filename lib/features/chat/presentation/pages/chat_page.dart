@@ -204,7 +204,7 @@ class _ChatPageState extends State<ChatPage>
                     ),
                     // const SizedBox(height: 10),
                     SendMessageWidget(
-                      textController: _sendTextController,
+                      textController: _sendTextController, chat: widget.chat,
                     ),
                     const SizedBox(height: 10),
                   ],

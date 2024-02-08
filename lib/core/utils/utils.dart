@@ -2,10 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:messaging_core/core/env/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void postFrameCallback(VoidCallback callback) {
   WidgetsBinding.instance.addPostFrameCallback((timeStamp) => callback.call());
+}
+
+String? getThumbnailUrl(String? originalUrl) {
+  return originalUrl?.replaceFirst(
+      RegExp(r'_\d+\.\w+$'), '_1.$thumbnailFileExtension');
+}
+
+String getFileExtension(String? fileName) {
+  if (fileName == null) return '';
+  return RegExp(r'\.(\w+)$').firstMatch(fileName)?.group(1) ?? '';
 }
 
 void dismissKeyboard() {

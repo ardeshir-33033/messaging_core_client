@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
+import 'package:messaging_core/core/services/media_handler/image_handler.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
+import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
+import 'package:messaging_core/features/chat/presentation/pages/edit_image_page.dart';
 
 class AttachFileBottomSheet extends StatelessWidget {
-  const AttachFileBottomSheet({super.key});
+  const AttachFileBottomSheet({super.key, required this.chat});
+
+  final ChatParentClass chat;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +70,26 @@ class AttachFileBottomSheet extends StatelessWidget {
         )
       ],
     );
+  }
+
+  Future<void> onSendImage(ImageSource imageSource, context) async {
+    // dismissOptions();
+
+    return ImageHandler()
+        .selectImageFile(source: imageSource, allowCrop: false)
+        .then((file) {
+      if (file == null) return;
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditImagePage(
+            fileModel: file,
+            chat: chat,
+          ),
+        ),
+      );
+    });
   }
 }
 

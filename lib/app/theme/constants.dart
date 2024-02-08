@@ -35,6 +35,7 @@ class Assets {
   static const String location = "$_baseIconPath/location.svg";
   static const String music = "$_baseIconPath/music.svg";
   static const String poll = "$_baseIconPath/poll.svg";
+  static const String sendMessageIcon = "$_baseIconPath/send_icon.svg";
 
   /// -----------------------Icons Assets -------------------------
 }

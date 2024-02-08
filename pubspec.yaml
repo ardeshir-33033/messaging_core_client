@@ -36,6 +36,15 @@ dependencies:
   flutter_cache_manager: ^3.3.0
   responsive_framework: ^1.0.0
   get: ^4.6.6
+  dartz: ^0.10.1
+  file_picker: ^5.3.2
+  image_picker: ^0.8.7+1
+  image_cropper: ^4.0.0
+  device_info_plus: ^9.0.2
+  permission_handler: ^10.1.0
+  image: ^4.0.17
+  record: ^4.4.4
+  just_audio: ^0.9.34
   api_handler:
     git: {url: 'https://github.com/ardeshir-33033/api_helper.git', ref: main}
 

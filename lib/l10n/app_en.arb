@@ -40,5 +40,6 @@
   "contact": "Contact",
   "document": "Document",
   "poll": "Poll",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "somethingWentWrong": "Something Went Wrong"
 }
