@@ -296,3 +296,29 @@ extension BuildContextHelper on BuildContext {
     SnackBarWidget.showFailedSnackBar(this, title);
   }
 }
+
+extension NumExtension on num {
+  EdgeInsets get top {
+    return EdgeInsets.only(top: toDouble());
+  }
+
+  EdgeInsets get bottom {
+    return EdgeInsets.only(bottom: toDouble());
+  }
+
+  EdgeInsets get left {
+    return EdgeInsets.only(left: toDouble());
+  }
+
+  EdgeInsets get right {
+    return EdgeInsets.only(right: toDouble());
+  }
+
+  EdgeInsets get horizontal {
+    return EdgeInsets.symmetric(horizontal: toDouble());
+  }
+
+  EdgeInsets get vertical {
+    return EdgeInsets.symmetric(vertical: toDouble());
+  }
+}

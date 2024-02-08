@@ -19,6 +19,7 @@ import 'package:messaging_core/features/chat/presentation/manager/chat_controlle
 import 'package:messaging_core/features/chat/presentation/widgets/chat_box.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/content_date_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/conversation_appbar.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/send_message_widget.dart';
 import 'package:messaging_core/locator.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -41,6 +42,7 @@ class _ChatPageState extends State<ChatPage>
   late Animation<Color?> _replyToColorAnimation;
   late AnimationController _replyToAnimationController;
   late OverlayController _overlayController;
+  final TextEditingController _sendTextController = TextEditingController();
 
   final ChatController controller =
       // Get.put<ChatController>(locator());
@@ -88,6 +90,7 @@ class _ChatPageState extends State<ChatPage>
             const SizedBox(height: 15),
             Expanded(
               child: Container(
+                padding: 8.horizontal,
                 decoration: BoxDecoration(
                   color: const Color(0xFFE7E7E7),
                   borderRadius: BorderRadius.circular(20.r),
@@ -174,16 +177,16 @@ class _ChatPageState extends State<ChatPage>
                                               isLastSenderContent: index == 0
                                                   ? true
                                                   : (controller
-                                                  .messages[
-                                              index - 1]
-                                                  .senderId !=
-                                                  controller
-                                                      .messages[index]
-                                                      .senderId ||
-                                                  controller
-                                                      .messages[index - 1]
-                                                      .contentType
-                                                      .isGeneralContent),
+                                                              .messages[
+                                                                  index - 1]
+                                                              .senderId !=
+                                                          controller
+                                                              .messages[index]
+                                                              .senderId ||
+                                                      controller
+                                                          .messages[index - 1]
+                                                          .contentType
+                                                          .isGeneralContent),
                                             ),
                                           ),
                                         ],
@@ -195,11 +198,19 @@ class _ChatPageState extends State<ChatPage>
                             }
                           }),
                     ),
+                    const Divider(
+                      color: Color(0xFFD6D6D6),
+                      thickness: 2,
+                    ),
+                    const SizedBox(height: 10),
+                    SendMessageWidget(
+                      textController: _sendTextController,
+                    ),
+                    const SizedBox(height: 10),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 10),
           ],
         ),
       ),

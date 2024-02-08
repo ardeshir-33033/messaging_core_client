@@ -113,7 +113,7 @@ class ChatBoxState extends State<ChatBox> {
           }
           return Padding(
             padding: EdgeInsets.fromLTRB(
-                8, widget.isFirstSenderContent ? 12 : 4, 8, 0),
+                0, widget.isFirstSenderContent ? 12 : 4, 0, 0),
             child: Row(
               textDirection: isMine ? TextDirection.rtl : TextDirection.ltr,
               mainAxisAlignment: MainAxisAlignment.start,

@@ -29,5 +29,6 @@
   "yesReport": "Report",
   "noReport": "Cancel",
   "noMessage": "No message",
-  "chat": "Chat"
+  "chat": "Chat",
+  "hintMessage": "Typing Something..."
 }

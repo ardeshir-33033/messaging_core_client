@@ -3,7 +3,7 @@ class Assets {
 
   /// ----------------------- Fonts -------------------------
 
-  static const String fontFamily = "poppins";
+  static const String fontFamily = "Cairo";
   static const String extraBold = "$fontFamily-extra";
   static const String bold = "$fontFamily-bold";
   static const String semiBold = "$fontFamily-semibold";
@@ -23,7 +23,9 @@ class Assets {
   static const String star = "$_baseIconPath/Star.svg";
   static const String reply = "$_baseIconPath/reply.svg";
   static const String arrowLeftIcon = "$_baseIconPath/arrow_left_icon.svg";
+  static const String addSticker = "$_baseIconPath/add_sticker.svg";
+  static const String attach = "$_baseIconPath/attach.svg";
+  static const String microphone = "$_baseIconPath/microphone.svg";
 
-
-/// -----------------------Icons Assets -------------------------
+  /// -----------------------Icons Assets -------------------------
 }

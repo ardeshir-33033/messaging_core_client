@@ -54,24 +54,24 @@ flutter:
   generate: true
 
   fonts:
-    - family: poppins-extra
+    - family: Cairo-extra
       fonts:
-        - asset: assets/fonts/poppins/Poppins-ExtraBold.ttf
-    - family: poppins-bold
+        - asset: assets/fonts/Cairo/Cairo-ExtraBold.ttf
+    - family: Cairo-bold
       fonts:
-        - asset: assets/fonts/poppins/Poppins-Bold.ttf
-    - family: poppins-semibold
+        - asset: assets/fonts/Cairo/Cairo-Bold.ttf
+    - family: Cairo-semibold
       fonts:
-        - asset: assets/fonts/poppins/Poppins-SemiBold.ttf
-    - family: poppins-medium
+        - asset: assets/fonts/Cairo/Cairo-SemiBold.ttf
+    - family: Cairo-medium
       fonts:
-        - asset: assets/fonts/poppins/Poppins-Medium.ttf
-    - family: poppins-Regular
+        - asset: assets/fonts/Cairo/Cairo-Medium.ttf
+    - family: Cairo-Regular
       fonts:
-        - asset: assets/fonts/poppins/Poppins-Regular.ttf
-    - family: poppins-light
+        - asset: assets/fonts/Cairo/Cairo-Regular.ttf
+    - family: Cairo-light
       fonts:
-        - asset: assets/fonts/poppins/Poppins-Light.ttf
+        - asset: assets/fonts/Cairo/Cairo-Light.ttf
 
   assets:
     - develop.env
