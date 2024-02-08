@@ -30,5 +30,15 @@
   "noReport": "Cancel",
   "noMessage": "No message",
   "chat": "Chat",
-  "hintMessage": "Typing Something..."
+  "hintMessage": "Typing Something...",
+  "gallery": "Gallery",
+  "file": "File",
+  "location": "Location",
+  "camera": "Camera",
+  "music": "Music",
+  "draw": "Draw",
+  "contact": "Contact",
+  "document": "Document",
+  "poll": "Poll",
+  "cancel": "Cancel"
 }

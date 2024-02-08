@@ -26,6 +26,15 @@ class Assets {
   static const String addSticker = "$_baseIconPath/add_sticker.svg";
   static const String attach = "$_baseIconPath/attach.svg";
   static const String microphone = "$_baseIconPath/microphone.svg";
+  static const String draw = "$_baseIconPath/brush.svg";
+  static const String camera = "$_baseIconPath/camera.svg";
+  static const String document = "$_baseIconPath/document.svg";
+  static const String contact = "$_baseIconPath/contact.svg";
+  static const String file = "$_baseIconPath/file.svg";
+  static const String gallery = "$_baseIconPath/gallery.svg";
+  static const String location = "$_baseIconPath/location.svg";
+  static const String music = "$_baseIconPath/music.svg";
+  static const String poll = "$_baseIconPath/poll.svg";
 
   /// -----------------------Icons Assets -------------------------
 }

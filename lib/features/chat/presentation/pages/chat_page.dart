@@ -202,7 +202,7 @@ class _ChatPageState extends State<ChatPage>
                       color: Color(0xFFD6D6D6),
                       thickness: 2,
                     ),
-                    const SizedBox(height: 10),
+                    // const SizedBox(height: 10),
                     SendMessageWidget(
                       textController: _sendTextController,
                     ),
