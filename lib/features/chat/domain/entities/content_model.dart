@@ -83,8 +83,7 @@ class ContentModel {
 
   static ContentModel fromJson(Map<String, dynamic> json,
       {bool mainContent = true}) {
-    var contentType = ContentTypeEnum.text;
-    // .fromString(json['message_text'] ?? "");
+    var contentType = ContentTypeEnum.fromString(json['message_type'] ?? "");
     var contentPayload =
         ContentPayloadModel.create(contentType, json['message_text']);
     ContentModel? repliedTo = (mainContent && json['repliedTo'] != null)
@@ -116,7 +115,7 @@ class ContentModel {
     var contentType = ContentTypeEnum.text;
     // .fromString(json['message_text'] ?? "");
     var contentPayload =
-    ContentPayloadModel.create(contentType, json['message_text']);
+        ContentPayloadModel.create(contentType, json['message_text']);
     ContentModel? repliedTo = (mainContent && json['repliedTo'] != null)
         ? ContentModel.fromJson(json['repliedTo'], mainContent: false)
         : null;

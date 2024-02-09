@@ -21,17 +21,16 @@ enum ContentTypeEnum {
   call;
 
   static ContentTypeEnum fromString(String name) {
-    name = name.substring(name.length, 3);
-    switch (name) {
-      case "mp4":
-        name = "video";
-      case "mp3":
-        name = "video";
-      case "jpg":
-        name = "image";
-      default:
-        name = "text";
-    }
+    // switch (name) {
+    //   case "mp4":
+    //     name = "video";
+    //   case "mp3":
+    //     name = "video";
+    //   case "jpg":
+    //     name = "image";
+    //   default:
+    //     name = "text";
+    // }
     switch (name) {
       case "text":
         return text;
@@ -56,6 +55,8 @@ enum ContentTypeEnum {
       case "localDeleted":
         return localDeleted;
       case "voice":
+        return voice;
+      case "audio":
         return voice;
       case "command":
         return command;

@@ -1,11 +1,14 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:messaging_core/core/enums/file_type.dart';
 import 'package:messaging_core/core/env/constants.dart';
+import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
@@ -91,7 +94,26 @@ String generateUUID() {
   return uuid.v4();
 }
 
-
 Future cacheFile(String key, Uint8List fileBytes) async {
   await DefaultCacheManager().putFile(key, fileBytes);
+}
+
+Future<void> saveImageInGallery(
+    String url, String tag, BuildContext context) async {
+  var response =
+      await Dio().get(url, options: Options(responseType: ResponseType.bytes));
+  final result = await ImageGallerySaver.saveImage(
+      Uint8List.fromList(response.data),
+      quality: 60,
+      name: tag);
+  if (result["isSuccess"] ?? false) {
+    Fluttertoast.showToast(
+      msg: context.l.imageSavedToGallery,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.grey[600],
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
 }

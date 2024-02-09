@@ -6,6 +6,7 @@ import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/contact_profile_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/text_content_payload_model.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/image_content_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/text_content_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -36,16 +37,13 @@ class ChatBoxContent extends StatelessWidget {
           content: payload.text,
           keyId: keyId,
         );
-      // case ContentTypeEnum.image:
-      //   var payload = contentModel.contentPayload as ImageContentPayloadModel;
-      //   return ImageContentWidget(
-      //     thumbnailUrl: isMine ? null : payload.thumbnailUrl,
-      //     originalUrl: payload.url,
-      //     contentModel: contentModel,
-      //     isUploading: contentModel.status == MessageStatus.pending,
-      //     imageWidth: payload.width,
-      //     imageHeight: payload.height,
-      //   );
+      case ContentTypeEnum.image:
+        return ImageContentWidget(
+          originalUrl: contentModel.filePath!,
+          contentModel: contentModel,
+          // imageWidth: payload.width,
+          // imageHeight: payload.height,
+        );
       // case ContentTypeEnum.voice:
       //   var payload = contentModel.contentPayload as VoiceContentPayloadModel;
       //   return VoiceContentWidget(

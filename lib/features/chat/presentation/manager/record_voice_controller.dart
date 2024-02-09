@@ -31,7 +31,6 @@ class RecordVoiceController extends GetxController {
       (state) {
         if (state == RecordState.record &&
             recordingState != RecordStateEnum.pause) {
-          print("------- Record State Listener");
           milliSeconds.value = 0;
           Timer.periodic(
             const Duration(milliseconds: 100),

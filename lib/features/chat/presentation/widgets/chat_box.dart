@@ -111,6 +111,7 @@ class ChatBoxState extends State<ChatBox> {
             //       '',
             // );
           }
+
           return Padding(
             padding: EdgeInsets.fromLTRB(
                 0, widget.isFirstSenderContent ? 12 : 4, 0, 0),
