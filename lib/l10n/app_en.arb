@@ -41,5 +41,6 @@
   "document": "Document",
   "poll": "Poll",
   "cancel": "Cancel",
-  "somethingWentWrong": "Something Went Wrong"
+  "somethingWentWrong": "Something Went Wrong",
+  "slideToCancel": "Slide To Cancel"
 }

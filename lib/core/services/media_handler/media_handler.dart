@@ -4,8 +4,11 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
+import 'package:messaging_core/core/enums/file_type.dart';
 import 'package:messaging_core/core/error/failures.dart';
 import 'package:messaging_core/core/services/media_handler/media_progress_data.dart';
+import 'package:messaging_core/core/services/network/http_helper.dart';
+import 'package:messaging_core/core/utils/utils.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -88,16 +91,17 @@ abstract class MediaHandler {
   //   }
   // }
   //
-  // static cachingFile(
-  //     String key, Uint8List data, FileType fileType, String extension) async {
-  //   if (fileType == FileType.file || fileType == FileType.audio) {
-  //     final directory = await getTemporaryDirectory();
-  //     final file = await File("${directory.path}/$key.$extension").create();
-  //     file.writeAsBytesSync(data);
-  //     return;
-  //   }
-  //   await cacheFile(key, data);
-  // }
+  static cachingFile(
+      String key, Uint8List data, FileType fileType, String extension) async {
+    if (fileType == FileType.file || fileType == FileType.audio) {
+      final directory = await getTemporaryDirectory();
+      final file = await File("${directory.path}/$key.$extension").create();
+      file.writeAsBytesSync(data);
+      return;
+    }
+    await cacheFile(key, data);
+  }
+
   //
   // static Future<FileModel?> getFileModel(String contentId) async {
   //   LocalPathModel? pathModel =
@@ -128,37 +132,36 @@ abstract class MediaHandler {
   //       .deleteUnsentMessage(contentModel);
   // }
   //
-  // Future<bool> downloadMedia(
-  //   String url,
-  //   String contentId,
-  //   FileType fileType,
-  //   String extension, {
-  //   CancelToken? cancelToken,
-  //   Function(int count, int total)? onReceiveProgress,
-  // }) async {
-  //   try {
-  //     final appDirectory = await getTemporaryDirectory();
-  //     await RestClient().download(
-  //       url: url,
-  //       savePath: '${appDirectory.path}/$contentId.$extension',
-  //       cancelToken: cancelToken,
-  //       onReceiveProgress: (count, total) {
-  //         progressController.sink.add(
-  //           MediaProgressData(contentId: contentId, total: total, count: count),
-  //         );
-  //       },
-  //     );
-  //     await cachingFile(
-  //       contentId,
-  //       await File('${appDirectory.path}/$contentId.$extension').readAsBytes(),
-  //       fileType,
-  //       extension,
-  //     );
-  //     return true;
-  //   } catch (e) {
-  //     return false;
-  //   }
-  // }
+  Future<bool> downloadMedia(
+    String url,
+    String contentId,
+    FileType fileType,
+    String extension, {
+    CancelToken? cancelToken,
+    Function(int count, int total)? onReceiveProgress,
+  }) async {
+    try {
+      final appDirectory = await getTemporaryDirectory();
+      await HttpHelper().httpDownload(
+        url,
+        '${appDirectory.path}/$contentId.$extension',
+        onReceiveProgress: (count, total) {
+          progressController.sink.add(
+            MediaProgressData(contentId: contentId, total: total, count: count),
+          );
+        },
+      );
+      await cachingFile(
+        contentId,
+        await File('${appDirectory.path}/$contentId.$extension').readAsBytes(),
+        fileType,
+        extension,
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
   //
   // sendMedia(String channelId, FileModel fileModel, {String? caption}) async {
   //   ContentModel pendingContent =

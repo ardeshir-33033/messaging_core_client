@@ -36,6 +36,10 @@ class Assets {
   static const String music = "$_baseIconPath/music.svg";
   static const String poll = "$_baseIconPath/poll.svg";
   static const String sendMessageIcon = "$_baseIconPath/send_icon.svg";
+  static const String micFillIcon = "$_baseIconPath/mic_filled_icon.svg";
+  static const String pause = "$_baseIconPath/pause_icon.svg";
+  static const String trashMic = "$_baseIconPath/trash_icon.svg";
+  static const String sendVoice = "$_baseIconPath/send_voice_icon.svg";
 
   /// -----------------------Icons Assets -------------------------
 }
