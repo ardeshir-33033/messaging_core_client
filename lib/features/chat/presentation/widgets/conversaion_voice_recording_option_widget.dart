@@ -1,5 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_instance/get_instance.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/theme/constants.dart';
@@ -7,6 +9,8 @@ import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/services/media_handler/voice_handler.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
+import 'package:messaging_core/features/chat/presentation/manager/record_voice_controller.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/review_voice_message_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/voice_content_widget.dart';
 
 class ConversationVoiceRecordingOptionWidget extends StatelessWidget {
@@ -16,7 +20,7 @@ class ConversationVoiceRecordingOptionWidget extends StatelessWidget {
   final VoidCallback onSendVoiceMessage;
   final VoidCallback onDeleteRecording;
 
-  const ConversationVoiceRecordingOptionWidget({
+  ConversationVoiceRecordingOptionWidget({
     Key? key,
     required this.recordState,
     required this.onResumeRecording,
@@ -25,6 +29,8 @@ class ConversationVoiceRecordingOptionWidget extends StatelessWidget {
     required this.onDeleteRecording,
   }) : super(key: key);
 
+  RecordVoiceController voiceController = Get.find<RecordVoiceController>();
+
   @override
   Widget build(BuildContext context) {
     if (recordState == RecordStateEnum.record) {
@@ -32,7 +38,7 @@ class ConversationVoiceRecordingOptionWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Row(
           children: [
-            const VoiceCounterWidget(
+            VoiceCounterWidget(
               hasBlinking: true,
             ),
             Expanded(
@@ -71,100 +77,31 @@ class ConversationVoiceRecordingOptionWidget extends StatelessWidget {
         ),
       );
     }
+    if (recordState == RecordStateEnum.review) {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(26),
+          color: const Color(0xFF48A4F9),
+        ),
+        child: const Row(
+          children: [
+            IconWidget(
+              icon: Assets.trashReviewVoice,
+              size: 30,
+            ),
+            Expanded(child: ReviewVoiceMessage()),
+            IconWidget(
+              icon: Assets.sendReviewVoice,
+              size: 30,
+            ),
+          ],
+        ),
+      );
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
         children: [
-          // if (recordState == RecordStateEnum.pause) ...[
-          //   Container(
-          //     padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 4),
-          //     decoration: BoxDecoration(
-          //       color: const Color(0xffF3F4F8),
-          //       borderRadius: BorderRadius.circular(16),
-          //     ),
-          //     child: ValueListenableBuilder2<String, AudioState>(
-          //       first: VoiceHandler().currentPlayingAudioId,
-          //       second: VoiceHandler().audioStateNotifier,
-          //       builder: (context, selectedVoiceUrl, voiceState, child) => Row(
-          //         children: [
-          //           InkWell(
-          //             onTap: () => onTapButton.call(
-          //                 isSelectedVoice(selectedVoiceUrl), voiceState),
-          //             child: VoiceButtonStateWidget(
-          //               voiceState: voiceState,
-          //               isSelectedVoice: isSelectedVoice(selectedVoiceUrl),
-          //               isLoading: false,
-          //               isCached: true,
-          //             ),
-          //           ),
-          //           const SizedBox(
-          //             width: 8,
-          //           ),
-          //           Expanded(
-          //             child: SfSliderTheme(
-          //               data: SfSliderThemeData(
-          //                 activeTrackHeight: 3,
-          //                 inactiveTrackHeight: 2,
-          //                 trackCornerRadius: 4,
-          //                 activeTrackColor: AppColors.primary1,
-          //                 thumbStrokeWidth: 2,
-          //                 thumbRadius: 6,
-          //                 inactiveDividerStrokeColor: Color(0xffA8B1CF),
-          //                 inactiveTickColor: Color(0xffA8B1CF),
-          //                 inactiveTrackColor: Color(0xffA8B1CF),
-          //                 thumbColor: AppColors.primary1,
-          //               ),
-          //               child: StreamBuilder(
-          //                 stream: isSelectedVoice(selectedVoiceUrl)
-          //                     ? VoiceHandler().player.positionStream
-          //                     : Stream.value(0),
-          //                 builder: (context, snapshot) {
-          //                   double seek = 0.0;
-          //                   if (isSelectedVoice(selectedVoiceUrl) &&
-          //                       snapshot.data != null &&
-          //                       snapshot.data is Duration) {
-          //                     seek = (snapshot.data as Duration).inSeconds.toDouble();
-          //                   }
-          //                   return Column(
-          //                     crossAxisAlignment: CrossAxisAlignment.start,
-          //                     mainAxisAlignment: MainAxisAlignment.end,
-          //                     children: [
-          //                       Center(
-          //                         heightFactor: 0.6,
-          //                         child: SfSlider(
-          //                           interval: 0.1,
-          //                           value: seek,
-          //                           max: VoiceHandler().seconds.value,
-          //                           min: 0,
-          //                           onChanged: (value) {
-          //                             VoiceHandler().seek(value.toInt());
-          //                           },
-          //                         ),
-          //                       ),
-          //                     ],
-          //                   );
-          //                 },
-          //               ),
-          //             ),
-          //           ),
-          //           const VoiceCounterWidget(hasBlinking: false),
-          //
-          //         ],
-          //       ),
-          //     ),
-          //   ),
-          // ],
-          // if (recordState == RecordStateEnum.lockRecord) ...[
-          //   const Row(
-          //     textDirection: TextDirection.ltr,
-          //     children: [
-          //       VoiceCounterWidget(
-          //         hasBlinking: true,
-          //       ),
-          //       Spacer(),
-          //     ],
-          //   )
-          // ],
           Row(
             textDirection: TextDirection.ltr,
             children: [
@@ -173,9 +110,6 @@ class ConversationVoiceRecordingOptionWidget extends StatelessWidget {
               ),
               const Spacer(),
             ],
-          ),
-          const SizedBox(
-            height: 8,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -223,26 +157,26 @@ class ConversationVoiceRecordingOptionWidget extends StatelessWidget {
   }
 
   bool isSelectedVoice(String url) {
-    return url == VoiceHandler().recordingVoiceId;
+    return url == voiceController.recordingVoiceId;
   }
 
   void onTapButton(bool isSelectedVoice, AudioState voiceState) {
     if (isSelectedVoice == false) {
-      VoiceHandler().playRecordingVoice();
+      voiceController.playRecordingVoice();
     } else {
       switch (voiceState) {
         case AudioState.paused:
           if (isSelectedVoice) {
-            VoiceHandler().resumePlayer();
+            voiceController.resumePlayer();
           } else {
-            VoiceHandler().playRecordingVoice();
+            voiceController.playRecordingVoice();
           }
           return;
         case AudioState.playing:
-          VoiceHandler().pausePlayer();
+          voiceController.pausePlayer();
           return;
         case AudioState.stopped:
-          VoiceHandler().playRecordingVoice();
+          voiceController.playRecordingVoice();
           return;
         case AudioState.loading:
           return;
@@ -254,17 +188,19 @@ class ConversationVoiceRecordingOptionWidget extends StatelessWidget {
 class VoiceCounterWidget extends StatelessWidget {
   final bool hasBlinking;
 
-  const VoiceCounterWidget({
+  VoiceCounterWidget({
     Key? key,
     required this.hasBlinking,
   }) : super(key: key);
+
+  RecordVoiceController voiceController = Get.find<RecordVoiceController>();
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 60,
       child: ValueListenableBuilder(
-        valueListenable: VoiceHandler().milliSeconds,
+        valueListenable: voiceController.milliSeconds,
         builder: (context, milliSeconds, child) => Row(
           children: [
             if (hasBlinking) ...[

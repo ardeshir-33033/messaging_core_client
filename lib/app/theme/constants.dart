@@ -40,6 +40,8 @@ class Assets {
   static const String pause = "$_baseIconPath/pause_icon.svg";
   static const String trashMic = "$_baseIconPath/trash_icon.svg";
   static const String sendVoice = "$_baseIconPath/send_voice_icon.svg";
+  static const String sendReviewVoice = "$_baseIconPath/send_voice.svg";
+  static const String trashReviewVoice = "$_baseIconPath/trash_voice.svg";
 
   /// -----------------------Icons Assets -------------------------
 }

@@ -3,6 +3,7 @@ import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/core/services/media_handler/voice_handler.dart';
+import 'package:messaging_core/features/chat/presentation/manager/record_voice_controller.dart';
 
 class SendButtonWidget extends StatelessWidget {
   final RecordStateEnum recordState;
@@ -87,11 +88,7 @@ class SendButtonWidget extends StatelessWidget {
                   icon: (voiceMessageEnabled && isMessageEmpty)
                       ? Assets.microphone
                       : Assets.sendMessageIcon,
-                  iconColor: Colors.white,
-                  backgroundColor: const Color(0xff2F80ED),
-                  boxFit: BoxFit.contain,
-                  boxShape: BoxShape.circle,
-                  size: 16,
+                  size: 30,
                   key: const Key("sendMessage"),
                 ),
               );

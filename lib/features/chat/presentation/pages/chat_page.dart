@@ -11,11 +11,13 @@ import 'package:messaging_core/app/widgets/loading_widget.dart';
 import 'package:messaging_core/app/widgets/overlay_widget.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/app_states/result_state.dart';
+import 'package:messaging_core/core/services/media_handler/voice_handler.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/contact_profile_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
+import 'package:messaging_core/features/chat/presentation/manager/record_voice_controller.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_box.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/content_date_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/conversation_appbar.dart';
@@ -48,8 +50,12 @@ class _ChatPageState extends State<ChatPage>
       // Get.put<ChatController>(locator());
       locator<ChatController>();
 
+  final RecordVoiceController voiceController =
+      Get.put(RecordVoiceController());
+
   @override
   void initState() {
+    voiceController.initialRecording();
     controller.getMessages(
         widget.chat.getReceiverType(), AppGlobalData.userId, widget.chat.id!);
     scrollNotificationController = StreamController();
@@ -204,7 +210,8 @@ class _ChatPageState extends State<ChatPage>
                     ),
                     // const SizedBox(height: 10),
                     SendMessageWidget(
-                      textController: _sendTextController, chat: widget.chat,
+                      textController: _sendTextController,
+                      chat: widget.chat,
                     ),
                     const SizedBox(height: 10),
                   ],
