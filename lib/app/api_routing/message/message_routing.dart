@@ -4,4 +4,5 @@ class MessageRouting {
   static const initial = "messages";
 
   static final showMessages = "${Environment.apiBaseUrl}/$initial/show";
+  static final sendMessages = "${Environment.apiBaseUrl}/$initial/send";
 }

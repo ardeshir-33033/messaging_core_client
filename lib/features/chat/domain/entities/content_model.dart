@@ -13,6 +13,7 @@ class ContentModel {
   DateTime updatedAt;
   int categoryId;
   String messageText;
+  String? filePath;
   ContentPayloadModel contentPayload;
   ContentTypeEnum contentType;
   MessageStatus status;
@@ -46,6 +47,7 @@ class ContentModel {
     ContentModel? repliedTo,
     required this.categoryId,
     required this.receiverId,
+    this.filePath,
     this.sender,
     this.status = MessageStatus
         .sent, // we didn't store message status on server. but keep in mind that if content is received to server, it's definitely 'sent'
@@ -103,6 +105,37 @@ class ContentModel {
         messageText: json['message_text'],
         categoryId: json['category_id'],
         receiverId: json['receiver_id'],
+        filePath: json['file_path'],
+        sender: json['sender'] != null
+            ? CategoryUser.fromJson(json['sender'])
+            : null);
+  }
+
+  static ContentModel fromJsonSendApi(Map<String, dynamic> json,
+      {bool mainContent = true}) {
+    var contentType = ContentTypeEnum.text;
+    // .fromString(json['message_text'] ?? "");
+    var contentPayload =
+    ContentPayloadModel.create(contentType, json['message_text']);
+    ContentModel? repliedTo = (mainContent && json['repliedTo'] != null)
+        ? ContentModel.fromJson(json['repliedTo'], mainContent: false)
+        : null;
+
+    return ContentModel(
+        contentId: json['id'],
+        senderId: int.parse(json['sender_id']),
+        createdAt: DateTime.parse(json['created_at']),
+        updatedAt: DateTime.parse(json['updated_at']),
+        contentType: contentType,
+        contentPayload: contentPayload,
+        status: MessageStatus.sent,
+        repliedTo: repliedTo,
+        isForwarded: json['isForwarded'] ?? false,
+        receiverType: ReceiverType.fromString(json['receiver_type']),
+        messageText: json['message_text'],
+        categoryId: int.parse(json['category_id']),
+        receiverId: int.parse(json['receiver_id']),
+        filePath: json['file_path'],
         sender: json['sender'] != null
             ? CategoryUser.fromJson(json['sender'])
             : null);
@@ -129,6 +162,15 @@ class ContentModel {
     if (json != null) {
       return json.map<ContentModel>((j) {
         return ContentModel.fromJson(j);
+      }).toList();
+    }
+    return [];
+  }
+
+  static List<ContentModel> listFromJsonSendApi(dynamic json) {
+    if (json != null) {
+      return json.map<ContentModel>((j) {
+        return ContentModel.fromJsonSendApi(j);
       }).toList();
     }
     return [];

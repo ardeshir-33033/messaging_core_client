@@ -17,6 +17,8 @@ abstract class ChatDataSource {
   Future<ResponseModel> getGroupChatsInCategory();
   Future<ResponseModel> showMessagesInGroup(
       ReceiverType receiverType, int senderId, int receiverId);
+  Future<ResponseModel> sendMessages(
+      ContentModel contentModel, List<String> receivingUsers);
 }
 
 class ChatDataSourceImpl extends ChatDataSource {
@@ -74,6 +76,21 @@ class ChatDataSourceImpl extends ChatDataSource {
 
     if (response.result == ResultEnum.success) {
       response.data = ContentModel.listFromJson(response.data);
+    }
+    return response;
+  }
+
+  @override
+  Future<ResponseModel> sendMessages(
+      ContentModel contentModel, List<String> receivingUsers) async {
+    ResponseModel response = await api.get(
+      MessageRouting.sendMessages,
+      headerEnum: HeaderEnum.bearerHeaderEnum,
+      responseEnum: ResponseEnum.responseModelEnum,
+    );
+
+    if (response.result == ResultEnum.success) {
+      response.data = ContentModel.listFromJsonSendApi(response.data);
     }
     return response;
   }
