@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
+import 'package:messaging_core/core/services/media_handler/file_handler.dart';
 import 'package:messaging_core/core/services/media_handler/image_handler.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
@@ -25,20 +26,32 @@ class AttachFileBottomSheet extends StatelessWidget {
           children: [
             AttachDataItem(
                 title: tr(context).gallery,
-                onPressed: () {},
+                onPressed: () {
+                  ImageHandler().selectImageFile(source: ImageSource.gallery);
+                },
                 icon: Assets.gallery),
             AttachDataItem(
-                title: tr(context).file, onPressed: () {}, icon: Assets.file),
+                title: tr(context).file,
+                onPressed: () {
+                  FileHandler().selectAndSendFile(chat.id.toString());
+                },
+                icon: Assets.file),
             AttachDataItem(
                 title: tr(context).camera,
-                onPressed: () {},
+                onPressed: () {
+                  ImageHandler().selectImageFile(source: ImageSource.camera);
+                },
                 icon: Assets.camera),
             AttachDataItem(
                 title: tr(context).location,
                 onPressed: () {},
                 icon: Assets.location),
             AttachDataItem(
-                title: tr(context).music, onPressed: () {}, icon: Assets.music),
+                title: tr(context).music,
+                onPressed: () {
+                  FileHandler().selectMusicAndSendFile(chat.id.toString());
+                },
+                icon: Assets.music),
             AttachDataItem(
                 title: tr(context).draw, onPressed: () {}, icon: Assets.draw),
             AttachDataItem(
@@ -47,7 +60,9 @@ class AttachFileBottomSheet extends StatelessWidget {
                 icon: Assets.contact),
             AttachDataItem(
                 title: tr(context).document,
-                onPressed: () {},
+                onPressed: () {
+                  FileHandler().selectDocumentAndSendFile(chat.id.toString());
+                },
                 icon: Assets.document),
             AttachDataItem(
                 title: tr(context).poll, onPressed: () {}, icon: Assets.poll),

@@ -15,4 +15,7 @@ class Environment {
   static String get apiBaseUrl {
     return dotenv.get("API_BASE_URL");
   }
+  static String get websocketUrl {
+    return dotenv.get("WEB_SOCKET_BASE_URL");
+  }
 }

@@ -4,12 +4,14 @@ import 'package:messaging_core/app/component/base_appBar.dart';
 import 'package:messaging_core/app/widgets/pagination_widget.dart';
 import 'package:messaging_core/app/widgets/skeleton_widget.dart';
 import 'package:messaging_core/core/app_states/result_state.dart';
+import 'package:messaging_core/core/env/environment.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_list_item.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/conversation_skeleton_widget.dart';
 import 'package:messaging_core/locator.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatListPage extends StatefulWidget {
   const ChatListPage({super.key});
@@ -21,10 +23,18 @@ class ChatListPage extends StatefulWidget {
 class _ChatListPageState extends State<ChatListPage> {
   final ChatController controller = Get.put<ChatController>(locator());
   // locator<ChatController>();
+  IO.Socket channel = IO.io(Environment.websocketUrl,
+      IO.OptionBuilder().setTransports(["websocket"]).build());
+
+  connect() {
+
+  }
 
   @override
   void initState() {
+    connect();
     controller.getAllChats();
+
     super.initState();
   }
 

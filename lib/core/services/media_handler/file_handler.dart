@@ -7,9 +7,7 @@ import 'package:messaging_core/core/services/media_handler/media_handler.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_payload_model.dart';
 
-
 class FileHandler extends MediaHandler {
-
   static final FileHandler _instance = FileHandler._internal();
 
   factory FileHandler() {
@@ -37,6 +35,36 @@ class FileHandler extends MediaHandler {
     // await sendMedia(channelId, fileModel);
   }
 
+  Future<void> selectMusicAndSendFile(String channelId) async {
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(type: FileType.audio);
+    if (result == null) return;
+    // FileModel fileModel = FileModel(
+    //   formData: File(result.files.single.path!).readAsBytesSync(),
+    //   fileName: result.files.single.name,
+    //   filePosition: FilePosition.message,
+    //   filePath: result.files.single.path,
+    //   cancelToken: CancelToken(),
+    //   sizeInKB: FileHelper.fileSizeInKB(result.files.single.size),
+    // );
+    // await sendMedia(channelId, fileModel);
+  }
+
+  Future<void> selectDocumentAndSendFile(String channelId) async {
+    FilePickerResult? result =
+    await FilePicker.platform.pickFiles(type: FileType.custom,allowedExtensions: ["pdf"]);
+    if (result == null) return;
+    // FileModel fileModel = FileModel(
+    //   formData: File(result.files.single.path!).readAsBytesSync(),
+    //   fileName: result.files.single.name,
+    //   filePosition: FilePosition.message,
+    //   filePath: result.files.single.path,
+    //   cancelToken: CancelToken(),
+    //   sizeInKB: FileHelper.fileSizeInKB(result.files.single.size),
+    // );
+    // await sendMedia(channelId, fileModel);
+  }
+
   @override
   makeContentPayloadModel(fileModel, {String? caption}) {
     // TODO: implement makeContentPayloadModel
@@ -50,7 +78,8 @@ class FileHandler extends MediaHandler {
   }
 
   @override
-  Future<List<String>?> uploadPendingFile(ContentModel pendingContent, fileModel) {
+  Future<List<String>?> uploadPendingFile(
+      ContentModel pendingContent, fileModel) {
     // TODO: implement uploadPendingFile
     throw UnimplementedError();
   }
@@ -69,48 +98,48 @@ class FileHandler extends MediaHandler {
   //     contentFile: fileModel.formData,
   //   );
   //   await MediaUploadManager().startUploadAndSend(pendingContent, fileModel);
-  }
+}
 
-  @override
-  onUploadCompleted(ContentModel pendingContent, List<String> downloadUrls) {
-    // pendingContent.contentPayload =
-    //     (pendingContent.contentPayload as FileContentPayloadModel).copyWith(
-    //   url: downloadUrls.first,
-    // );
-  }
+@override
+onUploadCompleted(ContentModel pendingContent, List<String> downloadUrls) {
+  // pendingContent.contentPayload =
+  //     (pendingContent.contentPayload as FileContentPayloadModel).copyWith(
+  //   url: downloadUrls.first,
+  // );
+}
 
-  @override
-  void resetState() {}
+@override
+void resetState() {}
 
-  // @override
-  // Future<List<String>?> uploadPendingFile(
-  //     ContentModel pendingContent, FileModel fileModel) async {
-  //   // final response = await uploadMedia(
-  //   //   fileType.FileType.file,
-  //   //   HttpHeaderType.multipart,
-  //   //   fileModel,
-  //   //   pendingContent.contentId,
-  //   //   cacheKey: pendingContent.contentId,
-  //   //   cancelToken: fileModel.fileCancelToken,
-  //   // );
-  //   // return response.fold(
-  //   //       (fail) {
-  //   //     //todo handle
-  //   //     return null;
-  //   //   },
-  //   //       (downloadUrls) {
-  //   //     return downloadUrls;
-  //   //   },
-  //   // );
-  // }
+// @override
+// Future<List<String>?> uploadPendingFile(
+//     ContentModel pendingContent, FileModel fileModel) async {
+//   // final response = await uploadMedia(
+//   //   fileType.FileType.file,
+//   //   HttpHeaderType.multipart,
+//   //   fileModel,
+//   //   pendingContent.contentId,
+//   //   cacheKey: pendingContent.contentId,
+//   //   cancelToken: fileModel.fileCancelToken,
+//   // );
+//   // return response.fold(
+//   //       (fail) {
+//   //     //todo handle
+//   //     return null;
+//   //   },
+//   //       (downloadUrls) {
+//   //     return downloadUrls;
+//   //   },
+//   // );
+// }
 
-  // @override
-  // ContentPayloadModel makeContentPayloadModel(FileModel fileModel, {String? caption}) {
-  //   // return FileContentPayloadModel(
-  //   //   url: '',
-  //   //   name: fileModel.fileName ?? "",
-  //   //   extension: getFileExtension(fileModel.filePath!),
-  //   //   sizeInKB: fileModel.sizeInKB ?? 0,
-  //   // );
-  // }
+// @override
+// ContentPayloadModel makeContentPayloadModel(FileModel fileModel, {String? caption}) {
+//   // return FileContentPayloadModel(
+//   //   url: '',
+//   //   name: fileModel.fileName ?? "",
+//   //   extension: getFileExtension(fileModel.filePath!),
+//   //   sizeInKB: fileModel.sizeInKB ?? 0,
+//   // );
+// }
 // }
