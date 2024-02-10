@@ -43,6 +43,9 @@ class Assets {
   static const String sendReviewVoice = "$_baseIconPath/send_voice.svg";
   static const String trashReviewVoice = "$_baseIconPath/trash_voice.svg";
   static const String fileIcon = "$_baseIconPath/file_round_icon.svg";
+  static const String addMenu = "$_baseIconPath/add-square.svg";
+  static const String editMenu = "$_baseIconPath/edit.svg";
+  static const String videoMenu = "$_baseIconPath/video.svg";
 
   /// -----------------------Icons Assets -------------------------
 }

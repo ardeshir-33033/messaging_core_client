@@ -43,5 +43,9 @@
   "cancel": "Cancel",
   "somethingWentWrong": "Something Went Wrong",
   "slideToCancel": "Slide To Cancel",
-  "cannotOpenFile": "Cannot Open File"
+  "cannotOpenFile": "Cannot Open File",
+  "add": "Add",
+  "edit": "Edit",
+  "users": "Users",
+  "video": "Video"
 }

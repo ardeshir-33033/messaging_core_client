@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
+import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/image_widget.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
@@ -25,7 +26,7 @@ class ConversationAppBar extends StatelessWidget {
         // chat.avatar.isNullOrEmpty()
         //     ?
         _noProfileImage(context, chat),
-            // : _profileImage(context),
+        // : _profileImage(context),
         const SizedBox(width: 7),
         Column(
           children: [
