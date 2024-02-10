@@ -21,7 +21,6 @@ class ChatController extends GetxController {
   List<ChatParentClass> chats = [];
   List<ContentModel> messages = [];
 
-
   getAllChats() async {
     try {
       chatsStatus.loading();
@@ -64,6 +63,4 @@ class ChatController extends GetxController {
       update(["messages"]);
     }
   }
-
-
 }

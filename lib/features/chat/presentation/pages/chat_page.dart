@@ -69,33 +69,9 @@ class _ChatPageState extends State<ChatPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: CustomAppBar(
-      //   haveShadow: false,
-      //   leadingWidth: 40,
-      //   color: const Color(0xFF5AC4F6),
-      //   textStyle: AppTextStyles.body4.copyWith(
-      //       fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white),
-      //   leadingWidget: const IconWidget(
-      //     icon: Icons.more_vert,
-      //     iconColor: Colors.white,
-      //     size: 25,
-      //   ),
-      //   actions: [
-      //     IconWidget(
-      //       padding: 10,
-      //       icon: Icons.keyboard_arrow_down_outlined,
-      //       iconColor: Colors.white,
-      //       size: 25,
-      //       onPressed: () {
-      //         controller.tapAnimatedAppBar();
-      //       },
-      //     )
-      //   ],
-      //   title: tr(context).chat,
-      // ),
       body: Column(
         children: [
-          AnimatedAppBar(),
+          const AnimatedAppBar(),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),

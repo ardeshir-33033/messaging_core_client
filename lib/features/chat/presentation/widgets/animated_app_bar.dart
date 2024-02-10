@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
-import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
-import 'package:messaging_core/locator.dart';
 
 class AnimatedAppBar extends StatefulWidget {
-  AnimatedAppBar({super.key});
+  const AnimatedAppBar({super.key});
 
   @override
   State<AnimatedAppBar> createState() => _AnimatedAppBarState();
 }
 
 class _AnimatedAppBarState extends State<AnimatedAppBar> {
-  bool openedFullMenu = true;
-  bool showMenuItems = true;
+  bool openedFullMenu = false;
+  bool showMenuItems = false;
 
   @override
   Widget build(BuildContext context) {
@@ -52,19 +49,22 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
                     onPressed: () {
                       tapAnimatedAppBar();
                     },
-                  )
+                  ),
                 ],
               ),
             ),
           ),
-          Padding(
-            padding: 10.horizontal,
-            child: Divider(
-              color: Colors.white.withOpacity(0.3),
-              height: 15,
-              thickness: 0.5,
+          const SizedBox(height: 7),
+          if (openedFullMenu)
+            Padding(
+              padding: 10.horizontal,
+              child: Divider(
+                color: Colors.white.withOpacity(0.3),
+                height: 5,
+                thickness: 0.5,
+              ),
             ),
-          ),
+          if (openedFullMenu) const SizedBox(height: 7),
           AnimatedContainer(
             duration: const Duration(milliseconds: 400),
             height: openedFullMenu ? 50 : 0,
