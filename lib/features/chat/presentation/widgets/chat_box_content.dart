@@ -6,6 +6,7 @@ import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/contact_profile_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/text_content_payload_model.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/file_content_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/image_content_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/text_content_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -64,12 +65,11 @@ class ChatBoxContent extends StatelessWidget {
       //     commandContentPayloadModel:
       //         contentModel.contentPayload as CommandContentPayloadModel,
       //   );
-      // case ContentTypeEnum.file:
-      //   return FileContentWidget(
-      //     payload: contentModel.contentPayload as FileContentPayloadModel,
-      //     isUploading: contentModel.status == MessageStatus.pending,
-      //     contentModel: contentModel,
-      //   );
+      case ContentTypeEnum.file:
+        return FileContentWidget(
+          isUploading: false,
+          contentModel: contentModel,
+        );
       case ContentTypeEnum.localDeleted:
         return _localDeletedContentType(context, keyId);
       default:

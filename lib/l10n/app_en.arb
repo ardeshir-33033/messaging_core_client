@@ -42,5 +42,6 @@
   "poll": "Poll",
   "cancel": "Cancel",
   "somethingWentWrong": "Something Went Wrong",
-  "slideToCancel": "Slide To Cancel"
+  "slideToCancel": "Slide To Cancel",
+  "cannotOpenFile": "Cannot Open File"
 }
