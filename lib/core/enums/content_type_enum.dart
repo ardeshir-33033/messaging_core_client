@@ -71,6 +71,24 @@ enum ContentTypeEnum {
     }
   }
 
+  @override
+  String toString() {
+    switch (this) {
+      case text:
+        return "text";
+      case voice:
+        return "audio";
+      case video:
+        return "video";
+      case image:
+        return "image";
+      case file:
+        return "file";
+      default:
+        return "text";
+    }
+  }
+
   String translate(BuildContext context) {
     switch (this) {
       case ContentTypeEnum.voice:

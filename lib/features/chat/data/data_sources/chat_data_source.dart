@@ -4,10 +4,12 @@ import 'package:api_handler/feature/api_handler/data/enums/result_enums.dart';
 import 'package:api_handler/feature/api_handler/data/models/query_model.dart';
 import 'package:api_handler/feature/api_handler/data/models/response_model.dart';
 import 'package:api_handler/feature/api_handler/presentation/presentation_usecase.dart';
+import 'package:dio/dio.dart';
 import 'package:messaging_core/app/api_routing/category_user/category_routing.dart';
 import 'package:messaging_core/app/api_routing/chat_group/chat_group_routing.dart';
 import 'package:messaging_core/app/api_routing/message/message_routing.dart';
 import 'package:messaging_core/core/enums/receiver_type.dart';
+import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/group_model.dart';
@@ -18,7 +20,7 @@ abstract class ChatDataSource {
   Future<ResponseModel> showMessagesInGroup(
       ReceiverType receiverType, int senderId, int receiverId);
   Future<ResponseModel> sendMessages(
-      ContentModel contentModel, List<String> receivingUsers);
+      ContentModel contentModel, List<String>? receivingUsers, FileModel? file);
 }
 
 class ChatDataSourceImpl extends ChatDataSource {
@@ -82,15 +84,33 @@ class ChatDataSourceImpl extends ChatDataSource {
 
   @override
   Future<ResponseModel> sendMessages(
-      ContentModel contentModel, List<String> receivingUsers) async {
-    ResponseModel response = await api.get(
+    ContentModel contentModel,
+    List<String>? receivingUsers,
+    FileModel? file,
+  ) async {
+    var data = FormData.fromMap({
+      if (file != null)
+        'files': [
+          await MultipartFile.fromFile(file.filePath!, filename: file.fileName)
+        ],
+      'category_id': contentModel.categoryId,
+      'sender_id': contentModel.senderId,
+      'receiver_id': contentModel.receiverId,
+      'receiver_type': contentModel.receiverType.toString(),
+      if (contentModel.receiverType == ReceiverType.group)
+        'receiver_users': receivingUsers,
+      'message_text': contentModel.messageText,
+      'message_type': contentModel.contentType.toString()
+    });
+    ResponseModel response = await api.post(
       MessageRouting.sendMessages,
+      body: data,
       headerEnum: HeaderEnum.bearerHeaderEnum,
       responseEnum: ResponseEnum.responseModelEnum,
     );
 
     if (response.result == ResultEnum.success) {
-      response.data = ContentModel.listFromJsonSendApi(response.data);
+      response.data = ContentModel.fromJsonSendApi(response.data["message"]);
     }
     return response;
   }

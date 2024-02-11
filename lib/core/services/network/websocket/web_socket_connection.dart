@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/env/environment.dart';
+import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -7,7 +9,9 @@ class WebSocketConnection {
   IO.Socket? channel;
   bool isConnected = false;
 
-  void initState() {}
+  void initState() {
+    initChannel();
+  }
 
   void resetState() async {
     channel = null;
@@ -18,7 +22,8 @@ class WebSocketConnection {
   Future initChannel() async {
     // Map<String , dynamic>  headers = HttpHeader.setHeaders(HttpHeaderType.webSocket);
 
-    channel = IO.io(Environment.websocketUrl);
+    channel = IO.io(Environment.websocketUrl,
+        IO.OptionBuilder().setTransports(["websocket"]).build());
     channel?.onConnect((data) {
       isConnected = true;
       print("-----------------   Successful Connection     -----------------");
@@ -35,9 +40,12 @@ class WebSocketConnection {
 
     channel?.on("chat message", (data) {
       print(data);
+      if (data["senderId"] != AppGlobalData.userId) {
+
+      }
     });
 
-    channel?.on("chat message", (data) {
+    channel?.on("notification", (data) {
       print(data);
     });
 
@@ -45,6 +53,13 @@ class WebSocketConnection {
       print(data);
     });
     channel?.on("userStoppedTyping", (data) {
+      print(data);
+    });
+    channel?.on("ChatGroupChange", (data) {
+      print(data);
+    });
+
+    channel?.on("addOnlineUser", (data) {
       print(data);
     });
   }

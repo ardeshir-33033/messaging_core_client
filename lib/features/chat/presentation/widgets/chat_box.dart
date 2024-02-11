@@ -18,6 +18,7 @@ import 'package:messaging_core/features/chat/domain/entities/content_model.dart'
 import 'package:messaging_core/features/chat/domain/entities/text_content_payload_model.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_box_content.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/content_options_overlay_widget.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/message_status_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/tag_widget.dart';
 
 class ChatBox extends StatefulWidget {
@@ -262,8 +263,14 @@ class ChatBoxState extends State<ChatBox> {
                                                     ),
                                                     Text(
                                                       widget.content.repliedTo!
-                                                          .contentPayload
-                                                          .shortDisplayName(),
+                                                                  .contentPayload !=
+                                                              null
+                                                          ? widget
+                                                              .content
+                                                              .repliedTo!
+                                                              .contentPayload!
+                                                              .shortDisplayName()
+                                                          : "",
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       maxLines: 1,
@@ -313,17 +320,17 @@ class ChatBoxState extends State<ChatBox> {
                                         ),
                                       ),
                                       const SizedBox(width: 5),
-                                      // isMine &&
-                                      //         widget.content.contentType !=
-                                      //             ContentTypeEnum.localDeleted
-                                      //     ? MessageStatusWidget(
-                                      //         content: widget.content,
-                                      //         lastReceived: currentChannelProvider
-                                      //             .lastReceived,
-                                      //         lastSeen:
-                                      //             currentChannelProvider.lastSeen,
-                                      //       )
-                                      //     : Container(),
+                                      isMine &&
+                                              widget.content.contentType !=
+                                                  ContentTypeEnum.localDeleted
+                                          ? MessageStatusWidget(
+                                              content: widget.content,
+                                              // lastReceived: currentChannelProvider
+                                              //     .lastReceived,
+                                              // lastSeen:
+                                              //     currentChannelProvider.lastSeen,
+                                            )
+                                          : Container(),
                                     ],
                                   ),
                                 ],

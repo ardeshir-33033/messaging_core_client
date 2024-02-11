@@ -4,11 +4,11 @@ import 'package:messaging_core/features/chat/domain/entities/content_model.dart'
 class MessagingClient {
   final WebSocketConnection webSocketConnection;
 
-  MessagingClient({
-    required this.webSocketConnection,
-  });
+  MessagingClient(this.webSocketConnection);
 
-  void initState() {}
+  void initState() {
+    webSocketConnection.initState();
+  }
 
   void resetState() {}
 
@@ -19,22 +19,22 @@ class MessagingClient {
   //   });
   // }
 
-  sendUserContent(ContentModel contentModel) async {
+  sendUserContent(ContentModel contentModel, String roomIdentifier) async {
     webSocketConnection.sendMessage("chat message", {
-      // 'roomIdentifier': contentModel.contentId,
+      'roomIdentifier': roomIdentifier,
       'text': contentModel.messageText,
       'senderId': contentModel.senderId,
       'receiverId': contentModel.receiverId,
-      'receiverType': contentModel.receiverType,
+      'receiverType': contentModel.receiverType.toString(),
       'messageId': contentModel.contentId,
       // "timestamp": DateTime.now().millisecondsSinceEpoch,
     });
   }
 
   sendGroupContent(ContentModel contentModel, List<String> receiverUsers,
-      String senderAvatar, String senderName) async {
+      String senderAvatar, String senderName, String roomIdentifier) async {
     webSocketConnection.sendMessage("chat message", {
-      // 'roomIdentifier': contentModel.contentId,
+      'roomIdentifier': roomIdentifier,
       'text': contentModel.messageText,
       'senderId': contentModel.senderId,
       'senderAvatar': senderAvatar,
@@ -58,4 +58,24 @@ class MessagingClient {
       'senderId': senderId,
     });
   }
+
+  sendJoinRoom(String roomIdentifier) async {
+    webSocketConnection.sendMessage("joinRoom", {
+      'roomIdentifier': roomIdentifier,
+    });
+  }
+
+  sendAddOnlineUser(String userId, String categoryId) async {
+    webSocketConnection.sendMessage("addOnlineUser", {
+      'userId': userId,
+      'categoryId': categoryId,
+    });
+  }
+
+  // sendNewGroupChat(String userId, String categoryId) async {
+  //   webSocketConnection.sendMessage("newChatGroup", {
+  //     'chatGroup': userId,
+  //     'usersInGroup': categoryId,
+  //   });
+  // }
 }

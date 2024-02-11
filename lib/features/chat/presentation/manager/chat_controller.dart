@@ -1,25 +1,47 @@
 import 'package:api_handler/api_handler.dart';
 import 'package:api_handler/feature/api_handler/data/models/response_model.dart';
 import 'package:get/get.dart';
+import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/app_states/result_state.dart';
+import 'package:messaging_core/core/enums/content_type_enum.dart';
+import 'package:messaging_core/core/enums/message_status.dart';
 import 'package:messaging_core/core/enums/receiver_type.dart';
+import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
+import 'package:messaging_core/core/utils/utils.dart';
 import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
+import 'package:messaging_core/features/chat/domain/entities/group_users_model.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_messages_use_case.dart';
+import 'package:messaging_core/features/chat/domain/use_cases/send_messags_use_case.dart';
 
 class ChatController extends GetxController {
   final GetAllChatsUseCase getAllChatsUseCase;
   final GetMessagesUseCase getMessagesUseCase;
+  final SendMessagesUseCase sendMessageUsecase;
+  final MessagingClient messagingClient;
 
-  ChatController(this.getAllChatsUseCase, this.getMessagesUseCase);
+  ChatController(this.getAllChatsUseCase, this.getMessagesUseCase,
+      this.sendMessageUsecase, this.messagingClient);
 
   RequestStatus chatsStatus = RequestStatus();
   RequestStatus messagesStatus = RequestStatus();
 
   List<ChatParentClass> chats = [];
   List<ContentModel> messages = [];
+  late ChatParentClass? _currentChat;
+  late String? _roomIdentifier;
+
+  void setCurrentChat(ChatParentClass value) {
+    _currentChat = value;
+  }
+
+  resetState() {
+    messages = [];
+    _currentChat = null;
+    _roomIdentifier = null;
+  }
 
   getAllChats() async {
     try {
@@ -61,6 +83,73 @@ class ChatController extends GetxController {
     } catch (e) {
       messagesStatus.error(e.toString());
       update(["messages"]);
+    }
+  }
+
+  sendTextMessage(ReceiverType receiverType, String text, int receiverId,
+      List<GroupUsersModel>? groupUsers) async {
+    try {
+      int uniqueId = generateUniqueId();
+      ContentModel content = ContentModel(
+          contentId: uniqueId,
+          senderId: AppGlobalData.userId,
+          receiverType: receiverType,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+          contentType: ContentTypeEnum.text,
+          contentPayload: null,
+          messageText: text,
+          categoryId: AppGlobalData.categoryId,
+          receiverId: receiverId,
+          status: MessageStatus.sending);
+      messages.insert(0, content);
+      update(["messages"]);
+
+      ResponseModel response = await sendMessageUsecase(SendMessagesParams(
+        contentModel: content,
+        receivingUser: receiverType == ReceiverType.group
+            ? groupUsers?.map((e) => e.id.toString()).toList()
+            : null,
+      ));
+      if (response.result == ResultEnum.success) {
+        int index =
+            messages.indexWhere((element) => element.contentId == uniqueId);
+        messages[index].contentId = (response.data as ContentModel).contentId;
+        messages[index].status = MessageStatus.sent;
+        messagingClient.sendUserContent(messages[index], _roomIdentifier!);
+
+        update(["messages"]);
+      }
+    } catch (e) {
+      print("----${e.toString()}----");
+    }
+  }
+
+  joinRoom() {
+    if (_currentChat!.isGroup()) {
+      List<int> groupIds = _currentChat!.groupUsers!.map((e) => e.id).toList();
+      groupIds.sort();
+      String result = groupIds.join();
+      _roomIdentifier = "${_currentChat!.id}$result";
+    } else {
+      List<int> ids = [];
+      ids.add(AppGlobalData.userId);
+      ids.add(_currentChat!.id!);
+      ids.sort();
+      _roomIdentifier = ids.join();
+    }
+    print("---------$_roomIdentifier ----");
+
+    messagingClient.sendJoinRoom(_roomIdentifier!);
+  }
+
+  handleReceivedMessages(Map<String, dynamic> json, String roomIdentifier) {
+    ContentModel content = ContentModel.fromSocketJson(json);
+    if (_currentChat != null) {
+      if (_roomIdentifier == roomIdentifier) {
+        messages.insert(0, content);
+        update(["messages"]);
+      }
     }
   }
 }

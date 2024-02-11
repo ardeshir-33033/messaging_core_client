@@ -1,6 +1,7 @@
 import 'package:api_handler/api_handler.dart';
 import 'package:api_handler/feature/api_handler/data/models/response_model.dart';
 import 'package:messaging_core/core/enums/receiver_type.dart';
+import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/repositories/chat_repository.dart';
 
@@ -40,9 +41,11 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  sendMessages(ContentModel contentModel, List<String> receivingUsers) async {
+  sendMessages(ContentModel contentModel, List<String>? receivingUsers,
+      FileModel? file) async {
     try {
-      return await _chatDataSource.sendMessages(contentModel, receivingUsers);
+      return await _chatDataSource.sendMessages(
+          contentModel, receivingUsers, file);
     } catch (e) {
       return ResponseModel(
         statusCode: 510,

@@ -5,6 +5,8 @@ import 'package:messaging_core/app/widgets/pagination_widget.dart';
 import 'package:messaging_core/app/widgets/skeleton_widget.dart';
 import 'package:messaging_core/core/app_states/result_state.dart';
 import 'package:messaging_core/core/env/environment.dart';
+import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
+import 'package:messaging_core/core/services/network/websocket/web_socket_connection.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
@@ -23,11 +25,9 @@ class ChatListPage extends StatefulWidget {
 class _ChatListPageState extends State<ChatListPage> {
   final ChatController controller = Get.put<ChatController>(locator());
   // locator<ChatController>();
-  IO.Socket channel = IO.io(Environment.websocketUrl,
-      IO.OptionBuilder().setTransports(["websocket"]).build());
 
   connect() {
-
+    locator<MessagingClient>().initState();
   }
 
   @override

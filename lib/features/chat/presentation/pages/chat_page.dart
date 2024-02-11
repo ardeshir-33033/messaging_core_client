@@ -3,15 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:messaging_core/app/component/base_appBar.dart';
+import 'package:messaging_core/app/page_routing/custom_transition.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
-import 'package:messaging_core/app/theme/app_text_styles.dart';
-import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/loading_widget.dart';
 import 'package:messaging_core/app/widgets/overlay_widget.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/app_states/result_state.dart';
-import 'package:messaging_core/core/services/media_handler/voice_handler.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/contact_profile_model.dart';
@@ -59,6 +56,8 @@ class _ChatPageState extends State<ChatPage>
     voiceController.initialRecording();
     controller.getMessages(
         widget.chat.getReceiverType(), AppGlobalData.userId, widget.chat.id!);
+    controller.setCurrentChat(widget.chat);
+    controller.joinRoom();
     scrollNotificationController = StreamController();
     _overlayController = OverlayController();
     _initAnimations();
@@ -68,163 +67,173 @@ class _ChatPageState extends State<ChatPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          const AnimatedAppBar(),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Column(
-                children: [
-                  const SizedBox(height: 15),
-                  Expanded(
-                    child: Container(
-                      padding: 8.horizontal,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFE7E7E7),
-                        borderRadius: BorderRadius.circular(20.r),
-                      ),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 20),
-                          ConversationAppBar(
-                            chat: widget.chat,
-                            size: 40,
-                          ),
-                          const SizedBox(height: 10),
-                          Expanded(
-                            child: GetBuilder<ChatController>(
-                                id: "messages",
-                                builder: (_) {
-                                  if (controller.messagesStatus.status ==
-                                      Status.success) {
-                                    return NotificationListener<
-                                        UserScrollNotification>(
-                                      onNotification: (notification) {
-                                        scrollNotificationController.sink
-                                            .add(notification);
-                                        return false;
-                                      },
-                                      child: ScrollablePositionedList.builder(
-                                          itemCount: controller.messages.length,
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 8),
-                                          reverse: true,
-                                          itemScrollController:
-                                              _itemScrollController,
-                                          itemPositionsListener:
-                                              _itemPositionsListener,
-                                          itemBuilder: (_, index) {
-                                            return Column(
-                                              children: [
-                                                ContentDateWidget(
-                                                  timeStamp: controller
-                                                      .messages[index]
-                                                      .updatedAt,
-                                                  showData: index ==
-                                                          controller.messages
-                                                                  .length -
-                                                              1
-                                                      ? true
-                                                      : (controller
-                                                          .messages[index]
-                                                          .updatedAt
-                                                          .isNotSameDateAs(
-                                                              controller
-                                                                  .messages[
-                                                                      index + 1]
-                                                                  .updatedAt)),
-                                                ),
-                                                Container(
-                                                  width: double.infinity,
-                                                  color: (controller
-                                                              .messages[index]
-                                                              .contentId ==
-                                                          _repliedItemToAnimate)
-                                                      ? _replyToColorAnimation
-                                                          .value
-                                                      : null,
-                                                  child: ChatBox(
-                                                    opponentProfile:
-                                                        ContactProfile(
-                                                            userId: "1"),
-                                                    overlayController:
-                                                        _overlayController,
-                                                    content: controller
-                                                        .messages[index],
-                                                    isGroup:
-                                                        widget.chat.isGroup(),
-                                                    onReplyTap: () =>
-                                                        _onReplyTap(controller
-                                                            .messages[index]
-                                                            .repliedTo),
-                                                    isFirstSenderContent: index ==
+    return MyWillPopScope(
+      onWillPop: () async {
+        controller.resetState();
+        return true;
+      },
+      child: Scaffold(
+        body: Column(
+          children: [
+            const AnimatedAppBar(),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 15),
+                    Expanded(
+                      child: Container(
+                        padding: 8.horizontal,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE7E7E7),
+                          borderRadius: BorderRadius.circular(20.r),
+                        ),
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 20),
+                            ConversationAppBar(
+                              chat: widget.chat,
+                              size: 40,
+                            ),
+                            const SizedBox(height: 10),
+                            Expanded(
+                              child: GetBuilder<ChatController>(
+                                  id: "messages",
+                                  builder: (_) {
+                                    if (controller.messagesStatus.status ==
+                                        Status.success) {
+                                      return NotificationListener<
+                                          UserScrollNotification>(
+                                        onNotification: (notification) {
+                                          scrollNotificationController.sink
+                                              .add(notification);
+                                          return false;
+                                        },
+                                        child: ScrollablePositionedList.builder(
+                                            itemCount:
+                                                controller.messages.length,
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8),
+                                            reverse: true,
+                                            itemScrollController:
+                                                _itemScrollController,
+                                            itemPositionsListener:
+                                                _itemPositionsListener,
+                                            itemBuilder: (_, index) {
+                                              return Column(
+                                                children: [
+                                                  ContentDateWidget(
+                                                    timeStamp: controller
+                                                        .messages[index]
+                                                        .updatedAt,
+                                                    showData: index ==
                                                             controller.messages
                                                                     .length -
                                                                 1
                                                         ? true
                                                         : (controller
+                                                            .messages[index]
+                                                            .updatedAt
+                                                            .isNotSameDateAs(
+                                                                controller
                                                                     .messages[
                                                                         index +
                                                                             1]
-                                                                    .senderId !=
-                                                                controller
-                                                                    .messages[
-                                                                        index]
-                                                                    .senderId ||
-                                                            controller
-                                                                .messages[
-                                                                    index + 1]
-                                                                .contentType
-                                                                .isGeneralContent),
-                                                    isLastSenderContent: index ==
-                                                            0
-                                                        ? true
-                                                        : (controller
-                                                                    .messages[
-                                                                        index -
-                                                                            1]
-                                                                    .senderId !=
-                                                                controller
-                                                                    .messages[
-                                                                        index]
-                                                                    .senderId ||
-                                                            controller
-                                                                .messages[
-                                                                    index - 1]
-                                                                .contentType
-                                                                .isGeneralContent),
+                                                                    .updatedAt)),
                                                   ),
-                                                ),
-                                              ],
-                                            );
-                                          }),
-                                    );
-                                  } else {
-                                    return const Center(child: LoadingWidget());
-                                  }
-                                }),
-                          ),
-                          const Divider(
-                            color: Color(0xFFD6D6D6),
-                            thickness: 2,
-                          ),
-                          // const SizedBox(height: 10),
-                          SendMessageWidget(
-                            textController: _sendTextController,
-                            chat: widget.chat,
-                          ),
-                          const SizedBox(height: 10),
-                        ],
+                                                  Container(
+                                                    width: double.infinity,
+                                                    color: (controller
+                                                                .messages[index]
+                                                                .contentId ==
+                                                            _repliedItemToAnimate)
+                                                        ? _replyToColorAnimation
+                                                            .value
+                                                        : null,
+                                                    child: ChatBox(
+                                                      opponentProfile:
+                                                          ContactProfile(
+                                                              userId: "1"),
+                                                      overlayController:
+                                                          _overlayController,
+                                                      content: controller
+                                                          .messages[index],
+                                                      isGroup:
+                                                          widget.chat.isGroup(),
+                                                      onReplyTap: () =>
+                                                          _onReplyTap(controller
+                                                              .messages[index]
+                                                              .repliedTo),
+                                                      isFirstSenderContent: index ==
+                                                              controller
+                                                                      .messages
+                                                                      .length -
+                                                                  1
+                                                          ? true
+                                                          : (controller
+                                                                      .messages[
+                                                                          index +
+                                                                              1]
+                                                                      .senderId !=
+                                                                  controller
+                                                                      .messages[
+                                                                          index]
+                                                                      .senderId ||
+                                                              controller
+                                                                  .messages[
+                                                                      index + 1]
+                                                                  .contentType
+                                                                  .isGeneralContent),
+                                                      isLastSenderContent: index ==
+                                                              0
+                                                          ? true
+                                                          : (controller
+                                                                      .messages[
+                                                                          index -
+                                                                              1]
+                                                                      .senderId !=
+                                                                  controller
+                                                                      .messages[
+                                                                          index]
+                                                                      .senderId ||
+                                                              controller
+                                                                  .messages[
+                                                                      index - 1]
+                                                                  .contentType
+                                                                  .isGeneralContent),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            }),
+                                      );
+                                    } else {
+                                      return const Center(
+                                          child: LoadingWidget());
+                                    }
+                                  }),
+                            ),
+                            const Divider(
+                              color: Color(0xFFD6D6D6),
+                              thickness: 2,
+                            ),
+                            // const SizedBox(height: 10),
+                            SendMessageWidget(
+                              textController: _sendTextController,
+                              chat: widget.chat,
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

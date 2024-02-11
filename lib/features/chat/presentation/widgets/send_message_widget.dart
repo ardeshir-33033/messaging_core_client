@@ -4,14 +4,15 @@ import 'package:messaging_core/app/component/base_bottom_sheets.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
-import 'package:messaging_core/core/services/media_handler/voice_handler.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/core/utils/text_utils.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
+import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/record_voice_controller.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/attach_file_bottom_sheet_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/conversaion_voice_recording_option_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/send_button_widget.dart';
+import 'package:messaging_core/locator.dart';
 
 class SendMessageWidget extends StatefulWidget {
   const SendMessageWidget(
@@ -26,6 +27,7 @@ class SendMessageWidget extends StatefulWidget {
 
 class _SendMessageWidgetState extends State<SendMessageWidget> {
   RecordVoiceController voiceController = Get.find<RecordVoiceController>();
+  final ChatController controller = locator<ChatController>();
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +83,9 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                                 key: const Key("messageField"),
                                 textCapitalization:
                                     TextCapitalization.sentences,
+                                onChanged: (val) {
+                                  setState(() {});
+                                },
                                 maxLines: 7,
                                 minLines: 1,
                                 textAlignVertical: TextAlignVertical.center,
@@ -113,6 +118,13 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                     voiceController.stopRecording(widget.chat.id.toString());
                   },
                   onSendTextMessage: () {
+                    controller.sendTextMessage(
+                        widget.chat.getReceiverType(),
+                        widget.textController.text,
+                        widget.chat.id!,
+                        widget.chat.groupUsers);
+                    widget.textController.text = "";
+
                     // widget.onSendMessage.call();
                   },
                   onRecordVoice: () {

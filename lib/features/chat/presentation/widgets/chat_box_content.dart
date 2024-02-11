@@ -34,9 +34,8 @@ class ChatBoxContent extends StatelessWidget {
       case ContentTypeEnum.text ||
             ContentTypeEnum.linkableText ||
             ContentTypeEnum.encryptedText:
-        var payload = contentModel.contentPayload as TextContentPayloadModel;
         return TextContentWidget(
-          content: payload.text,
+          content: contentModel.messageText,
           keyId: keyId,
         );
       case ContentTypeEnum.image:

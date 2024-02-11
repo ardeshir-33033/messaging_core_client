@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -116,4 +117,11 @@ Future<void> saveImageInGallery(
       fontSize: 16.0,
     );
   }
+}
+
+int generateUniqueId() {
+  Random random = Random();
+  int uniqueId =
+      random.nextInt(300);
+  return uniqueId;
 }

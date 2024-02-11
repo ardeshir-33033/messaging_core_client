@@ -12,4 +12,16 @@ enum ReceiverType {
         return ReceiverType.user;
     }
   }
+
+  @override
+  String toString() {
+    switch (this) {
+      case ReceiverType.user:
+        return "user";
+      case ReceiverType.group:
+        return "group";
+      default:
+        return "user";
+    }
+  }
 }

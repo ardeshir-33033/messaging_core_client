@@ -1,3 +1,4 @@
+import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/enums/message_status.dart';
 import 'package:messaging_core/core/enums/receiver_type.dart';
@@ -14,7 +15,7 @@ class ContentModel {
   int categoryId;
   String messageText;
   String? filePath;
-  ContentPayloadModel contentPayload;
+  ContentPayloadModel? contentPayload;
   ContentTypeEnum contentType;
   MessageStatus status;
   ContentModel? _repliedTo; // todo possibility of forge from client
@@ -41,7 +42,7 @@ class ContentModel {
     required this.createdAt,
     required this.updatedAt,
     required this.contentType,
-    required this.contentPayload,
+    this.contentPayload,
     required this.messageText,
     this.isForwarded = false,
     ContentModel? repliedTo,
@@ -110,6 +111,35 @@ class ContentModel {
             : null);
   }
 
+  static ContentModel fromSocketJson(Map<String, dynamic> json,
+      {bool mainContent = true}) {
+    var contentType = ContentTypeEnum.fromString(json['messageType'] ?? "text");
+    // var contentPayload =
+    //     ContentPayloadModel.create(contentType, json['text']);
+    ContentModel? repliedTo = (mainContent && json['repliedTo'] != null)
+        ? ContentModel.fromJson(json['repliedTo'], mainContent: false)
+        : null;
+
+    return ContentModel(
+        contentId: json['messageId'],
+        senderId: json['senderId'],
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        contentType: contentType,
+        // contentPayload: contentPayload,
+        status: MessageStatus.sent,
+        repliedTo: repliedTo,
+        isForwarded: json['isForwarded'] ?? false,
+        receiverType: ReceiverType.fromString(json['receiverType']),
+        messageText: json['text'],
+        categoryId: AppGlobalData.categoryId,
+        receiverId: json['receiverId'],
+        filePath: json['file_path'],
+        sender: json['sender'] != null
+            ? CategoryUser.fromJson(json['sender'])
+            : null);
+  }
+
   static ContentModel fromJsonSendApi(Map<String, dynamic> json,
       {bool mainContent = true}) {
     var contentType = ContentTypeEnum.text;
@@ -146,7 +176,7 @@ class ContentModel {
       'senderId': senderId,
       'updated_at': updatedAt.millisecondsSinceEpoch,
       'created_at': createdAt.millisecondsSinceEpoch,
-      'contentPayload': contentPayload.toJson(),
+      'contentPayload': contentPayload?.toJson(),
       'contentType': contentType.name,
       'status': status.name,
       'isForwarded': isForwarded,
