@@ -135,25 +135,25 @@ class _ImageContentWidgetState extends State<ImageContentWidget> {
             ),
           ),
         ),
-        if (widget.showCaption &&
-            !widget.contentModel.messageText.isNullOrEmpty())
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 8,
-              ),
-              Container(
-                width: imageWidth,
-                constraints: const BoxConstraints(maxWidth: 200, minWidth: 100),
-                child: TextContentWidget(
-                  content: widget.contentModel.messageText ?? "",
-                  keyId: Key('${widget.contentModel.contentId}-caption'),
-                ),
-              ),
-            ],
-          )
+        // if (widget.showCaption &&
+        //     !widget.contentModel.messageText.isNullOrEmpty())
+        //   Column(
+        //     mainAxisAlignment: MainAxisAlignment.start,
+        //     crossAxisAlignment: CrossAxisAlignment.start,
+        //     children: [
+        //       const SizedBox(
+        //         height: 8,
+        //       ),
+        //       Container(
+        //         width: imageWidth,
+        //         constraints: const BoxConstraints(maxWidth: 200, minWidth: 100),
+        //         child: TextContentWidget(
+        //           content: widget.contentModel.messageText ?? "",
+        //           keyId: Key('${widget.contentModel.contentId}-caption'),
+        //         ),
+        //       ),
+        //     ],
+        //   )
       ],
     );
   }

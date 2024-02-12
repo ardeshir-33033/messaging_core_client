@@ -1,3 +1,4 @@
+import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/services/network/websocket/web_socket_connection.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 
@@ -27,6 +28,7 @@ class MessagingClient {
       'receiverId': contentModel.receiverId,
       'receiverType': contentModel.receiverType.toString(),
       'messageId': contentModel.contentId,
+      'messageType': contentModel.contentType.toString()
       // "timestamp": DateTime.now().millisecondsSinceEpoch,
     });
   }

@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/env/environment.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
+import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
+import 'package:messaging_core/locator.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -41,7 +43,8 @@ class WebSocketConnection {
     channel?.on("chat message", (data) {
       print(data);
       if (data["senderId"] != AppGlobalData.userId) {
-
+        ChatController controller = locator<ChatController>();
+        controller.handleReceivedMessages(data, data["roomIdentifier"]);
       }
     });
 

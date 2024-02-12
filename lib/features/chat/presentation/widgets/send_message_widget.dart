@@ -122,7 +122,8 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                         widget.chat.getReceiverType(),
                         widget.textController.text,
                         widget.chat.id!,
-                        widget.chat.groupUsers);
+                        null,
+                        null);
                     widget.textController.text = "";
 
                     // widget.onSendMessage.call();

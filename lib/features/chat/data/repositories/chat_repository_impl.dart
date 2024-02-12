@@ -27,7 +27,7 @@ class ChatRepositoryImpl extends ChatRepository {
 
   @override
   Future<ResponseModel> getMessages(
-      ReceiverType receiverType, int senderId, int receiverId) async {
+      ReceiverType receiverType, int? senderId, int receiverId) async {
     try {
       return await _chatDataSource.showMessagesInGroup(
           receiverType, senderId, receiverId);
@@ -41,11 +41,9 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  sendMessages(ContentModel contentModel, List<String>? receivingUsers,
-      FileModel? file) async {
+  sendMessages(ContentModel contentModel, FileModel? file) async {
     try {
-      return await _chatDataSource.sendMessages(
-          contentModel, receivingUsers, file);
+      return await _chatDataSource.sendMessages(contentModel, file);
     } catch (e) {
       return ResponseModel(
         statusCode: 510,

@@ -6,6 +6,7 @@ import 'package:messaging_core/core/app_states/result_state.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/enums/message_status.dart';
 import 'package:messaging_core/core/enums/receiver_type.dart';
+import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
 import 'package:messaging_core/core/utils/utils.dart';
 import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
@@ -64,15 +65,17 @@ class ChatController extends GetxController {
     }
   }
 
-  getMessages(ReceiverType receiverType, int receiverId, int senderId) async {
+  getMessages() async {
     try {
       messagesStatus.loading();
       update(["messages"]);
 
       ResponseModel response = await getMessagesUseCase(GetMessagesParams(
-          receiverType: receiverType,
-          receiverId: receiverId,
-          senderId: senderId));
+          receiverType: _currentChat!.getReceiverType(),
+          receiverId: _currentChat!.isGroup()
+              ? _currentChat!.id!
+              : AppGlobalData.userId,
+          senderId: _currentChat!.isGroup() ? null : _currentChat!.id!));
       if (response.result == ResultEnum.success) {
         messages = response.data;
         messages = messages.reversed.toList();
@@ -87,7 +90,7 @@ class ChatController extends GetxController {
   }
 
   sendTextMessage(ReceiverType receiverType, String text, int receiverId,
-      List<GroupUsersModel>? groupUsers) async {
+      ContentTypeEnum? contentType, FileModel? file) async {
     try {
       int uniqueId = generateUniqueId();
       ContentModel content = ContentModel(
@@ -96,26 +99,29 @@ class ChatController extends GetxController {
           receiverType: receiverType,
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
-          contentType: ContentTypeEnum.text,
+          contentType: contentType ?? ContentTypeEnum.text,
           contentPayload: null,
           messageText: text,
+          filePath: file?.filePath,
           categoryId: AppGlobalData.categoryId,
           receiverId: receiverId,
           status: MessageStatus.sending);
       messages.insert(0, content);
       update(["messages"]);
-
+      //
       ResponseModel response = await sendMessageUsecase(SendMessagesParams(
         contentModel: content,
-        receivingUser: receiverType == ReceiverType.group
-            ? groupUsers?.map((e) => e.id.toString()).toList()
-            : null,
+        file: file,
       ));
       if (response.result == ResultEnum.success) {
         int index =
             messages.indexWhere((element) => element.contentId == uniqueId);
         messages[index].contentId = (response.data as ContentModel).contentId;
+        if (file != null) {
+          messages[index].filePath = (response.data as ContentModel).filePath;
+        }
         messages[index].status = MessageStatus.sent;
+
         messagingClient.sendUserContent(messages[index], _roomIdentifier!);
 
         update(["messages"]);

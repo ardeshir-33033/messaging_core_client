@@ -3,9 +3,15 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
+import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/core/services/media_handler/media_handler.dart';
+import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_payload_model.dart';
+import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
+import 'package:messaging_core/locator.dart';
+
+import '../../utils/file_helper.dart';
 
 class FileHandler extends MediaHandler {
   static final FileHandler _instance = FileHandler._internal();
@@ -21,24 +27,49 @@ class FileHandler extends MediaHandler {
   @override
   void initState() {}
 
-  Future<void> selectAndSendFile(String channelId) async {
+  Future<void> selectAndSendFile(ChatParentClass chat) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result == null) return;
-    // FileModel fileModel = FileModel(
-    //   formData: File(result.files.single.path!).readAsBytesSync(),
-    //   fileName: result.files.single.name,
-    //   filePosition: FilePosition.message,
-    //   filePath: result.files.single.path,
-    //   cancelToken: CancelToken(),
-    //   sizeInKB: FileHelper.fileSizeInKB(result.files.single.size),
-    // );
+    FileModel fileModel = FileModel(
+      formData: File(result.files.single.path!).readAsBytesSync(),
+      fileName: result.files.single.name,
+      filePath: result.files.single.path,
+      cancelToken: CancelToken(),
+      sizeInKB: FileHelper.fileSizeInKB(result.files.single.size),
+    );
+    final ChatController controller = locator<ChatController>();
+    controller.sendTextMessage(
+      chat.getReceiverType(),
+      result.files.single.name,
+      chat.id!,
+      ContentTypeEnum.file,
+      fileModel,
+    );
+
     // await sendMedia(channelId, fileModel);
   }
 
-  Future<void> selectMusicAndSendFile(String channelId) async {
+  Future<void> selectMusicAndSendFile(ChatParentClass chat) async {
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(type: FileType.audio);
     if (result == null) return;
+
+    FileModel fileModel = FileModel(
+      formData: File(result.files.single.path!).readAsBytesSync(),
+      fileName: result.files.single.name,
+      filePath: result.files.single.path,
+      cancelToken: CancelToken(),
+      sizeInKB: FileHelper.fileSizeInKB(result.files.single.size),
+    );
+
+    final ChatController controller = locator<ChatController>();
+    controller.sendTextMessage(
+      chat.getReceiverType(),
+      result.files.single.name,
+      chat.id!,
+      ContentTypeEnum.file,
+      fileModel,
+    );
     // FileModel fileModel = FileModel(
     //   formData: File(result.files.single.path!).readAsBytesSync(),
     //   fileName: result.files.single.name,
@@ -50,10 +81,28 @@ class FileHandler extends MediaHandler {
     // await sendMedia(channelId, fileModel);
   }
 
-  Future<void> selectDocumentAndSendFile(String channelId) async {
-    FilePickerResult? result =
-    await FilePicker.platform.pickFiles(type: FileType.custom,allowedExtensions: ["pdf"]);
+  Future<void> selectDocumentAndSendFile(ChatParentClass chat) async {
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: ["pdf"]);
     if (result == null) return;
+
+    FileModel fileModel = FileModel(
+      formData: File(result.files.single.path!).readAsBytesSync(),
+      fileName: result.files.single.name,
+      filePath: result.files.single.path,
+      cancelToken: CancelToken(),
+      sizeInKB: FileHelper.fileSizeInKB(result.files.single.size),
+    );
+
+    final ChatController controller = locator<ChatController>();
+    controller.sendTextMessage(
+      chat.getReceiverType(),
+      result.files.single.name,
+      chat.id!,
+      ContentTypeEnum.file,
+      fileModel,
+    );
+
     // FileModel fileModel = FileModel(
     //   formData: File(result.files.single.path!).readAsBytesSync(),
     //   fileName: result.files.single.name,

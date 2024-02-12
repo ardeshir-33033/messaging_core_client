@@ -21,7 +21,7 @@ class _VideoContentWidgetState extends State<VideoContentWidget> {
     _controller = VideoPlayerController.networkUrl(
         Uri.parse(widget.contentModel.filePath!))
       ..initialize().then((_) {
-        setState(() {});
+        if (mounted) setState(() {});
       });
   }
 

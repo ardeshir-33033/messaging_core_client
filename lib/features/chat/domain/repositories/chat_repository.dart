@@ -6,7 +6,7 @@ import 'package:messaging_core/features/chat/domain/entities/content_model.dart'
 abstract class ChatRepository {
   Future<ResponseModel> getAllChats();
   Future<ResponseModel> getMessages(
-      ReceiverType receiverType, int senderId, int receiverId);
+      ReceiverType receiverType, int? senderId, int receiverId);
   Future<ResponseModel> sendMessages(
-      ContentModel contentModel, List<String>? receivingUsers, FileModel? file);
+      ContentModel contentModel, FileModel? file);
 }

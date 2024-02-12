@@ -12,16 +12,13 @@ class SendMessagesUseCase
 
   @override
   Future<ResponseModel> call(SendMessagesParams params) {
-    return _chatRepository.sendMessages(
-        params.contentModel, params.receivingUser, params.file);
+    return _chatRepository.sendMessages(params.contentModel, params.file);
   }
 }
 
 class SendMessagesParams {
   ContentModel contentModel;
-  List<String>? receivingUser;
   FileModel? file;
 
-  SendMessagesParams(
-      {required this.contentModel, this.receivingUser, this.file});
+  SendMessagesParams({required this.contentModel, this.file});
 }

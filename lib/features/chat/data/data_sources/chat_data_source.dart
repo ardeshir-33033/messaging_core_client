@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:api_handler/feature/api_handler/data/enums/header_enum.dart';
 import 'package:api_handler/feature/api_handler/data/enums/response_enum.dart';
 import 'package:api_handler/feature/api_handler/data/enums/result_enums.dart';
@@ -13,14 +15,15 @@ import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/group_model.dart';
+import 'package:http/http.dart' as http;
 
 abstract class ChatDataSource {
   Future<ResponseModel> getUsersInCategory();
   Future<ResponseModel> getGroupChatsInCategory();
   Future<ResponseModel> showMessagesInGroup(
-      ReceiverType receiverType, int senderId, int receiverId);
+      ReceiverType receiverType, int? senderId, int receiverId);
   Future<ResponseModel> sendMessages(
-      ContentModel contentModel, List<String>? receivingUsers, FileModel? file);
+      ContentModel contentModel, FileModel? file);
 }
 
 class ChatDataSourceImpl extends ChatDataSource {
@@ -63,12 +66,13 @@ class ChatDataSourceImpl extends ChatDataSource {
 
   @override
   Future<ResponseModel> showMessagesInGroup(
-      ReceiverType receiverType, int senderId, int receiverId) async {
+      ReceiverType receiverType, int? senderId, int receiverId) async {
     ResponseModel response = await api.get(
       MessageRouting.showMessages,
       queries: [
         QueryModel(name: "category_id", value: "330"),
-        QueryModel(name: "sender_id", value: senderId.toString()),
+        if (senderId != null)
+          QueryModel(name: "sender_id", value: senderId.toString()),
         QueryModel(name: "receiver_id", value: receiverId.toString()),
         QueryModel(name: "receiver_type", value: receiverType.name.toString()),
       ],
@@ -85,23 +89,20 @@ class ChatDataSourceImpl extends ChatDataSource {
   @override
   Future<ResponseModel> sendMessages(
     ContentModel contentModel,
-    List<String>? receivingUsers,
     FileModel? file,
   ) async {
     var data = FormData.fromMap({
       if (file != null)
-        'files': [
-          await MultipartFile.fromFile(file.filePath!, filename: file.fileName)
-        ],
+        'file': await MultipartFile.fromFile(file.filePath!,
+            filename: file.fileName),
       'category_id': contentModel.categoryId,
       'sender_id': contentModel.senderId,
       'receiver_id': contentModel.receiverId,
       'receiver_type': contentModel.receiverType.toString(),
-      if (contentModel.receiverType == ReceiverType.group)
-        'receiver_users': receivingUsers,
       'message_text': contentModel.messageText,
       'message_type': contentModel.contentType.toString()
     });
+
     ResponseModel response = await api.post(
       MessageRouting.sendMessages,
       body: data,

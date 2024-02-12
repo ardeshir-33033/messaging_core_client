@@ -75,9 +75,9 @@ class _ChatPageState extends State<ChatPage>
   @override
   void initState() {
     voiceController.initialRecording();
-    controller.getMessages(
-        widget.chat.getReceiverType(), AppGlobalData.userId, widget.chat.id!);
     controller.setCurrentChat(widget.chat);
+
+    controller.getMessages();
     controller.joinRoom();
     scrollNotificationController = StreamController();
     _overlayController = OverlayController();

@@ -18,11 +18,9 @@ class GetMessagesUseCase
 
 class GetMessagesParams {
   ReceiverType receiverType;
-  int senderId;
+  int? senderId;
   int receiverId;
 
   GetMessagesParams(
-      {required this.receiverType,
-      required this.receiverId,
-      required this.senderId});
+      {required this.receiverType, required this.receiverId, this.senderId});
 }
