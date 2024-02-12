@@ -29,6 +29,7 @@ class ChatBox extends StatefulWidget {
   final Function() onReplyTap;
   final OverlayController overlayController;
   final ContactProfile? opponentProfile;
+  final Function(Offset globalPosition, Widget? target) onTap;
 
   const ChatBox({
     Key? key,
@@ -38,6 +39,7 @@ class ChatBox extends StatefulWidget {
     required this.isFirstSenderContent,
     required this.isLastSenderContent,
     required this.overlayController,
+    required this.onTap,
     this.opponentProfile,
   }) : super(key: key);
 
@@ -49,6 +51,7 @@ class ChatBoxState extends State<ChatBox> {
   late String userId;
   late bool isMine;
   bool _isDownloadedImage = false;
+  Offset? position;
 
   @override
   void didUpdateWidget(covariant ChatBox oldWidget) {
@@ -64,10 +67,17 @@ class ChatBoxState extends State<ChatBox> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final RenderBox box = key.currentContext?.findRenderObject() as RenderBox;
+      position = box.localToGlobal(Offset.zero);
+      setState(() {});
+    });
     // userId = getIt<UserCertStorage>().userId ?? "";
     isMine = mine(widget.content);
     updateIsDownloadImage();
   }
+
+  final GlobalKey key = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +94,10 @@ class ChatBoxState extends State<ChatBox> {
       onForward: _onForward,
       onReply: _onReply,
       onReport: _onReport,
+
       // onSaveImage: _onSaveImage,
       isMine: isMine,
+      offset: position,
       child: InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
@@ -94,10 +106,12 @@ class ChatBoxState extends State<ChatBox> {
             return;
           }
           dismissKeyboard();
-          widget.overlayController
-              .openOverlay(tag: widget.content.contentId.toString());
+          widget.overlayController.openOverlay(
+            tag: widget.content.contentId.toString(),
+          );
         },
         onTap: () {
+          // widget.onTap(position!, widget);
           FocusManager.instance.primaryFocus?.unfocus();
         },
         child: Builder(builder: (context) {
@@ -183,6 +197,7 @@ class ChatBoxState extends State<ChatBox> {
                                 ),
                               ),
                             Container(
+                              key: key,
                               padding: const EdgeInsets.all(8),
                               constraints: BoxConstraints(
                                 maxWidth: context.widthPercentage(80),
@@ -394,15 +409,12 @@ class ChatBoxState extends State<ChatBox> {
   }
 
   Future<void> _onCopy() async {
-    copyToClipboard(
-        (widget.content.contentPayload as TextContentPayloadModel).text);
+    copyToClipboard(widget.content.messageText);
     _hideBox();
   }
 
   Future<void> _onReply() async {
     _hideBox();
-    // currentChannelProvider.repliedContent = widget.content;
-    // currentChannelProvider.notifyListeners();
   }
 
   Future<void> _onReport() async {

@@ -14,6 +14,162 @@ import 'package:messaging_core/l10n/l10n.dart';
 import 'package:messaging_core/locator.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+// void main() {
+//   runApp(const MyApp2());
+// }
+
+class MyApp2 extends StatelessWidget {
+  const MyApp2({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+  final String title;
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  bool showOverlay = false;
+  Offset? targetPos;
+  Widget? target;
+
+  _showOverlay(Offset position, Widget? target) {
+    setState(() {
+      targetPos = position;
+      this.target = target;
+      showOverlay = true;
+    });
+  }
+
+  _hideOverlay() {
+    setState(() {
+      showOverlay = false;
+      targetPos = null;
+      target = null;
+    });
+  }
+
+  final double padding = 8;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return Message(
+                        onTap: _showOverlay,
+                        padding: padding,
+                      );
+                    }),
+              ),
+
+
+            ],
+          ),
+          ///Mimics the overlay
+          if (showOverlay)
+            GestureDetector(
+              onTap: _hideOverlay,
+              child: Container(
+                color: Colors.black54,
+              ),
+            ),
+          if (showOverlay)
+            Positioned(
+                top: (targetPos?.dy)! - 70,
+                left: targetPos?.dx,
+                child: Container(
+                  //Your Reaction widget
+                  height: 60,
+                  width: 120,
+                  color: Colors.blue,
+                )),
+          if (showOverlay)
+            Positioned(
+                top: (targetPos?.dy)! - padding,
+                left: (targetPos?.dx)! - padding,
+                child: target ?? const SizedBox()),
+          if (showOverlay)
+            Positioned(
+                top: (targetPos?.dy)! + 50,
+                left: targetPos?.dx,
+                child: Container(
+                  //Your action widget
+                  height: 60,
+                  width: 120,
+                  color: Colors.red,
+                ))
+        ],
+      ),
+    );
+  }
+}
+
+class Message extends StatefulWidget {
+  final double padding;
+  final Function(Offset globalPosition, Widget? target) onTap;
+
+  const Message({super.key, required this.onTap, required this.padding});
+
+  @override
+  State<Message> createState() => _MessageState();
+}
+
+class _MessageState extends State<Message> {
+  Offset? position;
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final RenderBox box = key.currentContext?.findRenderObject() as RenderBox;
+      position = box.localToGlobal(Offset.zero);
+      setState(() {});
+    });
+    super.initState();
+  }
+
+  final GlobalKey key = GlobalKey();
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(widget.padding),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        key: key,
+        onTap: position != null
+            ? () {
+                widget.onTap(position!, widget);
+              }
+            : null,
+        child: Container(
+          color: Colors.white,
+          padding: const EdgeInsets.all(10),
+          child: const Text("Hello"),
+        ),
+      ),
+    );
+  }
+}
+
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 void main() async {

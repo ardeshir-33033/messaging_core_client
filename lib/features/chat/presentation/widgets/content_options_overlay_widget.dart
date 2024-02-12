@@ -19,12 +19,17 @@ class ContentOptionsOverlayWidget extends StatefulWidget {
   final VoidCallback? onForward;
   final VoidCallback? onResend;
   final VoidCallback? onSaveFile;
+  final VoidCallback? onStar;
+  final VoidCallback? onShare;
+  final VoidCallback? onPin;
+  final VoidCallback? onEdit;
   final MessageStatus messageStatus;
   final ContentTypeEnum contentType;
   final String contentId;
   final OverlayController overlayController;
   final Widget child;
   final bool? isMine;
+  final Offset? offset;
 
   const ContentOptionsOverlayWidget({
     Key? key,
@@ -43,6 +48,11 @@ class ContentOptionsOverlayWidget extends StatefulWidget {
     this.onResend,
     this.isMine,
     this.onReport,
+    this.onStar,
+    this.onPin,
+    this.onShare,
+    this.onEdit,
+    this.offset,
   }) : super(key: key);
 
   @override
@@ -58,6 +68,7 @@ class _ContentOptionsOverlayWidgetState
   OverlayState? overlayState;
   OverlayEntry? overlayEntry;
   List<OptionModel> options = [];
+  List<OptionModel> secondOptions = [];
 
   @override
   void initState() {
@@ -112,17 +123,15 @@ class _ContentOptionsOverlayWidgetState
   void _initialOptionsList() {
     options = [
       OptionModel(
-        title: tr(context).resend,
-        icon: Icons.refresh,
-        onTap: widget.onResend,
-        visible: widget.onResend != null &&
-            (widget.messageStatus == MessageStatus.fail ||
-                widget.messageStatus == MessageStatus.pendingFail),
-      ),
-      OptionModel(
         title: tr(context).reply,
         icon: Assets.reply,
         onTap: widget.onReply,
+        visible: true,
+      ),
+      OptionModel(
+        title: tr(context).forward,
+        icon: Assets.forward,
+        onTap: widget.onForward,
         visible: true,
       ),
       OptionModel(
@@ -133,9 +142,9 @@ class _ContentOptionsOverlayWidgetState
             widget.contentType == ContentTypeEnum.linkableText,
       ),
       OptionModel(
-        title: tr(context).forward,
-        icon: Assets.forward,
-        onTap: widget.onForward,
+        title: tr(context).star,
+        icon: Assets.star,
+        onTap: widget.onStar,
         visible: true,
       ),
       OptionModel(
@@ -145,16 +154,36 @@ class _ContentOptionsOverlayWidgetState
         onTap: widget.onReport,
         visible: !(widget.isMine ?? true),
       ),
+    ];
+    secondOptions = [
+      OptionModel(
+        title: tr(context).edit,
+        icon: Assets.edit,
+        onTap: widget.onEdit,
+        visible: true,
+      ),
+      OptionModel(
+        title: tr(context).pin,
+        icon: Assets.pin,
+        onTap: widget.onPin,
+        visible: true,
+      ),
+      OptionModel(
+        title: tr(context).share,
+        icon: Assets.share,
+        onTap: widget.onShare,
+        visible: true,
+      ),
       OptionModel(
         title: tr(context).delete,
         icon: Assets.trash,
-        textColor: AppColors.primaryRed,
         onTap: widget.onDeleteLocal,
-        visible: widget.onDeleteLocal != null &&
-            (widget.messageStatus == MessageStatus.sent),
+        textColor: AppColors.primaryRed,
+        visible: true,
       ),
     ];
     options.removeWhere((element) => element.visible == false);
+    secondOptions.removeWhere((element) => element.visible == false);
   }
 
   void _showOverlay(BuildContext context) async {
@@ -175,7 +204,7 @@ class _ContentOptionsOverlayWidgetState
               ),
             ),
             Positioned(
-              top: _overlayOffset.dy,
+              top: widget.offset?.dy ?? _overlayOffset.dy,
               right: _overlayOffset.dx,
               child: SizeTransition(
                 sizeFactor: _sizeAnimation,
@@ -192,57 +221,85 @@ class _ContentOptionsOverlayWidgetState
                       borderRadius: BorderRadius.circular(16),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Column(
-                          children: List.generate(
-                            options.length,
-                            (index) => Expanded(
-                              child: InkWell(
-                                onTap: options[index].onTap,
-                                child: Column(
-                                  children: [
-                                    Expanded(
+                        child: Column(children: [
+                          Expanded(
+                            child: ListView.builder(
+                                itemCount: options.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: options[index].onTap,
+                                    child: SizedBox(
+                                      width: 60,
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 4.0, horizontal: 8),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                        child: Column(
                                           children: [
+                                            IconWidget(
+                                              icon: options[index].icon,
+                                              size: 25,
+                                            ),
                                             Text(
                                               options[index].title,
                                               style: AppTextStyles.overline2
                                                   .copyWith(
+                                                      fontSize: 11,
                                                       color: options[index]
                                                               .textColor ??
                                                           AppColors
                                                               .primary3[800]),
                                             ),
-                                            IconWidget(
-                                              icon: options[index].icon,
-                                              boxShape: BoxShape.circle,
-                                              padding: 1,
-                                              height: 18,
-                                              width: 18,
-                                              backgroundColor:
-                                                  const Color(0xffF3F4F8),
-                                            )
                                           ],
                                         ),
                                       ),
                                     ),
-                                    Visibility(
-                                      visible: index != options.length - 1,
-                                      child: Divider(
-                                        height: 0,
-                                        color: AppColors.primary3[200],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                  );
+                                }),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 3, horizontal: 3),
+                            child: Divider(
+                              color: Colors.grey[200],
                             ),
                           ),
-                        ),
+                          Expanded(
+                            child: ListView.builder(
+                                itemCount: secondOptions.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index2) {
+                                  return InkWell(
+                                    onTap: secondOptions[index2].onTap,
+                                    child: SizedBox(
+                                      width: 60,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 4.0, horizontal: 8),
+                                        child: Column(
+                                          children: [
+                                            IconWidget(
+                                              icon: secondOptions[index2].icon,
+                                              size: 25,
+                                            ),
+                                            Text(
+                                              secondOptions[index2].title,
+                                              style: AppTextStyles.overline2
+                                                  .copyWith(
+                                                      color: secondOptions[
+                                                                  index2]
+                                                              .textColor ??
+                                                          AppColors
+                                                              .primary3[800]),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          ),
+                        ]),
                       ),
                     ),
                   ),
@@ -273,9 +330,9 @@ class _ContentOptionsOverlayWidgetState
     return Offset(dx, dy);
   }
 
-  double get _overlayHeight => options.length * 50;
+  double get _overlayHeight => 150;
 
-  double get _overlayWidth => 180;
+  double get _overlayWidth => options.length * 60;
 }
 
 class OptionModel {

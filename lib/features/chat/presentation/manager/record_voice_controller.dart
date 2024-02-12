@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:messaging_core/core/enums/file_type.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/core/utils/utils.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/voice_content_widget.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 
@@ -16,15 +18,19 @@ class RecordVoiceController extends GetxController {
   String? recordingVoiceId;
   int? recordedFileDuration;
   late ValueNotifier<int> milliSeconds;
+  late ValueNotifier<AudioState> audioStateNotifier;
+  late ValueNotifier<CurrentPlayingAudio?> currentPlayingAudio =
+      ValueNotifier(null);
   String? recordedFilePath;
   Record record = Record();
 
-  final player = AudioPlayer();
+  AudioPlayer player = AudioPlayer();
 
   initialRecording() {
     milliSeconds = ValueNotifier(0);
     recordingState = RecordStateEnum.stop;
-    // audioStateNotifier = ValueNotifier(AudioState.paused);
+    audioStateNotifier = ValueNotifier(AudioState.paused);
+
     // listenToPlayerState();
     record = Record();
     record.onStateChanged().listen(
@@ -133,13 +139,44 @@ class RecordVoiceController extends GetxController {
     await player.play();
   }
 
+  Future<void> playVoiceMessage(
+    CurrentPlayingAudio playingAudio, {
+    int? seek,
+    FileType fileType = FileType.audio,
+  }) async {
+    if (currentPlayingAudio.value != playingAudio) {
+      await player.seek(Duration.zero);
+      await player.pause();
+      final file = await getCachedFile(playingAudio.audioKey, fileType);
+      if (file == null) return;
+      currentPlayingAudio.value = playingAudio;
+
+      await player.setFilePath(
+        file.path,
+        initialPosition: Duration(milliseconds: seek ?? 0),
+      );
+      audioStateNotifier.value = AudioState.playing;
+
+      await player.play();
+    } else {
+      if (player.playing) {
+        pausePlayer();
+        audioStateNotifier.value = AudioState.paused;
+      } else {
+        resumePlayer();
+        audioStateNotifier.value = AudioState.playing;
+      }
+    }
+  }
+
   Future<void> stopPlayer() async {
     await player.stop();
     await player.seek(Duration.zero);
-    // audioStateNotifier = AudioState.stopped;
+    audioStateNotifier.value = AudioState.stopped;
   }
 
   Future<void> pausePlayer() async {
+    audioStateNotifier.value = AudioState.paused;
     await player.pause();
   }
 
@@ -148,6 +185,7 @@ class RecordVoiceController extends GetxController {
   }
 
   Future<void> resumePlayer() async {
+    audioStateNotifier.value = AudioState.playing;
     await player.play();
   }
 }
@@ -168,5 +206,23 @@ enum RecordStateEnum {
       RecordState.stop => RecordStateEnum.stop,
       RecordState.record => RecordStateEnum.record,
     };
+  }
+}
+
+class CurrentPlayingAudio {
+  final String audioKey;
+  // final String title;
+
+  const CurrentPlayingAudio({
+    required this.audioKey,
+    // required this.title,
+  });
+
+  @override
+  int get hashCode => audioKey.hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    return audioKey == (other as CurrentPlayingAudio).audioKey;
   }
 }

@@ -12,7 +12,7 @@ import 'package:messaging_core/core/utils/utils.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:path_provider/path_provider.dart';
 
-abstract class MediaHandler {
+ class MediaHandler {
   StreamController<MediaProgressData> progressController =
       StreamController.broadcast();
 

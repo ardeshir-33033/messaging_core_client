@@ -14,7 +14,7 @@ class Assets {
   /// -----------------------Icons Assets -------------------------
   static const String _baseIconPath = "assets/icons";
   static const String copy = "$_baseIconPath/copy.svg";
-  static const String edit = "$_baseIconPath/edit_2.svg";
+  static const String edit = "$_baseIconPath/edit-2.svg";
   static const String forward = "$_baseIconPath/forward.svg";
   static const String pin = "$_baseIconPath/pin.svg";
   static const String report = "$_baseIconPath/report.svg";

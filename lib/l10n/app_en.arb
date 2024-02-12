@@ -47,5 +47,8 @@
   "add": "Add",
   "edit": "Edit",
   "users": "Users",
-  "video": "Video"
+  "video": "Video",
+  "star": "Star",
+  "pin": "Pin",
+  "share": "Share"
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
+import 'package:messaging_core/core/enums/message_status.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/contact_profile_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
@@ -10,6 +11,7 @@ import 'package:messaging_core/features/chat/presentation/widgets/file_content_w
 import 'package:messaging_core/features/chat/presentation/widgets/image_content_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/text_content_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/video_content_widget.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/voice_content_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ChatBoxContent extends StatelessWidget {
@@ -45,15 +47,14 @@ class ChatBoxContent extends StatelessWidget {
           // imageWidth: payload.width,
           // imageHeight: payload.height,
         );
-      // case ContentTypeEnum.voice:
-      //   var payload = contentModel.contentPayload as VoiceContentPayloadModel;
-      //   return VoiceContentWidget(
-      //     contentModel: contentModel,
-      //     contentId: contentModel.contentId,
-      //     contentPayload: payload,
-      //     isUploading: contentModel.status == MessageStatus.pending,
-      //     senderName: isMine ? tr(context).you : senderName,
-      //   );
+      case ContentTypeEnum.voice:
+        // var payload = contentModel.contentPayload as VoiceContentPayloadModel;
+        return VoiceContentWidget(
+          contentModel: contentModel,
+          contentId: contentModel.contentId.toString(),
+          isUploading: contentModel.status == MessageStatus.pending,
+          // senderName: isMine ? tr(context).you : senderName,
+        );
       // case ContentTypeEnum.transaction:
       //   return TransactionContentWidget(
       //     transactionPayload:
