@@ -119,7 +119,6 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                   },
                   onSendTextMessage: () {
                     controller.sendTextMessage(
-                        widget.chat.getReceiverType(),
                         widget.textController.text,
                         widget.chat.id!,
                         null,

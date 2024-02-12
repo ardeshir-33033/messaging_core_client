@@ -10,6 +10,7 @@ import 'package:dio/dio.dart';
 import 'package:messaging_core/app/api_routing/category_user/category_routing.dart';
 import 'package:messaging_core/app/api_routing/chat_group/chat_group_routing.dart';
 import 'package:messaging_core/app/api_routing/message/message_routing.dart';
+import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
@@ -37,7 +38,8 @@ class ChatDataSourceImpl extends ChatDataSource {
       CategoryRouting.usersInCategory,
       queries: [
         QueryModel(name: "category_id", value: "330"),
-        QueryModel(name: 'login_user_id', value: '391')
+        QueryModel(
+            name: 'login_user_id', value: AppGlobalData.userId.toString())
       ],
       headerEnum: HeaderEnum.bearerHeaderEnum,
       responseEnum: ResponseEnum.responseModelEnum,

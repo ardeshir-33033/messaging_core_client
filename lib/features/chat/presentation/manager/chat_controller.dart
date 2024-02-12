@@ -16,6 +16,7 @@ import 'package:messaging_core/features/chat/domain/entities/group_users_model.d
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_messages_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/send_messags_use_case.dart';
+import 'package:messaging_core/features/chat/presentation/pages/chat_page.dart';
 
 class ChatController extends GetxController {
   final GetAllChatsUseCase getAllChatsUseCase;
@@ -67,8 +68,10 @@ class ChatController extends GetxController {
 
   getMessages() async {
     try {
-      messagesStatus.loading();
-      update(["messages"]);
+      Future.delayed(const Duration(milliseconds: 100), () {
+        messagesStatus.loading();
+        update(["messages"]);
+      });
 
       ResponseModel response = await getMessagesUseCase(GetMessagesParams(
           receiverType: _currentChat!.getReceiverType(),
@@ -89,14 +92,14 @@ class ChatController extends GetxController {
     }
   }
 
-  sendTextMessage(ReceiverType receiverType, String text, int receiverId,
-      ContentTypeEnum? contentType, FileModel? file) async {
+  sendTextMessage(String text, int receiverId, ContentTypeEnum? contentType,
+      FileModel? file) async {
     try {
       int uniqueId = generateUniqueId();
       ContentModel content = ContentModel(
           contentId: uniqueId,
           senderId: AppGlobalData.userId,
-          receiverType: receiverType,
+          receiverType: _currentChat!.getReceiverType(),
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
           contentType: contentType ?? ContentTypeEnum.text,
@@ -108,7 +111,7 @@ class ChatController extends GetxController {
           status: MessageStatus.sending);
       messages.insert(0, content);
       update(["messages"]);
-      //
+
       ResponseModel response = await sendMessageUsecase(SendMessagesParams(
         contentModel: content,
         file: file,

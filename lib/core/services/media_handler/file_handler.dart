@@ -39,7 +39,6 @@ class FileHandler extends MediaHandler {
     );
     final ChatController controller = locator<ChatController>();
     controller.sendTextMessage(
-      chat.getReceiverType(),
       result.files.single.name,
       chat.id!,
       ContentTypeEnum.file,
@@ -64,7 +63,6 @@ class FileHandler extends MediaHandler {
 
     final ChatController controller = locator<ChatController>();
     controller.sendTextMessage(
-      chat.getReceiverType(),
       result.files.single.name,
       chat.id!,
       ContentTypeEnum.file,
@@ -96,7 +94,6 @@ class FileHandler extends MediaHandler {
 
     final ChatController controller = locator<ChatController>();
     controller.sendTextMessage(
-      chat.getReceiverType(),
       result.files.single.name,
       chat.id!,
       ContentTypeEnum.file,

@@ -24,9 +24,10 @@ import 'package:messaging_core/locator.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({super.key, required this.chat});
+  ChatPage({super.key, required this.chat, this.isForwarded});
 
   final ChatParentClass chat;
+  bool? isForwarded = false;
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -152,7 +153,7 @@ class _ChatPageState extends State<ChatPage>
                                                                 controller
                                                                     .messages[
                                                                         index]
-                                                                    .updatedAt,
+                                                                    .createdAt,
                                                             showData: index ==
                                                                     controller
                                                                             .messages
@@ -162,12 +163,12 @@ class _ChatPageState extends State<ChatPage>
                                                                 : (controller
                                                                     .messages[
                                                                         index]
-                                                                    .updatedAt
+                                                                    .createdAt
                                                                     .isNotSameDateAs(controller
                                                                         .messages[
                                                                             index +
                                                                                 1]
-                                                                        .updatedAt)),
+                                                                        .createdAt)),
                                                           ),
                                                           Container(
                                                             width:

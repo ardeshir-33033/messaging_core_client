@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:messaging_core/app/component/base_bottom_sheets.dart';
 import 'package:messaging_core/app/component/dialog_box.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
@@ -19,6 +20,7 @@ import 'package:messaging_core/features/chat/domain/entities/text_content_payloa
 import 'package:messaging_core/features/chat/presentation/widgets/chat_box_content.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/content_options_overlay_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/message_status_widget.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/sheets/forward_content_sheet.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/tag_widget.dart';
 
 class ChatBox extends StatefulWidget {
@@ -471,12 +473,12 @@ class ChatBoxState extends State<ChatBox> {
 
   Future<void> _onForward() async {
     _hideBox();
-    // CustomBottomSheet.showSimpleSheet(
-    //   context,
-    //   (context) => ForwardContentSheet(
-    //     contentModel: widget.content,
-    //   ),
-    // );
+    CustomBottomSheet.showSimpleSheet(
+      context,
+      (context) => ForwardContentSheet(
+        contentModel: widget.content,
+      ),
+    );
   }
 
   // Future<void> _onSaveImage() async {

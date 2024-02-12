@@ -36,7 +36,6 @@ class AttachFileBottomSheet extends StatelessWidget {
                   if (file != null) {
                     final ChatController controller = locator<ChatController>();
                     controller.sendTextMessage(
-                      chat.getReceiverType(),
                       "",
                       chat.id!,
                       ContentTypeEnum.image,

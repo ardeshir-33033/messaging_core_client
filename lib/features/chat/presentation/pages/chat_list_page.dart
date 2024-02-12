@@ -51,48 +51,42 @@ class _ChatListPageState extends State<ChatListPage> {
           horizontal: 15,
         ),
         child: SafeArea(
-            child:
-                // ListView.builder(
-                //     itemCount: controller.usersAndGroupsInCategory.users.length +
-                //         controller.usersAndGroupsInCategory.groups.length,
-                //     itemBuilder: (context, index) {})
-                GetBuilder<ChatController>(
-                    id: "allChats",
-                    builder: (_) {
-                      if (controller.chatsStatus.status == Status.loading) {
-                        return ListView.separated(
-                          itemBuilder: (context, index) =>
-                              const ConversationSkeletonWidget(),
-                          itemCount: 15,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          separatorBuilder: (context, index) => Divider(
-                            height: 15,
-                            color: Colors.grey[100],
-                          ),
-                        );
-                      } else {
-                        return PaginationWidget<ChatParentClass>(
-                          itemBuilder: (index, item) {
-                            return ChatListItem(chat: item);
-                          },
-                          items: controller.chats,
-                          separatorBuilder: (index) => Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Divider(
-                              height: 1,
-                              color: Colors.grey[100],
-                            ),
-                          ),
-                          onRefresh: (limit, offset) async {
-                            // await controller.getAllChats();
-                          },
-                          onLoading: (limit, offset) async {
-                            // await channelProvider.setChannels(limit, offset);
-                          },
-                        );
-                      }
-                    })),
+            child: GetBuilder<ChatController>(
+                id: "allChats",
+                builder: (_) {
+                  if (controller.chatsStatus.status == Status.loading) {
+                    return ListView.separated(
+                      itemBuilder: (context, index) =>
+                          const ConversationSkeletonWidget(),
+                      itemCount: 15,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      separatorBuilder: (context, index) => Divider(
+                        height: 15,
+                        color: Colors.grey[100],
+                      ),
+                    );
+                  } else {
+                    return PaginationWidget<ChatParentClass>(
+                      itemBuilder: (index, item) {
+                        return ChatListItem(chat: item);
+                      },
+                      items: controller.chats,
+                      separatorBuilder: (index) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Divider(
+                          height: 1,
+                          color: Colors.grey[100],
+                        ),
+                      ),
+                      onRefresh: (limit, offset) async {
+                        // await controller.getAllChats();
+                      },
+                      onLoading: (limit, offset) async {
+                        // await channelProvider.setChannels(limit, offset);
+                      },
+                    );
+                  }
+                })),
       ),
     );
   }

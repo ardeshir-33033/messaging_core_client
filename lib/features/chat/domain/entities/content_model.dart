@@ -94,8 +94,8 @@ class ContentModel {
     return ContentModel(
         contentId: json['id'],
         senderId: json['sender_id'],
-        createdAt: DateTime.parse(json['created_at']),
-        updatedAt: DateTime.parse(json['updated_at']),
+        createdAt: DateTime.parse(json['created_at']).toLocal(),
+        updatedAt: DateTime.parse(json['updated_at']).toLocal(),
         contentType: contentType,
         contentPayload: contentPayload,
         status: MessageStatus.sent,
@@ -153,8 +153,8 @@ class ContentModel {
     return ContentModel(
         contentId: json['id'],
         senderId: int.parse(json['sender_id']),
-        createdAt: DateTime.parse(json['created_at']),
-        updatedAt: DateTime.parse(json['updated_at']),
+        createdAt: DateTime.parse(json['created_at']).toLocal(),
+        updatedAt: DateTime.parse(json['updated_at']).toLocal(),
         contentType: contentType,
         contentPayload: contentPayload,
         status: MessageStatus.sent,
