@@ -44,6 +44,7 @@ class _VoiceContentWidgetState extends State<VoiceContentWidget> {
   bool _isCached = false;
   bool _isDownloading = false;
   double currentPositionInMS = 0;
+  int durationInMilliSeconds = 60000;
   RecordVoiceController voiceController = Get.find<RecordVoiceController>();
 
   @override
@@ -114,6 +115,9 @@ class _VoiceContentWidgetState extends State<VoiceContentWidget> {
       ),
       seek: currentPositionInMS.toInt(),
     );
+    durationInMilliSeconds =
+        voiceController.player.duration?.inMilliseconds ?? 60000;
+    setState(() {});
   }
 
   Future<void> pauseVoice() async {
@@ -138,7 +142,7 @@ class _VoiceContentWidgetState extends State<VoiceContentWidget> {
   }
 
   int get durationInSeconds {
-    return 60000 ~/ 1000;
+    return durationInMilliSeconds ~/ 1000;
     // widget.contentPayload.durationInMilliSeconds ?? 0 ~/ 1000;
   }
 

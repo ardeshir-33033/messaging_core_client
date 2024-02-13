@@ -4,10 +4,14 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/enums/file_type.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/core/utils/utils.dart';
+import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
+import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/voice_content_widget.dart';
+import 'package:messaging_core/locator.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 
@@ -110,7 +114,7 @@ class RecordVoiceController extends GetxController {
     update();
   }
 
-  Future<void> stopRecording(String channelId) async {
+  Future<void> stopRecording(ChatParentClass chat) async {
     final voicePath = await record.stop();
     if (voicePath == null ||
         milliSeconds.value < minimumRecordingDurationMilliSeconds) return;
@@ -120,6 +124,10 @@ class RecordVoiceController extends GetxController {
       filePath: voicePath,
     );
     recordedFileDuration = milliSeconds.value;
+    final ChatController controller = locator<ChatController>();
+
+    controller.sendTextMessage(voicePath.substring(voicePath.length - 7),
+        chat.id!, ContentTypeEnum.voice, fileModel);
     // await sendMedia(channelId, fileModel);
   }
 
@@ -155,6 +163,7 @@ class RecordVoiceController extends GetxController {
         file.path,
         initialPosition: Duration(milliseconds: seek ?? 0),
       );
+
       audioStateNotifier.value = AudioState.playing;
 
       await player.play();

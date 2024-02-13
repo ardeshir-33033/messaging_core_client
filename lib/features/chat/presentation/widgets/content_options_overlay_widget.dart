@@ -204,7 +204,7 @@ class _ContentOptionsOverlayWidgetState
               ),
             ),
             Positioned(
-              top: widget.offset?.dy ?? _overlayOffset.dy,
+              top: _overlayOffset.dy,
               right: _overlayOffset.dx,
               child: SizeTransition(
                 sizeFactor: _sizeAnimation,
@@ -325,7 +325,11 @@ class _ContentOptionsOverlayWidgetState
   }
 
   Offset get _overlayOffset {
-    double dy = (context.screenHeight - _overlayHeight) / 2;
+    double dy = widget.offset!.dy;
+    if (context.screenHeight - widget.offset!.dy < 120) {
+      dy = widget.offset!.dy - 230;
+    }
+    // double dy = (context.screenHeight - _overlayHeight) / 2;
     double dx = (context.screenWidth - _overlayWidth) / 2;
     return Offset(dx, dy);
   }

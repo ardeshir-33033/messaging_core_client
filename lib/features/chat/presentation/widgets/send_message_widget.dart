@@ -57,8 +57,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                         voiceController.cancelRecording();
                       },
                       onSendVoiceMessage: () {
-                        voiceController
-                            .stopRecording(widget.chat.id.toString());
+                        voiceController.stopRecording(widget.chat);
                       },
                       recordState: voiceController.recordingState,
                     ),
@@ -115,14 +114,11 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                     voiceController.lockRecord();
                   },
                   onSendVoiceMessage: () {
-                    voiceController.stopRecording(widget.chat.id.toString());
+                    voiceController.stopRecording(widget.chat);
                   },
                   onSendTextMessage: () {
-                    controller.sendTextMessage(
-                        widget.textController.text,
-                        widget.chat.id!,
-                        null,
-                        null);
+                    controller.sendTextMessage(widget.textController.text,
+                        widget.chat.id!, null, null);
                     widget.textController.text = "";
 
                     // widget.onSendMessage.call();
