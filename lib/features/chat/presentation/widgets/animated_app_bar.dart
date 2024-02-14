@@ -43,7 +43,9 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
                         color: Colors.white),
                   ),
                   IconWidget(
-                    icon: Icons.keyboard_arrow_down_outlined,
+                    icon: openedFullMenu
+                        ? Icons.keyboard_arrow_up_outlined
+                        : Icons.keyboard_arrow_down_outlined,
                     iconColor: Colors.white,
                     size: 25,
                     onPressed: () {

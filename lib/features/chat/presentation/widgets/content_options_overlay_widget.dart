@@ -184,6 +184,7 @@ class _ContentOptionsOverlayWidgetState
     ];
     options.removeWhere((element) => element.visible == false);
     secondOptions.removeWhere((element) => element.visible == false);
+    print(secondOptions);
   }
 
   void _showOverlay(BuildContext context) async {
@@ -325,18 +326,24 @@ class _ContentOptionsOverlayWidgetState
   }
 
   Offset get _overlayOffset {
-    double dy = widget.offset!.dy;
-    if (context.screenHeight - widget.offset!.dy < 120) {
-      dy = widget.offset!.dy - 230;
-    }
-    // double dy = (context.screenHeight - _overlayHeight) / 2;
+    // double dy = widget.offset!.dy;
+    // if (context.screenHeight - widget.offset!.dy < 120) {
+    //   dy = widget.offset!.dy - 230;
+    // }
+    double dy = (context.screenHeight - _overlayHeight) / 2;
     double dx = (context.screenWidth - _overlayWidth) / 2;
     return Offset(dx, dy);
   }
 
   double get _overlayHeight => 150;
 
-  double get _overlayWidth => options.length * 60;
+  double get _overlayWidth {
+    if (secondOptions.length > options.length) {
+      return secondOptions.length * 60;
+    } else {
+      return options.length * 60;
+    }
+  }
 }
 
 class OptionModel {

@@ -31,9 +31,12 @@ class AttachFileBottomSheet extends StatelessWidget {
             AttachDataItem(
                 title: tr(context).gallery,
                 onPressed: () async {
+                  final navigator = Navigator.of(context);
+
                   FileModel? file = await ImageHandler()
                       .selectImageFile(source: ImageSource.gallery);
                   if (file != null) {
+                    navigator.pop();
                     final ChatController controller = locator<ChatController>();
                     controller.sendTextMessage(
                       "",
@@ -47,22 +50,31 @@ class AttachFileBottomSheet extends StatelessWidget {
             AttachDataItem(
                 title: tr(context).file,
                 onPressed: () {
+                  final navigator = Navigator.of(context);
+                  navigator.pop();
                   FileHandler().selectAndSendFile(chat);
                 },
                 icon: Assets.file),
             AttachDataItem(
                 title: tr(context).camera,
                 onPressed: () {
+                  final navigator = Navigator.of(context);
+                  navigator.pop();
                   ImageHandler().selectImageFile(source: ImageSource.camera);
                 },
                 icon: Assets.camera),
             AttachDataItem(
                 title: tr(context).location,
-                onPressed: () {},
+                onPressed: () {
+                  final navigator = Navigator.of(context);
+                  navigator.pop();
+                },
                 icon: Assets.location),
             AttachDataItem(
                 title: tr(context).music,
                 onPressed: () {
+                  final navigator = Navigator.of(context);
+                  navigator.pop();
                   FileHandler().selectMusicAndSendFile(chat);
                 },
                 icon: Assets.music),
@@ -70,16 +82,26 @@ class AttachFileBottomSheet extends StatelessWidget {
                 title: tr(context).draw, onPressed: () {}, icon: Assets.draw),
             AttachDataItem(
                 title: tr(context).contact,
-                onPressed: () {},
+                onPressed: () {
+                  final navigator = Navigator.of(context);
+                  navigator.pop();
+                },
                 icon: Assets.contact),
             AttachDataItem(
                 title: tr(context).document,
                 onPressed: () {
+                  final navigator = Navigator.of(context);
+                  navigator.pop();
                   FileHandler().selectDocumentAndSendFile(chat);
                 },
                 icon: Assets.document),
             AttachDataItem(
-                title: tr(context).poll, onPressed: () {}, icon: Assets.poll),
+                title: tr(context).poll,
+                onPressed: () {
+                  final navigator = Navigator.of(context);
+                  navigator.pop();
+                },
+                icon: Assets.poll),
           ],
         ),
         const SizedBox(height: 15),
