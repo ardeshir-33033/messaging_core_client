@@ -256,6 +256,9 @@ class _ChatPageState extends State<ChatPage>
                                 SendMessageWidget(
                                   textController: _sendTextController,
                                   chat: widget.chat,
+                                  onUpdateScroll: () {
+                                    updateScrollToLastMessage();
+                                  },
                                 ),
                                 const SizedBox(height: 10),
                               ],
@@ -320,6 +323,13 @@ class _ChatPageState extends State<ChatPage>
     setState(() {});
     _scrollToSeqNo(replyContent.contentId);
     await _replyToAnimationController.forward(from: 0);
+  }
+
+  void updateScrollToLastMessage() {
+    if (_itemPositionsListener.itemPositions.value.isNotEmpty) {
+      _itemScrollController.scrollTo(
+          index: 0, duration: kThemeAnimationDuration);
+    }
   }
 
   _scrollToSeqNo(int seqNo, {bool ignoreScrollToFirst = false}) async {

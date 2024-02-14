@@ -16,10 +16,14 @@ import 'package:messaging_core/locator.dart';
 
 class SendMessageWidget extends StatefulWidget {
   const SendMessageWidget(
-      {super.key, required this.textController, required this.chat});
+      {super.key,
+      required this.textController,
+      required this.chat,
+      required this.onUpdateScroll});
 
   final TextEditingController textController;
   final ChatParentClass chat;
+  final VoidCallback onUpdateScroll;
 
   @override
   State<SendMessageWidget> createState() => _SendMessageWidgetState();
@@ -71,6 +75,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                       },
                       onSendVoiceMessage: () {
                         voiceController.stopRecording(widget.chat);
+                        widget.onUpdateScroll();
                       },
                       recordState: voiceController.recordingState,
                     ),
@@ -129,13 +134,13 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                   },
                   onSendVoiceMessage: () {
                     voiceController.stopRecording(widget.chat);
+                    widget.onUpdateScroll();
                   },
                   onSendTextMessage: () {
                     controller.sendTextMessage(widget.textController.text,
                         widget.chat.id!, null, null);
                     widget.textController.text = "";
-
-                    // widget.onSendMessage.call();
+                    widget.onUpdateScroll();
                   },
                   onRecordVoice: () {
                     voiceController.recordAudio();
