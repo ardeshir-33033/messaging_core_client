@@ -124,7 +124,6 @@ class _ChooseUserPageState extends State<ChooseUserPage> {
                     subtitle: Text("ID: ${users[index].id}"),
                     onTap: () {
                       selectedUser = users[index];
-                      AppGlobalData.userId = selectedUser!.id;
                       setState(() {});
                     },
                   ),
@@ -136,6 +135,9 @@ class _ChooseUserPageState extends State<ChooseUserPage> {
           ElevatedButton(
             onPressed: selectedUser != null
                 ? () {
+                    AppGlobalData.userId = selectedUser!.id;
+                    AppGlobalData.userName = selectedUser!.name;
+
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(

@@ -1,3 +1,4 @@
+import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/services/network/websocket/web_socket_connection.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
@@ -49,15 +50,15 @@ class MessagingClient {
     });
   }
 
-  sendTyping(String senderName) async {
+  sendTyping() async {
     webSocketConnection.sendMessage("typing", {
-      'senderName': senderName,
+      'senderName': AppGlobalData.userName,
     });
   }
 
-  sendStopTyping(String senderId) async {
+  sendStopTyping() async {
     webSocketConnection.sendMessage("stopTyping", {
-      'senderId': senderId,
+      'senderId': AppGlobalData.userId,
     });
   }
 
@@ -67,10 +68,10 @@ class MessagingClient {
     });
   }
 
-  sendAddOnlineUser(String userId, String categoryId) async {
+  sendAddOnlineUser() async {
     webSocketConnection.sendMessage("addOnlineUser", {
-      'userId': userId,
-      'categoryId': categoryId,
+      'userId': AppGlobalData.userId,
+      'categoryId': AppGlobalData.categoryId,
     });
   }
 

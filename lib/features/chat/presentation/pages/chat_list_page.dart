@@ -34,6 +34,8 @@ class _ChatListPageState extends State<ChatListPage> {
   void initState() {
     connect();
     controller.getAllChats();
+    controller.addOnlineUser();
+
 
     super.initState();
   }

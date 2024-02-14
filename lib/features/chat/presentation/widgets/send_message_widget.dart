@@ -28,6 +28,19 @@ class SendMessageWidget extends StatefulWidget {
 class _SendMessageWidgetState extends State<SendMessageWidget> {
   RecordVoiceController voiceController = Get.find<RecordVoiceController>();
   final ChatController controller = locator<ChatController>();
+  final FocusNode focusNode = FocusNode();
+
+  @override
+  void initState() {
+    focusNode.addListener(() {
+      if (!focusNode.hasFocus) {
+        controller.sendUserStoppedTyping();
+      } else {
+        controller.sendUserTyping();
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +98,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                                 onChanged: (val) {
                                   setState(() {});
                                 },
+                                focusNode: focusNode,
                                 maxLines: 7,
                                 minLines: 1,
                                 textAlignVertical: TextAlignVertical.center,

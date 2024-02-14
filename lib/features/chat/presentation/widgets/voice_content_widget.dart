@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/widgets/custom_value_listenable.dart';
@@ -51,6 +52,7 @@ class _VoiceContentWidgetState extends State<VoiceContentWidget> {
   void initState() {
     super.initState();
     checkCachingFile();
+    calculateFileLength();
     cancelToken = CancelToken();
   }
 
@@ -78,6 +80,15 @@ class _VoiceContentWidgetState extends State<VoiceContentWidget> {
         setState(() {});
       }
     });
+  }
+
+  calculateFileLength() async {
+    final player = AudioPlayer();
+    Duration? duration = await player.setUrl(widget.contentModel.filePath!);
+    if (duration != null) {
+      durationInMilliSeconds = duration.inMilliseconds;
+      setState(() {});
+    }
   }
 
   void changeSeek(double value, bool isSelectedVoice) {
@@ -111,13 +122,9 @@ class _VoiceContentWidgetState extends State<VoiceContentWidget> {
     await voiceController.playVoiceMessage(
       CurrentPlayingAudio(
         audioKey: fileVoicePath,
-        // title: widget.senderName,
       ),
       seek: currentPositionInMS.toInt(),
     );
-    durationInMilliSeconds =
-        voiceController.player.duration?.inMilliseconds ?? 60000;
-    setState(() {});
   }
 
   Future<void> pauseVoice() async {
@@ -229,7 +236,7 @@ class _VoiceContentWidgetState extends State<VoiceContentWidget> {
                         heightFactor: 0.6,
                         child: SfSlider(
                           value: currentPositionInMS,
-                          max: durationInSeconds,
+                          max: durationInMilliSeconds,
                           min: 0,
                           onChanged: (value) {
                             changeSeek(

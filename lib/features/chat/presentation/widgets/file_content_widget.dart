@@ -73,7 +73,6 @@ class _FileContentWidgetState extends State<FileContentWidget> {
       }
     });
   }
-  //application/octet-stream
   @override
   void initState() {
     checkCachingFile();

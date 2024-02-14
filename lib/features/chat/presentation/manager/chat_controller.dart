@@ -12,11 +12,9 @@ import 'package:messaging_core/core/utils/utils.dart';
 import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
-import 'package:messaging_core/features/chat/domain/entities/group_users_model.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_messages_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/send_messags_use_case.dart';
-import 'package:messaging_core/features/chat/presentation/pages/chat_page.dart';
 
 class ChatController extends GetxController {
   final GetAllChatsUseCase getAllChatsUseCase;
@@ -141,11 +139,18 @@ class ChatController extends GetxController {
       String result = groupIds.join();
       _roomIdentifier = "${_currentChat!.id}$result";
     } else {
-      List<int> ids = [];
-      ids.add(AppGlobalData.userId);
-      ids.add(_currentChat!.id!);
+      List<int> ids = [
+        AppGlobalData.userId,
+        _currentChat!.id!,
+        AppGlobalData.categoryId
+      ];
+      // ids.add(AppGlobalData.userId);
+      // ids.add(_currentChat!.id!);
       ids.sort();
-      _roomIdentifier = ids.join();
+      _roomIdentifier = ids.join('-');
+
+      // [AppGlobalData.userId, _currentChat!.id, AppGlobalData.categoryId].sort();
+      // _roomIdentifier = ids.join();
     }
     print("---------$_roomIdentifier ----");
 
@@ -160,5 +165,17 @@ class ChatController extends GetxController {
         update(["messages"]);
       }
     }
+  }
+
+  sendUserTyping() {
+    messagingClient.sendTyping();
+  }
+
+  addOnlineUser() {
+    messagingClient.sendAddOnlineUser();
+  }
+
+  sendUserStoppedTyping() {
+    messagingClient.sendStopTyping();
   }
 }

@@ -28,7 +28,7 @@ class WebSocketConnection {
         IO.OptionBuilder().setTransports(["websocket"]).build());
     channel?.onConnect((data) {
       isConnected = true;
-      print("-----------------   Successful Connection     -----------------");
+      print("-----------------   Successful Connection   $data  -----------------");
     });
 
     channel?.onConnectError((data) {
@@ -38,6 +38,10 @@ class WebSocketConnection {
     channel?.onDisconnect((data) {
       isConnected = false;
       print("-----------------   Disconnected     -----------------");
+    });
+
+    channel?.onAny((event, data) {
+      print("$event : data");
     });
 
     channel?.on("chat message", (data) {
@@ -68,6 +72,7 @@ class WebSocketConnection {
   }
 
   void sendMessage(String event, dynamic payload) {
+    print("----------   $event : $payload --------");
     if (isConnected) {
       channel?.emit(event, payload);
     }

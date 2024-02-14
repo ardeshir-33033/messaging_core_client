@@ -35,7 +35,7 @@ class RecordVoiceController extends GetxController {
     recordingState = RecordStateEnum.stop;
     audioStateNotifier = ValueNotifier(AudioState.paused);
 
-    // listenToPlayerState();
+    listenToPlayerState();
     record = Record();
     record.onStateChanged().listen(
       (state) {
@@ -176,6 +176,26 @@ class RecordVoiceController extends GetxController {
         audioStateNotifier.value = AudioState.playing;
       }
     }
+  }
+
+  void listenToPlayerState() {
+    player.playerStateStream.listen((playerState) async {
+      final isPlaying = playerState.playing;
+      final processingState = playerState.processingState;
+      if (processingState == ProcessingState.loading) {
+        audioStateNotifier.value = AudioState.loading;
+      } else if (!isPlaying) {
+        if (audioStateNotifier.value == AudioState.stopped) {
+          currentPlayingAudio.value = null;
+        } else {
+          audioStateNotifier.value = AudioState.paused;
+        }
+      } else if (processingState != ProcessingState.completed) {
+        audioStateNotifier.value = AudioState.playing;
+      } else {
+        stopPlayer();
+      }
+    });
   }
 
   Future<void> stopPlayer() async {
