@@ -45,9 +45,7 @@ class _ChatPageState extends State<ChatPage>
   late OverlayController _overlayController;
   final TextEditingController _sendTextController = TextEditingController();
 
-  final ChatController controller =
-      // Get.put<ChatController>(locator());
-      locator<ChatController>();
+  final ChatController controller = locator<ChatController>();
 
   final RecordVoiceController voiceController =
       Get.put(RecordVoiceController());

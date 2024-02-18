@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
+import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/core/env/environment.dart';
+import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/locator.dart';
@@ -28,7 +30,11 @@ class WebSocketConnection {
         IO.OptionBuilder().setTransports(["websocket"]).build());
     channel?.onConnect((data) {
       isConnected = true;
-      print("-----------------   Successful Connection   $data  -----------------");
+      print("Socket Id: ${channel!.id}");
+      locator<MessagingClient>().sendAddOnlineUser();
+
+      print(
+          "-----------------   Successful Connection   $data  -----------------");
     });
 
     channel?.onConnectError((data) {
@@ -54,6 +60,9 @@ class WebSocketConnection {
 
     channel?.on("notification", (data) {
       print(data);
+      ChatController controller = locator<ChatController>();
+      controller.handleNotificationSignal(
+          data["senderId"], ReceiverType.fromString(data["receiverType"]));
     });
 
     channel?.on("userTyping", (data) {

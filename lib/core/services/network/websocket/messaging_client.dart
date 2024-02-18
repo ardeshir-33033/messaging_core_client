@@ -53,6 +53,7 @@ class MessagingClient {
   sendTyping() async {
     webSocketConnection.sendMessage("typing", {
       'senderName': AppGlobalData.userName,
+      'senderId': AppGlobalData.userId,
     });
   }
 
@@ -64,7 +65,7 @@ class MessagingClient {
 
   sendJoinRoom(String roomIdentifier) async {
     webSocketConnection.sendMessage("joinRoom", {
-      'roomIdentifier': roomIdentifier,
+      roomIdentifier,
     });
   }
 

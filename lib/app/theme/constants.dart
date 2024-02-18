@@ -47,5 +47,7 @@ class Assets {
   static const String editMenu = "$_baseIconPath/edit.svg";
   static const String videoMenu = "$_baseIconPath/video.svg";
 
-  /// -----------------------Icons Assets -------------------------
+  /// -----------------------Tone Assets -------------------------
+  static const String _baseTonePath = "assets/tones";
+  static const String notificationTone = "$_baseTonePath/notif_tone.wav";
 }

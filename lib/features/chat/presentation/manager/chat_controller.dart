@@ -1,6 +1,8 @@
 import 'package:api_handler/api_handler.dart';
 import 'package:api_handler/feature/api_handler/data/models/response_model.dart';
 import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/app_states/result_state.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
@@ -15,6 +17,8 @@ import 'package:messaging_core/features/chat/domain/entities/content_model.dart'
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_messages_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/send_messags_use_case.dart';
+import 'package:messaging_core/features/chat/presentation/manager/record_voice_controller.dart';
+import 'package:messaging_core/locator.dart';
 
 class ChatController extends GetxController {
   final GetAllChatsUseCase getAllChatsUseCase;
@@ -167,12 +171,20 @@ class ChatController extends GetxController {
     }
   }
 
-  sendUserTyping() {
-    messagingClient.sendTyping();
+  handleNotificationSignal(int chatId, ReceiverType receiverType) {
+    chats.forEach((element) {
+      if (element.id == chatId) {
+        chats.remove(element);
+        chats.insert(0, element);
+        locator<RecordVoiceController>()
+            .playSimpleAudio(Assets.notificationTone);
+        update(["allChats"]);
+      }
+    });
   }
 
-  addOnlineUser() {
-    messagingClient.sendAddOnlineUser();
+  sendUserTyping() {
+    messagingClient.sendTyping();
   }
 
   sendUserStoppedTyping() {

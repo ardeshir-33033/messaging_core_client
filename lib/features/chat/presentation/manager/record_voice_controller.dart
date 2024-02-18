@@ -217,6 +217,12 @@ class RecordVoiceController extends GetxController {
     audioStateNotifier.value = AudioState.playing;
     await player.play();
   }
+
+  playSimpleAudio(String assetPath) async {
+    AudioPlayer player = AudioPlayer();
+    await player.setAsset(assetPath);
+    player.play();
+  }
 }
 
 enum RecordStateEnum {
