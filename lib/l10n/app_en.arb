@@ -51,5 +51,8 @@
   "star": "Star",
   "pin": "Pin",
   "share": "Share",
-  "yourChat": "Your Chats"
+  "yourChat": "Your Chats",
+  "voiceMessage": "Voice",
+  "image": "Image",
+  "gif": "Gif"
 }

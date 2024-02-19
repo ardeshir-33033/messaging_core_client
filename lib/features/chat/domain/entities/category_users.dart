@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:messaging_core/core/enums/user_roles.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
+import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 
 class CategoryUser extends ChatParentClass {
   CategoryUser({
@@ -10,9 +13,12 @@ class CategoryUser extends ChatParentClass {
     int? creatorUserId,
     int? categoryId,
     int? level,
+    int? unreadCount,
     String? status,
     String? email,
     String? statusEmail,
+    ContentModel? lastRead,
+    ContentModel? lastMessage,
     DateTime? createdAt,
     DateTime? updatedAt,
     List<UserRoles>? roles,
@@ -27,19 +33,30 @@ class CategoryUser extends ChatParentClass {
           updatedAt: updatedAt,
           creatorUserId: creatorUserId,
           roles: roles,
+          unreadCount: unreadCount,
+          lastRead: lastRead,
+          lastMessage: lastMessage,
         );
 
   static CategoryUser fromJson(Map<String, dynamic> json) {
     return CategoryUser(
-        id: json['id'],
-        name: json['name'],
-        username: json['username'],
-        avatar: json['avatar'],
-        level: json['level'],
-        status: json['status'],
-        email: json['email'],
-        statusEmail: json['status_email'],
-        roles: UserRoles.fromList(json['roles']));
+      id: json['id'],
+      name: json['name'],
+      username: json['username'],
+      avatar: json['avatar'],
+      level: json['level'],
+      status: json['status'],
+      email: json['email'],
+      statusEmail: json['status_email'],
+      roles: UserRoles.fromList(json['roles']),
+      unreadCount: json["unreadCount"],
+      lastMessage: json["lastMessage"] != null
+          ? ContentModel.fromJson(json["lastMessage"])
+          : null,
+      lastRead: json["lastRead"] != null
+          ? ContentModel.fromJson(json["lastRead"])
+          : null,
+    );
   }
 
   Map<String, dynamic> toJson() {

@@ -89,7 +89,8 @@ class _ChatPageState extends State<ChatPage>
   Widget build(BuildContext context) {
     return MyWillPopScope(
       onWillPop: () async {
-        controller.resetState();
+        controller.onBackButtonOnChatPage();
+
         return true;
       },
       child: Scaffold(

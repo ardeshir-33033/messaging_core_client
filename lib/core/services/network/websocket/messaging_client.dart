@@ -76,6 +76,10 @@ class MessagingClient {
     });
   }
 
+  sendLeaveRoomEvent(String roomIdentifier) async {
+    webSocketConnection.sendMessage("leaveRoom", {roomIdentifier});
+  }
+
   // sendNewGroupChat(String userId, String categoryId) async {
   //   webSocketConnection.sendMessage("newChatGroup", {
   //     'chatGroup': userId,

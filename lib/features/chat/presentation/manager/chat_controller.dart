@@ -174,6 +174,7 @@ class ChatController extends GetxController {
   handleNotificationSignal(int chatId, ReceiverType receiverType) {
     chats.forEach((element) {
       if (element.id == chatId) {
+        element.unreadCount = element.unreadCount ?? 0 + 1;
         chats.remove(element);
         chats.insert(0, element);
         locator<RecordVoiceController>()
@@ -189,5 +190,14 @@ class ChatController extends GetxController {
 
   sendUserStoppedTyping() {
     messagingClient.sendStopTyping();
+  }
+
+  sendLeaveRoomEvent() {
+    messagingClient.sendLeaveRoomEvent(_roomIdentifier!);
+  }
+
+  onBackButtonOnChatPage() {
+    sendLeaveRoomEvent();
+    resetState();
   }
 }

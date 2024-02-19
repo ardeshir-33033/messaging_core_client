@@ -72,7 +72,8 @@ class ChatDataSourceImpl extends ChatDataSource {
     ResponseModel response = await api.get(
       MessageRouting.showMessages,
       queries: [
-        QueryModel(name: "category_id", value: "330"),
+        QueryModel(
+            name: "category_id", value: AppGlobalData.categoryId.toString()),
         if (senderId != null)
           QueryModel(name: "sender_id", value: senderId.toString()),
         QueryModel(name: "receiver_id", value: receiverId.toString()),

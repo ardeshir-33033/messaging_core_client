@@ -1,4 +1,5 @@
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
+import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/group_users_model.dart';
 
 class GroupModel extends ChatParentClass {
@@ -12,7 +13,8 @@ class GroupModel extends ChatParentClass {
     DateTime? createdAt,
     DateTime? updatedAt,
     int? unreadCount,
-    dynamic lastRead,
+    ContentModel? lastRead,
+    ContentModel? lastMessage,
     List<GroupUsersModel> groupUsers = const [],
   }) : super(
           id: id,
@@ -26,6 +28,7 @@ class GroupModel extends ChatParentClass {
           unreadCount: unreadCount,
           lastRead: lastRead,
           groupUsers: groupUsers,
+          lastMessage: lastRead,
         );
 
   static GroupModel fromJson(Map<String, dynamic> json) {
@@ -36,7 +39,8 @@ class GroupModel extends ChatParentClass {
         creatorUserId: json['creator_user_id'],
         categoryId: json['category_id'],
         unreadCount: json['unreadCount'],
-        lastRead: json['lastRead'],
+        lastRead: ContentModel.fromJson(json["lastRead"]),
+        lastMessage: ContentModel.fromJson(json["lastMessage"]),
         groupUsers: GroupUsersModel.listFromJson(json['users']),
         createdAt: DateTime.parse(json['created_at']),
         updatedAt: DateTime.parse(json['updated_at']));

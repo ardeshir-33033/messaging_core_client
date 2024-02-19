@@ -113,7 +113,7 @@ class ChatListItemState extends State<ChatListItem> {
     // if (widget.chat.model.status == ChannelSubscriptionStatus.removed) {
     //   return tr(context).youWereRemoved;
     // }
-    // return widget.chat.lastContent?.contentPayload.shortDisplayName() ?? '';
+    return widget.chat.lastMessage?.shortDisplayMessage() ?? '';
     return "";
   }
 }

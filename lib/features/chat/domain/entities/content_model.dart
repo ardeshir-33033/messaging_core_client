@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/enums/message_status.dart';
 import 'package:messaging_core/core/enums/receiver_type.dart';
+import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_payload_model.dart';
+import 'package:messaging_core/main.dart';
 
 class ContentModel {
   int contentId;
@@ -203,5 +206,23 @@ class ContentModel {
       }).toList();
     }
     return [];
+  }
+
+  shortDisplayMessage() {
+    BuildContext context = MyApp.navigatorKey.currentContext!;
+    switch (contentType) {
+      case ContentTypeEnum.voice:
+        return context.l.voiceMessage;
+      case ContentTypeEnum.text:
+        return messageText;
+      case ContentTypeEnum.image:
+        return context.l.image;
+      case ContentTypeEnum.video:
+        return context.l.video;
+      case ContentTypeEnum.gif:
+        return context.l.gif;
+      default:
+        return messageText;
+    }
   }
 }

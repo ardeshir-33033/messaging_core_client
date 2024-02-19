@@ -1,5 +1,6 @@
 import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/core/enums/user_roles.dart';
+import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/group_users_model.dart';
 
 class ChatParentClass {
@@ -12,7 +13,8 @@ class ChatParentClass {
   DateTime? updatedAt;
   int? unreadCount;
   List<GroupUsersModel>? groupUsers;
-  dynamic lastRead;
+  ContentModel? lastRead;
+  ContentModel? lastMessage;
   String? username;
   int? level;
   String? status;
@@ -36,10 +38,11 @@ class ChatParentClass {
     this.updatedAt,
     this.unreadCount,
     this.lastRead,
+    this.lastMessage,
     this.groupUsers = const [],
   });
 
-  bool isGroup() => unreadCount != null;
+  bool isGroup() => creatorUserId != null;
 
   ReceiverType getReceiverType() =>
       isGroup() ? ReceiverType.group : ReceiverType.user;
