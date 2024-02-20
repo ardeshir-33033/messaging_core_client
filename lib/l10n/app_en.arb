@@ -55,5 +55,6 @@
   "voiceMessage": "Voice",
   "image": "Image",
   "gif": "Gif",
-  "isTyping": "Typing"
+  "isTyping": "Typing",
+  "viewContact": "View Contact"
 }

@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:messaging_core/core/enums/content_type_enum.dart';
+import 'package:messaging_core/core/enums/other_content_type_enum.dart';
+import 'package:messaging_core/features/chat/domain/entities/contact_payload_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/text_content_payload_model.dart';
 
 abstract class ContentPayloadModel {
@@ -12,7 +16,16 @@ abstract class ContentPayloadModel {
     switch (contentType) {
       case ContentTypeEnum.text:
         return TextContentPayloadModel.fromJson(json);
+      case ContentTypeEnum.other:
+        final content = jsonDecode(json);
+        switch (OtherContentTypeEnum.fromString(content["content_Type"])) {
+          case OtherContentTypeEnum.contact:
+            return ContactPayloadModel.fromJson(content["data"]);
+          case OtherContentTypeEnum.unsupported:
+            return ContactPayloadModel.fromJson(content["data"]);
+        }
 
+        return TextContentPayloadModel.fromJson(json);
       default:
         return TextContentPayloadModel.fromJson(json);
     }

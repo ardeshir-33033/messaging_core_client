@@ -221,6 +221,8 @@ class ContentModel {
         return context.l.video;
       case ContentTypeEnum.gif:
         return context.l.gif;
+      case ContentTypeEnum.other:
+        return context.l.contact;
       default:
         return messageText;
     }

@@ -9,6 +9,7 @@ import 'package:messaging_core/features/chat/domain/entities/content_model.dart'
 import 'package:messaging_core/features/chat/domain/entities/text_content_payload_model.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/file_content_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/image_content_widget.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/other_content_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/text_content_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/video_content_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/voice_content_widget.dart';
@@ -55,6 +56,16 @@ class ChatBoxContent extends StatelessWidget {
           isUploading: contentModel.status == MessageStatus.pending,
           // senderName: isMine ? tr(context).you : senderName,
         );
+
+      case ContentTypeEnum.other:
+        ContentTypeEnum otherContentType =
+            contentModel.contentPayload!.getContentType();
+
+        return OtherContentWidget(
+          otherContentType: otherContentType,
+          contentPayloadModel: contentModel.contentPayload!,
+        );
+
       // case ContentTypeEnum.transaction:
       //   return TransactionContentWidget(
       //     transactionPayload:

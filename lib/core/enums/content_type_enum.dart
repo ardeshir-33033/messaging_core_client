@@ -10,10 +10,12 @@ enum ContentTypeEnum {
   location,
   sticker,
   gif,
+  other,
   transaction,
   unsupported,
   command,
   voice,
+  contact,
   encryptedText,
   localDeleted,
   referralBonus,
@@ -50,6 +52,8 @@ enum ContentTypeEnum {
         return gif;
       case "transaction":
         return transaction;
+      case "contact":
+        return contact;
       case "call":
         return call;
       case "localDeleted":
@@ -66,6 +70,8 @@ enum ContentTypeEnum {
         return referralBonus;
       case "sms":
         return sms;
+      case "other":
+        return other;
       default:
         return unsupported;
     }
