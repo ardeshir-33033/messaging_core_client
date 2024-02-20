@@ -67,9 +67,13 @@ class WebSocketConnection {
 
     channel?.on("userTyping", (data) {
       print(data);
+      ChatController controller = locator<ChatController>();
+      controller.handleUserTypingSignal(data["senderId"]);
     });
     channel?.on("userStoppedTyping", (data) {
       print(data);
+      ChatController controller = locator<ChatController>();
+      controller.handleUserStoppedTypingSignal(data["senderId"]);
     });
     channel?.on("ChatGroupChange", (data) {
       print(data);

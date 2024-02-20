@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/theme/constants.dart';
@@ -6,6 +7,7 @@ import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/image_widget.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
+import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/user_profile_widget.dart';
 
 class ConversationAppBar extends StatelessWidget {
@@ -37,14 +39,29 @@ class ConversationAppBar extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            if (chat.isGroup())
-              Text(
-                "${(chat.groupUsers?.length ?? 0).toString()} Users",
-                style: AppTextStyles.description.copyWith(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
+            GetBuilder<ChatController>(
+                id: "isTyping",
+                builder: (controller) {
+                  return
+                      // if (chat.isGroup())
+                      chat.isGroup()
+                          ? Text(
+                              "${(chat.groupUsers?.length ?? 0).toString()} Users",
+                              style: AppTextStyles.description.copyWith(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            )
+                          : controller.isTyping
+                              ? Text(
+                                  tr(context).isTyping,
+                                  style: AppTextStyles.description.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                )
+                              : const SizedBox();
+                })
           ],
         ),
         const IconWidget(

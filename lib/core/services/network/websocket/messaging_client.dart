@@ -1,5 +1,4 @@
 import 'package:messaging_core/core/app_states/app_global_data.dart';
-import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/services/network/websocket/web_socket_connection.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 

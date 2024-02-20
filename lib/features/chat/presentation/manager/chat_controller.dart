@@ -34,6 +34,7 @@ class ChatController extends GetxController {
 
   List<ChatParentClass> chats = [];
   List<ContentModel> messages = [];
+  bool isTyping = false;
   late ChatParentClass? _currentChat;
   late String? _roomIdentifier;
 
@@ -45,6 +46,7 @@ class ChatController extends GetxController {
     messages = [];
     _currentChat = null;
     _roomIdentifier = null;
+    isTyping = false;
   }
 
   getAllChats() async {
@@ -184,6 +186,20 @@ class ChatController extends GetxController {
     });
   }
 
+  handleUserTypingSignal(int senderId) {
+    if (_currentChat?.id == senderId) {
+      isTyping = true;
+      update(["isTyping"]);
+    }
+  }
+
+  handleUserStoppedTypingSignal(int senderId) {
+    if (_currentChat?.id == senderId) {
+      isTyping = false;
+      update(["isTyping"]);
+    }
+  }
+
   sendUserTyping() {
     messagingClient.sendTyping();
   }
@@ -197,6 +213,9 @@ class ChatController extends GetxController {
   }
 
   onBackButtonOnChatPage() {
+    if (isTyping) {
+      sendUserStoppedTyping();
+    }
     sendLeaveRoomEvent();
     resetState();
   }

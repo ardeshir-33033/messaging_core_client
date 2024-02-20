@@ -54,5 +54,6 @@
   "yourChat": "Your Chats",
   "voiceMessage": "Voice",
   "image": "Image",
-  "gif": "Gif"
+  "gif": "Gif",
+  "isTyping": "Typing"
 }
