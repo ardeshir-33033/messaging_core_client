@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:messaging_core/app/component/base_bottom_sheets.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
@@ -11,6 +12,7 @@ import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/pages/edit_image_page.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/contacts_bottom_sheet.dart';
 import 'package:messaging_core/locator.dart';
 
 class AttachFileBottomSheet extends StatelessWidget {
@@ -85,6 +87,10 @@ class AttachFileBottomSheet extends StatelessWidget {
                 onPressed: () {
                   final navigator = Navigator.of(context);
                   navigator.pop();
+                  CustomBottomSheet.showSimpleSheet(
+                    context,
+                    (context) => ContactsBottomSheet(),
+                  );
                 },
                 icon: Assets.contact),
             AttachDataItem(

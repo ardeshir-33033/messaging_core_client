@@ -56,5 +56,6 @@
   "image": "Image",
   "gif": "Gif",
   "isTyping": "Typing",
-  "viewContact": "View Contact"
+  "viewContact": "View Contact",
+  "permissionToAccessContactDenied": "No permission to access contacts"
 }

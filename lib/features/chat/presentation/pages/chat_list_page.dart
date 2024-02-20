@@ -25,6 +25,7 @@ class ChatListPage extends StatefulWidget {
 class _ChatListPageState extends State<ChatListPage> {
   final ChatController controller = Get.put<ChatController>(locator());
 
+
   connect() {
     locator<MessagingClient>().initState();
   }

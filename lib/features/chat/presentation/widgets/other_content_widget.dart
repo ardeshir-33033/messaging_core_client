@@ -14,8 +14,6 @@ class OtherContentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (_) {
-      ContentTypeEnum content = contentPayloadModel.getContentType();
-      print(content);
       switch (contentPayloadModel.getContentType()) {
         case ContentTypeEnum.contact:
           return ContactContentWidget(
