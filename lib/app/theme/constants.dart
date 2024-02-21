@@ -46,6 +46,8 @@ class Assets {
   static const String addMenu = "$_baseIconPath/add-square.svg";
   static const String editMenu = "$_baseIconPath/edit.svg";
   static const String videoMenu = "$_baseIconPath/video.svg";
+  static const String callOutlined = "$_baseIconPath/call-outlined.svg";
+  static const String callRemove = "$_baseIconPath/call-remove.svg";
 
   /// -----------------------Tone Assets -------------------------
   static const String _baseTonePath = "assets/tones";

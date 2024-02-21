@@ -57,5 +57,9 @@
   "gif": "Gif",
   "isTyping": "Typing",
   "viewContact": "View Contact",
-  "permissionToAccessContactDenied": "No permission to access contacts"
+  "permissionToAccessContactDenied": "No permission to access contacts",
+  "callingFrom": "Calling from",
+  "youHaveAnotherCallNow": "You have another call now:",
+  "rejectWithMessage": "Reject with message",
+  "iCantTalkNow": "I Cant’t talk now"
 }
