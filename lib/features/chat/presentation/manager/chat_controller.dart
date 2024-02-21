@@ -12,7 +12,9 @@ import 'package:messaging_core/core/services/network/websocket/messaging_client.
 import 'package:messaging_core/core/utils/utils.dart';
 import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
+import 'package:messaging_core/features/chat/domain/entities/contact_payload_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
+import 'package:messaging_core/features/chat/domain/entities/content_payload_model.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_messages_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/send_messags_use_case.dart';
@@ -96,7 +98,7 @@ class ChatController extends GetxController {
   }
 
   sendTextMessage(String text, int receiverId, ContentTypeEnum? contentType,
-      FileModel? file) async {
+      FileModel? file, ContentPayloadModel? contentPayload) async {
     try {
       int uniqueId = generateUniqueId();
       ContentModel content = ContentModel(
@@ -106,13 +108,14 @@ class ChatController extends GetxController {
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
           contentType: contentType ?? ContentTypeEnum.text,
-          contentPayload: null,
+          contentPayload: contentPayload,
           messageText: text,
           filePath: file?.filePath,
           categoryId: AppGlobalData.categoryId,
           receiverId: receiverId,
           status: MessageStatus.sending);
       messages.insert(0, content);
+      print(content.contentType);
       update(["messages"]);
 
       ResponseModel response = await sendMessageUsecase(SendMessagesParams(
@@ -135,6 +138,14 @@ class ChatController extends GetxController {
     } catch (e) {
       print("----${e.toString()}----");
     }
+  }
+
+  attachContact(
+      {required int receiverId,
+      required String text,
+      required ContentTypeEnum contentType,
+      required ContentPayloadModel content}) {
+    sendTextMessage(text, receiverId, contentType, null, content);
   }
 
   joinRoom() {

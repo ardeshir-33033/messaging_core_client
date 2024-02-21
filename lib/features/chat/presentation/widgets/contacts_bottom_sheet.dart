@@ -9,7 +9,9 @@ import 'package:messaging_core/features/chat/presentation/manager/contacts_contr
 import 'package:messaging_core/locator.dart';
 
 class ContactsBottomSheet extends StatefulWidget {
-  const ContactsBottomSheet({super.key});
+  const ContactsBottomSheet({super.key, required this.chatId});
+
+  final int chatId;
 
   @override
   State<ContactsBottomSheet> createState() => _ContactsBottomSheetState();
@@ -40,27 +42,34 @@ class _ContactsBottomSheetState extends State<ContactsBottomSheet> {
                           contact.phones!.first.value == null) {
                         return const SizedBox();
                       }
-                      return Row(
-                        children: [
-                          _noProfileImage(context, contact.displayName!,
-                              contact.phones!.first.value!),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                contact.displayName ?? "",
-                                style: AppTextStyles.subtitle4,
-                              ),
-                              Text(
-                                contact.phones?.first.value ?? "",
-                                style: AppTextStyles.overline2,
-                              ),
-                            ],
-                          ),
-                        ],
+                      return InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                          controller.sendContactAsMessage(
+                              contact, widget.chatId);
+                        },
+                        child: Row(
+                          children: [
+                            _noProfileImage(context, contact.displayName!,
+                                contact.phones!.first.value!),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  contact.displayName ?? "",
+                                  style: AppTextStyles.subtitle4,
+                                ),
+                                Text(
+                                  contact.phones?.first.value ?? "",
+                                  style: AppTextStyles.overline2,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       );
                     },
                     separatorBuilder: (context, int index) {

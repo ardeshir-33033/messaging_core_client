@@ -20,6 +20,13 @@ abstract class ContentPayloadModel {
         final content = jsonDecode(json);
         switch (OtherContentTypeEnum.fromString(content["content_Type"])) {
           case OtherContentTypeEnum.contact:
+            if (content["data"] == null) {
+              return ContactPayloadModel(
+                  contentType:
+                      ContentTypeEnum.fromString(content["content_Type"]),
+                  contactName: content["contact_name"],
+                  contactNumber: content["contact_number"]);
+            }
             return ContactPayloadModel.fromJson(content["data"]);
           case OtherContentTypeEnum.unsupported:
             return ContactPayloadModel.fromJson(content["data"]);

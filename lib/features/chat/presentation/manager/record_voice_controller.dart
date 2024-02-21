@@ -127,7 +127,7 @@ class RecordVoiceController extends GetxController {
     final ChatController controller = locator<ChatController>();
 
     controller.sendTextMessage(voicePath.substring(voicePath.length - 7),
-        chat.id!, ContentTypeEnum.voice, fileModel);
+        chat.id!, ContentTypeEnum.voice, fileModel, null);
     // await sendMedia(channelId, fileModel);
   }
 

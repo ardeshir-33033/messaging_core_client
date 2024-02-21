@@ -90,6 +90,10 @@ enum ContentTypeEnum {
         return "image";
       case file:
         return "file";
+      case contact:
+        return "contact";
+      case other:
+        return "other";
       default:
         return "text";
     }

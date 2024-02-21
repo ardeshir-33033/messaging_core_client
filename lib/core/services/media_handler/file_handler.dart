@@ -38,12 +38,8 @@ class FileHandler extends MediaHandler {
       sizeInKB: FileHelper.fileSizeInKB(result.files.single.size),
     );
     final ChatController controller = locator<ChatController>();
-    controller.sendTextMessage(
-      result.files.single.name,
-      chat.id!,
-      ContentTypeEnum.file,
-      fileModel,
-    );
+    controller.sendTextMessage(result.files.single.name, chat.id!,
+        ContentTypeEnum.file, fileModel, null);
 
     // await sendMedia(channelId, fileModel);
   }
@@ -67,6 +63,7 @@ class FileHandler extends MediaHandler {
       chat.id!,
       ContentTypeEnum.file,
       fileModel,
+      null
     );
     // FileModel fileModel = FileModel(
     //   formData: File(result.files.single.path!).readAsBytesSync(),
@@ -98,6 +95,7 @@ class FileHandler extends MediaHandler {
       chat.id!,
       ContentTypeEnum.file,
       fileModel,
+      null
     );
 
     // FileModel fileModel = FileModel(

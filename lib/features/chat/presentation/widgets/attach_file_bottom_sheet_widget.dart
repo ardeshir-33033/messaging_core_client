@@ -40,12 +40,8 @@ class AttachFileBottomSheet extends StatelessWidget {
                   if (file != null) {
                     navigator.pop();
                     final ChatController controller = locator<ChatController>();
-                    controller.sendTextMessage(
-                      file.fileName ?? "Image",
-                      chat.id!,
-                      ContentTypeEnum.image,
-                      file,
-                    );
+                    controller.sendTextMessage(file.fileName ?? "Image",
+                        chat.id!, ContentTypeEnum.image, file, null);
                   }
                 },
                 icon: Assets.gallery),
@@ -89,7 +85,9 @@ class AttachFileBottomSheet extends StatelessWidget {
                   navigator.pop();
                   CustomBottomSheet.showSimpleSheet(
                     context,
-                    (context) => ContactsBottomSheet(),
+                    (context) => ContactsBottomSheet(
+                      chatId: chat.id!,
+                    ),
                   );
                 },
                 icon: Assets.contact),

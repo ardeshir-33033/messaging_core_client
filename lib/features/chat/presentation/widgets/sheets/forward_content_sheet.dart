@@ -129,7 +129,8 @@ class _ForwardContentSheetState extends State<ForwardContentSheet> {
             ? FileModel(
                 formData: File(widget.contentModel.filePath!).readAsBytesSync(),
                 fileName: widget.contentModel.messageText)
-            : null);
+            : null,
+        null);
     await Future.delayed(const Duration(milliseconds: 600));
     isLoading = false;
     navigator.pop();

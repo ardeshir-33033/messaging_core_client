@@ -138,7 +138,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                   },
                   onSendTextMessage: () {
                     controller.sendTextMessage(widget.textController.text,
-                        widget.chat.id!, null, null);
+                        widget.chat.id!, null, null, null);
                     widget.textController.text = "";
                     widget.onUpdateScroll();
                   },
