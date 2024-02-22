@@ -61,5 +61,7 @@
   "callingFrom": "Calling from",
   "youHaveAnotherCallNow": "You have another call now:",
   "rejectWithMessage": "Reject with message",
-  "iCantTalkNow": "I Cant’t talk now"
+  "iCantTalkNow": "I Cant’t talk now",
+  "editMessage":"Edit Message",
+  "close": "Close"
 }

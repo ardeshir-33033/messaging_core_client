@@ -8,20 +8,24 @@ import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/image_widget.dart';
 import 'package:messaging_core/app/widgets/overlay_widget.dart';
+import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/enums/message_status.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
+import 'package:messaging_core/core/utils/text_utils.dart';
 import 'package:messaging_core/core/utils/utils.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/contact_profile_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/text_content_payload_model.dart';
+import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_box_content.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/content_options_overlay_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/message_status_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/sheets/forward_content_sheet.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/tag_widget.dart';
+import 'package:messaging_core/locator.dart';
 
 class ChatBox extends StatefulWidget {
   final ContentModel content;
@@ -31,6 +35,7 @@ class ChatBox extends StatefulWidget {
   final Function() onReplyTap;
   final OverlayController overlayController;
   final ContactProfile? opponentProfile;
+  final int index;
   final Function(Offset globalPosition, Widget? target) onTap;
 
   const ChatBox({
@@ -42,6 +47,7 @@ class ChatBox extends StatefulWidget {
     required this.isLastSenderContent,
     required this.overlayController,
     required this.onTap,
+    required this.index,
     this.opponentProfile,
   }) : super(key: key);
 
@@ -50,6 +56,8 @@ class ChatBox extends StatefulWidget {
 }
 
 class ChatBoxState extends State<ChatBox> {
+  final ChatController controller = locator<ChatController>();
+
   late String userId;
   late bool isMine;
   bool _isDownloadedImage = false;
@@ -96,6 +104,7 @@ class ChatBoxState extends State<ChatBox> {
       onForward: _onForward,
       onReply: _onReply,
       onReport: _onReport,
+      onEdit: _onEdit,
 
       // onSaveImage: _onSaveImage,
       isMine: isMine,
@@ -450,6 +459,59 @@ class ChatBoxState extends State<ChatBox> {
         otherTask: () {
           Navigator.pop(context);
         }).showMyDialog();
+  }
+
+  _onEdit() {
+    _hideBox();
+    TextEditingController textController = TextEditingController();
+    controller.editingContent = widget.content;
+    textController.text = widget.content.messageText;
+    DialogBoxes(
+            dismissible: false,
+            customView: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextWidget(
+                  tr(context).editMessage,
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.body3.copyWith(
+                    color: const Color(0xff050D18),
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  height: 50,
+                  child: TextField(
+                      maxLines: 7,
+                      minLines: 1,
+                      textAlignVertical: TextAlignVertical.top,
+                      controller: textController,
+                      textDirection: directionOf(textController.text),
+                      style: AppTextStyles.body2,
+                      decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.transparent,
+                          contentPadding: 10.horizontal,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide:
+                                  const BorderSide(color: Color(0xFFD6D6D6))))),
+                ),
+              ],
+            ),
+            mainTaskText: tr(context).edit,
+            mainTask: () {
+              controller.editTextMessage(
+                  textController.text, widget.content.contentId, widget.index);
+              Navigator.pop(context);
+            },
+            otherTask: () {
+              controller.editingContent = null;
+              Navigator.pop(context);
+            },
+            otherTaskText: tr(context).close)
+        .showMyDialog();
   }
 
   Future<void> _onDeleteUnsent() async {

@@ -52,4 +52,17 @@ class ChatRepositoryImpl extends ChatRepository {
       );
     }
   }
+
+  @override
+  Future<ResponseModel> editMessages(String newText, int messageId) async {
+    try {
+      return await _chatDataSource.editMessages(newText, messageId);
+    } catch (e) {
+      return ResponseModel(
+        statusCode: 510,
+        result: ResultEnum.error,
+        message: e.toString(),
+      );
+    }
+  }
 }

@@ -7,7 +7,6 @@ import 'package:messaging_core/app/page_routing/custom_transition.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/widgets/loading_widget.dart';
 import 'package:messaging_core/app/widgets/overlay_widget.dart';
-import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/app_states/result_state.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
@@ -181,6 +180,7 @@ class _ChatPageState extends State<ChatPage>
                                                                     .value
                                                                 : null,
                                                             child: ChatBox(
+                                                              index: index,
                                                               onTap:
                                                                   _showOverlay,
                                                               opponentProfile:
@@ -247,11 +247,6 @@ class _ChatPageState extends State<ChatPage>
                                         }
                                       }),
                                 ),
-                                const Divider(
-                                  color: Color(0xFFD6D6D6),
-                                  thickness: 2,
-                                ),
-                                // const SizedBox(height: 10),
                                 SendMessageWidget(
                                   textController: _sendTextController,
                                   chat: widget.chat,

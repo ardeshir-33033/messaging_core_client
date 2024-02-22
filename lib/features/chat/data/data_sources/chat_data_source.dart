@@ -11,6 +11,7 @@ import 'package:messaging_core/app/api_routing/category_user/category_routing.da
 import 'package:messaging_core/app/api_routing/chat_group/chat_group_routing.dart';
 import 'package:messaging_core/app/api_routing/message/message_routing.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
+import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
@@ -25,6 +26,7 @@ abstract class ChatDataSource {
       ReceiverType receiverType, int? senderId, int receiverId);
   Future<ResponseModel> sendMessages(
       ContentModel contentModel, FileModel? file);
+  Future<ResponseModel> editMessages(String newText, int messageId);
 }
 
 class ChatDataSourceImpl extends ChatDataSource {
@@ -116,6 +118,24 @@ class ChatDataSourceImpl extends ChatDataSource {
     if (response.result == ResultEnum.success) {
       response.data = ContentModel.fromJsonSendApi(response.data["message"]);
     }
+    return response;
+  }
+
+  @override
+  Future<ResponseModel> editMessages(String newText, int messageId) async {
+    var data = FormData.fromMap({
+      'message_text': newText,
+      'message_type': ContentTypeEnum.text.toString(),
+      '_method': 'PUT'
+    });
+
+    ResponseModel response = await api.post(
+      MessageRouting.editMessages(messageId.toString()),
+      body: data,
+      headerEnum: HeaderEnum.bearerHeaderEnum,
+      responseEnum: ResponseEnum.responseModelEnum,
+    );
+
     return response;
   }
 }

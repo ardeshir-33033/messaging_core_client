@@ -12,9 +12,9 @@ import 'package:messaging_core/core/services/network/websocket/messaging_client.
 import 'package:messaging_core/core/utils/utils.dart';
 import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
-import 'package:messaging_core/features/chat/domain/entities/contact_payload_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_payload_model.dart';
+import 'package:messaging_core/features/chat/domain/use_cases/edit_message_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_messages_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/send_messags_use_case.dart';
@@ -25,10 +25,11 @@ class ChatController extends GetxController {
   final GetAllChatsUseCase getAllChatsUseCase;
   final GetMessagesUseCase getMessagesUseCase;
   final SendMessagesUseCase sendMessageUsecase;
+  final EditMessagesUseCase editMessagesUseCase;
   final MessagingClient messagingClient;
 
   ChatController(this.getAllChatsUseCase, this.getMessagesUseCase,
-      this.sendMessageUsecase, this.messagingClient);
+      this.sendMessageUsecase, this.messagingClient, this.editMessagesUseCase);
 
   RequestStatus chatsStatus = RequestStatus();
   RequestStatus messagesStatus = RequestStatus();
@@ -36,6 +37,7 @@ class ChatController extends GetxController {
   List<ChatParentClass> chats = [];
   List<ContentModel> messages = [];
   bool isTyping = false;
+  ContentModel? editingContent;
   late ChatParentClass? _currentChat;
   late String? _roomIdentifier;
 
@@ -48,6 +50,7 @@ class ChatController extends GetxController {
     _currentChat = null;
     _roomIdentifier = null;
     isTyping = false;
+    editingContent = null;
   }
 
   getAllChats() async {
@@ -140,6 +143,25 @@ class ChatController extends GetxController {
     }
   }
 
+  editTextMessage(String newMessage, int messageId, messageIndex) async {
+    try {
+      messages[messageIndex].messageText = newMessage;
+
+      ResponseModel response = await editMessagesUseCase(
+          EditMessagesParams(newMessage: newMessage, messageId: messageId));
+
+      if (response.result != ResultEnum.success) {
+        messages[messageIndex].messageText = editingContent!.messageText;
+      }
+      editingContent = null;
+    } catch (e) {
+      messages[messageIndex].messageText = editingContent!.messageText;
+      editingContent = null;
+
+      print("----${e.toString()}----");
+    }
+  }
+
   attachContact(
       {required int receiverId,
       required String text,
@@ -226,6 +248,7 @@ class ChatController extends GetxController {
     if (isTyping) {
       sendUserStoppedTyping();
     }
+    getAllChats();
     sendLeaveRoomEvent();
     resetState();
   }

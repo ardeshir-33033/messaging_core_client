@@ -9,4 +9,5 @@ abstract class ChatRepository {
       ReceiverType receiverType, int? senderId, int receiverId);
   Future<ResponseModel> sendMessages(
       ContentModel contentModel, FileModel? file);
+  Future<ResponseModel> editMessages(String newText, int messageId);
 }
