@@ -15,6 +15,7 @@ class ContentModel {
   int receiverId;
   DateTime createdAt;
   DateTime updatedAt;
+  DateTime? readAt;
   int categoryId;
   String messageText;
   String? filePath;
@@ -44,6 +45,7 @@ class ContentModel {
     required this.receiverType,
     required this.createdAt,
     required this.updatedAt,
+    this.readAt,
     required this.contentType,
     this.contentPayload,
     required this.messageText,
@@ -99,6 +101,9 @@ class ContentModel {
         senderId: json['sender_id'],
         createdAt: DateTime.parse(json['created_at']).toLocal(),
         updatedAt: DateTime.parse(json['updated_at']).toLocal(),
+        readAt: json['readed_at'] != null
+            ? DateTime.parse(json['readed_at']).toLocal()
+            : null,
         contentType: contentType,
         contentPayload: contentPayload,
         status: MessageStatus.sent,
@@ -128,6 +133,9 @@ class ContentModel {
         senderId: json['senderId'],
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
+        // readAt: json['readed_at'] != null
+        //     ? DateTime.parse(json['readed_at']).toLocal()
+        //     : null,
         contentType: contentType,
         // contentPayload: contentPayload,
         status: MessageStatus.sent,
@@ -158,6 +166,9 @@ class ContentModel {
         senderId: int.parse(json['sender_id']),
         createdAt: DateTime.parse(json['created_at']).toLocal(),
         updatedAt: DateTime.parse(json['updated_at']).toLocal(),
+        readAt: json['readed_at'] != null
+            ? DateTime.parse(json['readed_at']).toLocal()
+            : null,
         contentType: contentType,
         contentPayload: contentPayload,
         status: MessageStatus.sent,
@@ -183,6 +194,7 @@ class ContentModel {
       'contentType': contentType.name,
       'status': status.name,
       'isForwarded': isForwarded,
+      // 'readed_at': readAt,
     };
     if (_repliedTo != null && mainContent) {
       json['repliedTo'] = _repliedTo?.toJson(mainContent: false);

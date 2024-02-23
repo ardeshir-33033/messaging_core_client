@@ -123,9 +123,14 @@ class _ChatPageState extends State<ChatPage>
                             Column(
                               children: [
                                 const SizedBox(height: 20),
-                                ConversationAppBar(
-                                  chat: widget.chat,
-                                  size: 40,
+                                InkWell(
+                                  onTap: () {
+                                    controller.getMessages();
+                                  },
+                                  child: ConversationAppBar(
+                                    chat: widget.chat,
+                                    size: 40,
+                                  ),
                                 ),
                                 const SizedBox(height: 10),
                                 Expanded(

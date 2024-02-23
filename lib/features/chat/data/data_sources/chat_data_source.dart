@@ -39,7 +39,7 @@ class ChatDataSourceImpl extends ChatDataSource {
     ResponseModel response = await api.get(
       CategoryRouting.usersInCategory,
       queries: [
-        QueryModel(name: "category_id", value: "330"),
+        QueryModel(name: "category_id", value: AppGlobalData.categoryId.toString()),
         QueryModel(
             name: 'login_user_id', value: AppGlobalData.userId.toString())
       ],

@@ -30,18 +30,18 @@ class MessageStatusWidget extends StatelessWidget {
         contentStatus == MessageStatus.pendingFail) {
       icon = Icons.error_outline;
       color = Colors.red;
-    }
-    else if (contentStatus == MessageStatus.sent) {
-      // if (content.sequenceNumber <= lastReceived) {
+    } else if (contentStatus == MessageStatus.sent) {
+      if (content.readAt != null) {
         icon = Icons.done_all;
-      // } else {
+        color = Colors.green;
+      } else {
         icon = Icons.done;
-      // }
+      }
 
       // if (content.sequenceNumber <= lastSeen) {
       //   color = AppColors.primary1;
       // } else {
-        color = Colors.grey;
+      // color = Colors.grey;
       // }
     }
 

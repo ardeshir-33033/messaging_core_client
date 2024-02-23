@@ -10,6 +10,7 @@ import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
 import 'package:messaging_core/core/utils/utils.dart';
+import 'package:messaging_core/features/chat/data/data_sources/chat_data_source.dart';
 import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
@@ -86,11 +87,10 @@ class ChatController extends GetxController {
       });
 
       ResponseModel response = await getMessagesUseCase(GetMessagesParams(
-          receiverType: _currentChat!.getReceiverType(),
-          receiverId: _currentChat!.isGroup()
-              ? _currentChat!.id!
-              : AppGlobalData.userId,
-          senderId: _currentChat!.isGroup() ? null : _currentChat!.id!));
+        receiverType: _currentChat!.getReceiverType(),
+        receiverId: _currentChat!.id!,
+        senderId: _currentChat!.isGroup() ? null : AppGlobalData.userId,
+      ));
       if (response.result == ResultEnum.success) {
         messages = response.data;
         messages = messages.reversed.toList();
@@ -122,7 +122,6 @@ class ChatController extends GetxController {
           receiverId: receiverId,
           status: MessageStatus.sending);
       messages.insert(0, content);
-      print(content.contentType);
       update(["messages"]);
 
       ResponseModel response = await sendMessageUsecase(SendMessagesParams(

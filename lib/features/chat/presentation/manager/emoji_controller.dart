@@ -21,7 +21,7 @@ class EmojiController extends GetxController {
       showSendButton = true;
       RecordVoiceController voiceController = Get.find<RecordVoiceController>();
       voiceController.update();
-      update(["send"]);
+      // update(["send"]);
     }
   }
 
