@@ -13,11 +13,13 @@ import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.
 import 'package:messaging_core/features/chat/domain/entities/contact_profile_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
+import 'package:messaging_core/features/chat/presentation/manager/emoji_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/record_voice_controller.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/animated_app_bar.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_box.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/content_date_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/conversation_appbar.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/emoji_picker.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/send_message_widget.dart';
 import 'package:messaging_core/locator.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -43,8 +45,10 @@ class _ChatPageState extends State<ChatPage>
   late AnimationController _replyToAnimationController;
   late OverlayController _overlayController;
   final TextEditingController _sendTextController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   final ChatController controller = locator<ChatController>();
+  final EmojiController emojiController = Get.find<EmojiController>();
 
   final RecordVoiceController voiceController =
       Get.put(RecordVoiceController());
@@ -88,9 +92,14 @@ class _ChatPageState extends State<ChatPage>
   Widget build(BuildContext context) {
     return MyWillPopScope(
       onWillPop: () async {
-        controller.onBackButtonOnChatPage();
+        if (emojiController.emojiShowing) {
+          emojiController.stopShowingEmoji();
+          return false;
+        } else {
+          controller.onBackButtonOnChatPage();
 
-        return true;
+          return true;
+        }
       },
       child: Scaffold(
         body: Column(
@@ -250,6 +259,7 @@ class _ChatPageState extends State<ChatPage>
                                 SendMessageWidget(
                                   textController: _sendTextController,
                                   chat: widget.chat,
+                                  scrollController: _scrollController,
                                   onUpdateScroll: () {
                                     updateScrollToLastMessage();
                                   },
@@ -299,6 +309,10 @@ class _ChatPageState extends State<ChatPage>
                         ),
                       ),
                     ),
+                    EmojiPickerWidget(
+                      textController: _sendTextController,
+                      scrollController: _scrollController,
+                    )
                   ],
                 ),
               ),

@@ -4,11 +4,11 @@ import 'package:messaging_core/app/component/base_bottom_sheets.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
-import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/core/utils/text_utils.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
+import 'package:messaging_core/features/chat/presentation/manager/emoji_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/record_voice_controller.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/attach_file_bottom_sheet_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/conversaion_voice_recording_option_widget.dart';
@@ -20,11 +20,13 @@ class SendMessageWidget extends StatefulWidget {
       {super.key,
       required this.textController,
       required this.chat,
-      required this.onUpdateScroll});
+      required this.onUpdateScroll,
+      required this.scrollController});
 
   final TextEditingController textController;
   final ChatParentClass chat;
   final VoidCallback onUpdateScroll;
+  final ScrollController scrollController;
 
   @override
   State<SendMessageWidget> createState() => _SendMessageWidgetState();
@@ -33,6 +35,7 @@ class SendMessageWidget extends StatefulWidget {
 class _SendMessageWidgetState extends State<SendMessageWidget> {
   RecordVoiceController voiceController = Get.find<RecordVoiceController>();
   final ChatController controller = locator<ChatController>();
+  final EmojiController emojiController = Get.find<EmojiController>();
   final FocusNode focusNode = FocusNode();
 
   @override
@@ -41,6 +44,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
       if (!focusNode.hasFocus) {
         controller.sendUserStoppedTyping();
       } else {
+        emojiController.stopShowingEmoji();
         controller.sendUserTyping();
       }
     });
@@ -94,9 +98,24 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                               ),
                               firstChild: Row(
                                 children: [
-                                  const IconWidget(
-                                    icon: Assets.addSticker,
-                                    size: 30,
+                                  InkWell(
+                                    onTap: () {
+                                      // setState(() {
+                                      emojiController.changeEmojiState();
+                                      if (!emojiController.emojiShowing) {
+                                        WidgetsBinding.instance
+                                            .addPostFrameCallback((_) {
+                                          focusNode.requestFocus();
+                                        });
+                                      } else {
+                                        focusNode.unfocus();
+                                      }
+                                      // });
+                                    },
+                                    child: const IconWidget(
+                                      icon: Assets.addSticker,
+                                      size: 30,
+                                    ),
                                   ),
                                   const SizedBox(width: 5),
                                   InkWell(
@@ -113,6 +132,8 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                                           key: const Key("messageField"),
                                           textCapitalization:
                                               TextCapitalization.sentences,
+                                          scrollController:
+                                              widget.scrollController,
                                           onChanged: (val) {
                                             setState(() {});
                                           },

@@ -18,6 +18,7 @@ import 'package:messaging_core/features/chat/domain/use_cases/edit_message_use_c
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_messages_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/send_messags_use_case.dart';
+import 'package:messaging_core/features/chat/presentation/manager/emoji_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/record_voice_controller.dart';
 import 'package:messaging_core/locator.dart';
 
@@ -53,10 +54,13 @@ class ChatController extends GetxController {
     editingContent = null;
   }
 
-  getAllChats() async {
+  getAllChats({bool showLoading = true}) async {
     try {
-      chatsStatus.loading();
-      update(["allChats"]);
+      if (showLoading) {
+        chatsStatus.loading();
+        update(["allChats"]);
+      }
+      chats = [];
 
       ResponseModel response = await getAllChatsUseCase(null);
       if (response.result == ResultEnum.success) {
@@ -245,10 +249,13 @@ class ChatController extends GetxController {
   }
 
   onBackButtonOnChatPage() {
+    final EmojiController emojiController = Get.find<EmojiController>();
+
     if (isTyping) {
       sendUserStoppedTyping();
     }
-    getAllChats();
+    emojiController.stopShowingEmoji();
+    getAllChats(showLoading: false);
     sendLeaveRoomEvent();
     resetState();
   }
