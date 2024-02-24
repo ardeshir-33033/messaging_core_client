@@ -233,7 +233,7 @@ class ChatBoxState extends State<ChatBox> {
                                         topLeft: const Radius.circular(16))
                                     : BorderRadius.circular(16),
                                 color: isMine
-                                    ? const Color(0xFF48A4F9).withOpacity(0.5)
+                                    ? AppColors.primary1.withOpacity(0.5)
                                     : const Color(0xFFCECECE),
                               ),
                               child: Column(

@@ -81,7 +81,7 @@ class ConversationVoiceRecordingOptionWidget extends StatelessWidget {
       return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(26),
-          color: const Color(0xFF48A4F9),
+          color: AppColors.primary1,
         ),
         child: const Row(
           children: [

@@ -23,8 +23,8 @@ class AppColors {
       950: Color(0xFF050D18),
     },
   );
-  static const int _primary1Value = 0xFF2F80ED;
-  static const Color backGroundWhiteColor =  Color(0xFFFFFFFF);
+  static const int _primary1Value = 0xFF48A4F9;
+  static const Color backGroundWhiteColor = Color(0xFFFFFFFF);
   static Color backGroundSecondaryColor = const Color(0xFFFDFDFD);
 
   ///primary2

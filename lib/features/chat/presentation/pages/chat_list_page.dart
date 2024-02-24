@@ -12,6 +12,7 @@ import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/emoji_controller.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_list_item.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/chat_list_widgets/chat_list_floating_button.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/conversation_skeleton_widget.dart';
 import 'package:messaging_core/locator.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -26,7 +27,6 @@ class ChatListPage extends StatefulWidget {
 class _ChatListPageState extends State<ChatListPage> {
   final ChatController controller = Get.put<ChatController>(locator());
   final EmojiController emojiController = Get.put(EmojiController());
-
 
   connect() {
     locator<MessagingClient>().initState();
@@ -43,6 +43,8 @@ class _ChatListPageState extends State<ChatListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: const ChatListFloatingButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: CustomAppBar(
         haveShadow: false,
         leadingWidth: 40,
