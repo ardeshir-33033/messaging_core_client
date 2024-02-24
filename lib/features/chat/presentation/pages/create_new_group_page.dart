@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:messaging_core/app/component/base_appBar.dart';
 import 'package:messaging_core/app/component/base_bottom_sheets.dart';
+import 'package:messaging_core/app/theme/app_colors.dart';
+import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/theme/constants.dart';
+import 'package:messaging_core/app/widgets/icon_widget.dart';
+import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/core/services/media_handler/image_handler.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/create_group_widgets/bottom_sheet_item.dart';
 
 class CreateNewGroupPage extends StatelessWidget {
-  const CreateNewGroupPage({super.key});
+  CreateNewGroupPage({super.key});
+
+  final TextEditingController textEditingController = TextEditingController();
+  FileModel? groupImage;
+  bool _showCreateGroupButton = false;
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: CustomAppBar(
         haveShadow: false,
         leadingWidth: 40,
@@ -25,59 +34,59 @@ class CreateNewGroupPage extends StatelessWidget {
                 onTap: () {
                   CustomBottomSheet.showSimpleSheet(
                       context,
-                          (context) => Column(
-                        children: [
-                          InkWell(
-                            onTap: () async {
-                              Navigator.pop(context);
-                              groupImage =
-                              await ImageHandler().takePicture();
-                            },
-                            child: BottomSheetItem(
-                              asset: Assets.groupTopicPictureIcon,
-                              title: tr(context).takePhoto,
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          InkWell(
-                            onTap: () async {
-                              Navigator.pop(context);
-                              groupImage = await ImageHandler()
-                                  .selectImageFile(FilePosition.profile);
-                            },
-                            child: BottomSheetItem(
-                              asset: Assets.choosePhotoIcon,
-                              title: tr(context).choosePhoto,
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 32,
-                                  width: 32,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppColors.primary2[100]),
-                                  child: const IconWidget(
-                                    icon: Icons.close,
-                                  ),
+                      (context) => Column(
+                            children: [
+                              InkWell(
+                                onTap: () async {
+                                  Navigator.pop(context);
+                                  groupImage =
+                                      await ImageHandler().takePicture();
+                                },
+                                child: BottomSheetItem(
+                                  asset: Assets.groupTopicPictureIcon,
+                                  title: tr(context).takePhoto,
                                 ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  tr(context).cancel,
-                                  style: AppTextStyles.body2.copyWith(
-                                      color: AppColors.primary1),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      ));
+                              ),
+                              const SizedBox(height: 24),
+                              InkWell(
+                                onTap: () async {
+                                  Navigator.pop(context);
+                                  groupImage =
+                                      await ImageHandler().selectImageFile();
+                                },
+                                child: BottomSheetItem(
+                                  asset: Assets.choosePhotoIcon,
+                                  title: tr(context).choosePhoto,
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 32,
+                                      width: 32,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: AppColors.primary2[100]),
+                                      child: const IconWidget(
+                                        icon: Icons.close,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      tr(context).cancel,
+                                      style: AppTextStyles.body2
+                                          .copyWith(color: AppColors.primary1),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ));
                 },
                 child: Container(
                   width: 40,
@@ -90,16 +99,15 @@ class CreateNewGroupPage extends StatelessWidget {
               ),
               const SizedBox(width: 5),
               Expanded(
-                child: TextFieldWidget(
+                child: TextField(
                   key: const Key("groupNameInput"),
-                  controller: _textController,
-                  verticalPadding: 10,
-                  textInputType: TextInputType.name,
-                  customDecoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 0),
+                  controller: textEditingController,
+                  keyboardType: TextInputType.name,
+                  decoration: InputDecoration(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                     border: InputBorder.none,
-                    hintText: tr(context).createATopic,
+                    hintText: tr(context).groupName,
                     hintStyle: AppTextStyles.overline2.copyWith(
                       color: const Color(0xff4E5670),
                       fontWeight: FontWeight.w400,
@@ -107,19 +115,18 @@ class CreateNewGroupPage extends StatelessWidget {
                     ),
                   ),
                   onChanged: (val) {
-                    if (val.isEmpty) {
-                      _showAddSubscriberButton = false;
-                      setState(() {});
-                    } else {
-                      _showAddSubscriberButton = true;
-                      setState(() {});
-                    }
+                    // if (val.isEmpty) {
+                    //   _showAddSubscriberButton = false;
+                    //   setState(() {});
+                    // } else {
+                    //   _showAddSubscriberButton = true;
+                    //   setState(() {});
+                    // }
                   },
                 ),
               ),
             ],
           ),
-
         ],
       ),
     );
