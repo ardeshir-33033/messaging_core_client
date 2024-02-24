@@ -66,5 +66,6 @@
   "close": "Close",
   "createGroupTitle": "Create New Group",
   "choosePhoto": "Choose photo",
-  "takePhoto": "Take photo"
+  "takePhoto": "Take photo",
+  "test": "Test"
 }
