@@ -63,5 +63,8 @@
   "rejectWithMessage": "Reject with message",
   "iCantTalkNow": "I Cant’t talk now",
   "editMessage":"Edit Message",
-  "close": "Close"
+  "close": "Close",
+  "createGroupTitle": "Create New Group",
+  "choosePhoto": "Choose photo",
+  "takePhoto": "Take photo"
 }

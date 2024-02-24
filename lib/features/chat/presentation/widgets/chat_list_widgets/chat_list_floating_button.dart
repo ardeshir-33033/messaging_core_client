@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
-import 'package:messaging_core/app/theme/theme_service.dart';
 
 class ChatListFloatingButton extends StatelessWidget {
   const ChatListFloatingButton({super.key});
