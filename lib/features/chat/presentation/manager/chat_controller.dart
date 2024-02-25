@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:api_handler/api_handler.dart';
 import 'package:api_handler/feature/api_handler/data/models/response_model.dart';
 import 'package:get/get.dart';
@@ -10,12 +12,13 @@ import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
 import 'package:messaging_core/core/utils/utils.dart';
-import 'package:messaging_core/features/chat/data/data_sources/chat_data_source.dart';
+import 'package:messaging_core/features/chat/data/models/create_group_model.dart';
 import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
 import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_payload_model.dart';
+import 'package:messaging_core/features/chat/domain/use_cases/create_group_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/edit_message_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_messages_use_case.dart';
@@ -29,10 +32,16 @@ class ChatController extends GetxController {
   final GetMessagesUseCase getMessagesUseCase;
   final SendMessagesUseCase sendMessageUsecase;
   final EditMessagesUseCase editMessagesUseCase;
+  final CreateGroupUseCase createGroupUseCase;
   final MessagingClient messagingClient;
 
-  ChatController(this.getAllChatsUseCase, this.getMessagesUseCase,
-      this.sendMessageUsecase, this.messagingClient, this.editMessagesUseCase);
+  ChatController(
+      this.getAllChatsUseCase,
+      this.getMessagesUseCase,
+      this.sendMessageUsecase,
+      this.messagingClient,
+      this.editMessagesUseCase,
+      this.createGroupUseCase);
 
   RequestStatus chatsStatus = RequestStatus();
   RequestStatus messagesStatus = RequestStatus();
@@ -149,6 +158,17 @@ class ChatController extends GetxController {
       }
     } catch (e) {
       print("----${e.toString()}----");
+    }
+  }
+
+  Future<ResponseModel> createNewGroup(
+      String groupName, List<int> users, FileModel? file) async {
+    try {
+      ResponseModel response = await createGroupUseCase(
+          CreateGroupParams(groupName: groupName, users: users, file: file));
+      return response;
+    } catch (e) {
+      return ResponseModel(result: ResultEnum.error);
     }
   }
 

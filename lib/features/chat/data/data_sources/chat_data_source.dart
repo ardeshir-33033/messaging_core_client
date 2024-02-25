@@ -154,7 +154,8 @@ class ChatDataSourceImpl extends ChatDataSource {
       'users': users,
       'category_id': AppGlobalData.categoryId,
       'creator_user_id': AppGlobalData.userId,
-    });
+    }, ListFormat.multiCompatible);
+
     ResponseModel response = await api.post(
       ChatGroupRouting.createChat,
       body: data,

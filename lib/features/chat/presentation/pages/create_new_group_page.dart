@@ -1,4 +1,7 @@
+import 'package:api_handler/api_handler.dart';
+import 'package:api_handler/feature/api_handler/data/models/response_model.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:messaging_core/app/component/TextFieldWidget.dart';
 import 'package:messaging_core/app/component/base_appBar.dart';
 import 'package:messaging_core/app/component/base_bottom_sheets.dart';
@@ -12,8 +15,11 @@ import 'package:messaging_core/core/app_states/SelectableModel.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/core/services/media_handler/image_handler.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
+import 'package:messaging_core/features/chat/data/models/create_group_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
+import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
+import 'package:messaging_core/features/chat/presentation/pages/chat_page.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/create_group_widgets/bottom_sheet_item.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/create_group_widgets/row_user_profile_widget.dart';
 import 'package:messaging_core/locator.dart';
@@ -29,10 +35,10 @@ class _CreateNewGroupPageState extends State<CreateNewGroupPage> {
   final TextEditingController textEditingController = TextEditingController();
 
   FileModel? groupImage;
-  bool _showCreateGroupButton = false;
   bool loading = false;
   final ChatController controller = locator<ChatController>();
   late List<SelectableModel<CategoryUser>> users;
+  List<CategoryUser> selectedUsers = [];
 
   @override
   void initState() {
@@ -188,7 +194,30 @@ class _CreateNewGroupPageState extends State<CreateNewGroupPage> {
             ),
             Center(
                 child: MainButton(
-              onPressed: () {},
+              onPressed: () async {
+                if (textEditingController.text.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please fill the group Name");
+                  return;
+                } else {
+                  loading = true;
+                  setState(() {});
+
+                  ResponseModel response = await controller.createNewGroup(
+                      textEditingController.text,
+                      selectedUsers.map((e) => e.id!).toList(),
+                      null);
+                  loading = false;
+                  setState(() {});
+
+                  if (response.result == ResultEnum.success) {
+                    CreateGroupModel group = response.data;
+                    navigateToNewPage(group);
+                  } else {
+                    Fluttertoast.showToast(msg: response.message ?? '');
+                  }
+                }
+              },
+              isEnable: selectedUsers.isNotEmpty,
               text: tr(context).create,
               isLoading: loading,
             )),
@@ -201,6 +230,27 @@ class _CreateNewGroupPageState extends State<CreateNewGroupPage> {
 
   void selectUser(SelectableModel<CategoryUser> user) {
     user.toggleSelection();
+    if (user.isSelected) {
+      selectedUsers.add(user.model);
+    } else {
+      selectedUsers.remove(user.model);
+    }
     setState(() {});
+  }
+
+  navigateToNewPage(CreateGroupModel group) {
+    final navigator = Navigator.of(context);
+
+    ChatParentClass chat = ChatParentClass(
+        id: group.group.id,
+        name: group.group.name,
+        avatar: group.group.avatar,
+        creatorUserId: group.group.creatorUserId,
+        categoryId: group.group.creatorUserId,
+        createdAt: group.group.createdAt,
+        updatedAt: group.group.updatedAt,
+        groupUsers: group.groupUsers);
+    navigator.pushReplacement(
+        MaterialPageRoute(builder: (context) => ChatPage(chat: chat)));
   }
 }

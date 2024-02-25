@@ -36,8 +36,12 @@ class GroupModel extends ChatParentClass {
         id: json['id'],
         name: json['name'],
         avatar: json['avatar'],
-        creatorUserId: json['creator_user_id'],
-        categoryId: json['category_id'],
+        creatorUserId: json['creator_user_id'].runtimeType == int
+            ? json['creator_user_id']
+            : int.parse(json['creator_user_id']),
+        categoryId: json['category_id'].runtimeType == int
+            ? json['category_id']
+            : int.parse(json['category_id']),
         unreadCount: json['unreadCount'],
         lastMessage: json["lastMessage"] != null
             ? ContentModel.fromJson(json["lastMessage"])
