@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:messaging_core/app/component/TextFieldWidget.dart';
 import 'package:messaging_core/app/component/base_appBar.dart';
 import 'package:messaging_core/app/component/base_bottom_sheets.dart';
+import 'package:messaging_core/app/component/main_button.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/theme/constants.dart';
@@ -185,6 +186,13 @@ class _CreateNewGroupPageState extends State<CreateNewGroupPage> {
                     );
                   }),
             ),
+            Center(
+                child: MainButton(
+              onPressed: () {},
+              text: tr(context).create,
+              isLoading: loading,
+            )),
+            const SizedBox(height: 10),
           ],
         ),
       ),
