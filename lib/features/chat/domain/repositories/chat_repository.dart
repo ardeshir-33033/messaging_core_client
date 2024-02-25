@@ -10,4 +10,6 @@ abstract class ChatRepository {
   Future<ResponseModel> sendMessages(
       ContentModel contentModel, FileModel? file);
   Future<ResponseModel> editMessages(String newText, int messageId);
+  Future<ResponseModel> createGroup(
+      String groupName, List<int> users, FileModel? file);
 }

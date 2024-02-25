@@ -65,4 +65,18 @@ class ChatRepositoryImpl extends ChatRepository {
       );
     }
   }
+
+  @override
+  Future<ResponseModel> createGroup(
+      String groupName, List<int> users, FileModel? file) async {
+    try {
+      return await _chatDataSource.createGroup(groupName, users, file);
+    } catch (e) {
+      return ResponseModel(
+        statusCode: 510,
+        result: ResultEnum.error,
+        message: e.toString(),
+      );
+    }
+  }
 }

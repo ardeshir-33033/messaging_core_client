@@ -7,4 +7,6 @@ class ChatGroupRouting {
   static String groupChatsInCategory(int category) {
     return "${Environment.apiBaseUrl}/$initial/$path/$category";
   }
+
+  static final String createChat = "${Environment.apiBaseUrl}/$initial";
 }

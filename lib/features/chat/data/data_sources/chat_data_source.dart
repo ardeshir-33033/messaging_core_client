@@ -14,6 +14,7 @@ import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
+import 'package:messaging_core/features/chat/data/models/create_group_model.dart';
 import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/group_model.dart';
@@ -27,6 +28,8 @@ abstract class ChatDataSource {
   Future<ResponseModel> sendMessages(
       ContentModel contentModel, FileModel? file);
   Future<ResponseModel> editMessages(String newText, int messageId);
+  Future<ResponseModel> createGroup(
+      String groupName, List<int> users, FileModel? file);
 }
 
 class ChatDataSourceImpl extends ChatDataSource {
@@ -39,7 +42,8 @@ class ChatDataSourceImpl extends ChatDataSource {
     ResponseModel response = await api.get(
       CategoryRouting.usersInCategory,
       queries: [
-        QueryModel(name: "category_id", value: AppGlobalData.categoryId.toString()),
+        QueryModel(
+            name: "category_id", value: AppGlobalData.categoryId.toString()),
         QueryModel(
             name: 'login_user_id', value: AppGlobalData.userId.toString())
       ],
@@ -136,6 +140,31 @@ class ChatDataSourceImpl extends ChatDataSource {
       responseEnum: ResponseEnum.responseModelEnum,
     );
 
+    return response;
+  }
+
+  @override
+  Future<ResponseModel> createGroup(
+      String groupName, List<int> users, FileModel? file) async {
+    var data = FormData.fromMap({
+      if (file != null)
+        'file': await MultipartFile.fromFile(file.filePath!,
+            filename: file.fileName),
+      'name': groupName,
+      'users': users,
+      'category_id': AppGlobalData.categoryId,
+      'creator_user_id': AppGlobalData.userId,
+    });
+    ResponseModel response = await api.post(
+      ChatGroupRouting.createChat,
+      body: data,
+      headerEnum: HeaderEnum.bearerHeaderEnum,
+      responseEnum: ResponseEnum.responseModelEnum,
+    );
+
+    if (response.result == ResultEnum.success) {
+      response.data = CreateGroupModel.fromJson(response.data);
+    }
     return response;
   }
 }
