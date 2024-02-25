@@ -12,6 +12,7 @@ import 'package:messaging_core/core/services/network/websocket/messaging_client.
 import 'package:messaging_core/core/utils/utils.dart';
 import 'package:messaging_core/features/chat/data/data_sources/chat_data_source.dart';
 import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
+import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_payload_model.dart';
@@ -38,6 +39,7 @@ class ChatController extends GetxController {
 
   List<ChatParentClass> chats = [];
   List<ContentModel> messages = [];
+  List<CategoryUser> users = [];
   bool isTyping = false;
   ContentModel? editingContent;
   late ChatParentClass? _currentChat;
@@ -49,6 +51,7 @@ class ChatController extends GetxController {
 
   resetState() {
     messages = [];
+    users = [];
     _currentChat = null;
     _roomIdentifier = null;
     isTyping = false;
@@ -62,10 +65,13 @@ class ChatController extends GetxController {
         update(["allChats"]);
       }
       chats = [];
+      users = [];
 
       ResponseModel response = await getAllChatsUseCase(null);
       if (response.result == ResultEnum.success) {
         UsersAndGroupsInCategory usersAndGroupsInCategory = response.data;
+
+        users.addAll(usersAndGroupsInCategory.users);
 
         chats.addAll(usersAndGroupsInCategory.users);
         chats.addAll(usersAndGroupsInCategory.groups);

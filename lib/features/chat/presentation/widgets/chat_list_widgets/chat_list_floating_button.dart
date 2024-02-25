@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
+import 'package:messaging_core/features/chat/presentation/pages/create_new_group_page.dart';
 
 class ChatListFloatingButton extends StatelessWidget {
   const ChatListFloatingButton({super.key});
@@ -7,7 +8,10 @@ class ChatListFloatingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => CreateNewGroupPage()));
+      },
       elevation: 0,
       backgroundColor: Colors.transparent,
       foregroundColor: Colors.red,

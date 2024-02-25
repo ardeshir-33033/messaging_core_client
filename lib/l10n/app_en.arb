@@ -67,5 +67,6 @@
   "createGroupTitle": "Create New Group",
   "choosePhoto": "Choose photo",
   "takePhoto": "Take photo",
-  "groupName": "Group Name"
+  "groupName": "Group Name",
+
 }

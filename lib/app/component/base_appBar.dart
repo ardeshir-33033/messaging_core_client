@@ -41,29 +41,32 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      title: title == null
-          ? null
-          : Text(
-              title ?? "",
-            ),
-      titleTextStyle: textStyle ?? AppTextStyles.subtitle4,
-      toolbarHeight: height ?? 56,
-      backgroundColor: color ?? AppColors.neutral[800],
-      centerTitle: true,
-      actions: actions,
-      leadingWidth: leadingWidth,
-      leading: onPressBack == null
-          ? leadingWidget
-          : IconWidget(
-              onPressed: onPressBack,
-              height: 20,
-              width: 20,
-              size: 14,
-              borderRadius: 100,
-              icon: Assets.arrowLeftIcon,
-            ),
-      elevation: haveShadow ? 1 : 0,
+    return Theme(
+      data: ThemeData(useMaterial3:  false),
+      child: AppBar(
+        title: title == null
+            ? null
+            : Text(
+                title ?? "",
+              ),
+        titleTextStyle: textStyle ?? AppTextStyles.subtitle4,
+        toolbarHeight: height ?? 56,
+        backgroundColor: color ?? AppColors.neutral[800],
+        centerTitle: true,
+        actions: actions,
+        leadingWidth: leadingWidth,
+        leading: onPressBack == null
+            ? leadingWidget
+            : IconWidget(
+                onPressed: onPressBack,
+                height: 20,
+                width: 20,
+                size: 14,
+                borderRadius: 100,
+                icon: Assets.arrowLeftIcon,
+              ),
+        elevation: haveShadow ? 1 : 0,
+      ),
     );
   }
 

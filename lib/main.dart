@@ -107,6 +107,7 @@ class _ChooseUserPageState extends State<ChooseUserPage> {
     return Scaffold(
       appBar: const CustomAppBar(
         title: "Choose User",
+        haveShadow: false,
       ),
       body: Column(
         children: [

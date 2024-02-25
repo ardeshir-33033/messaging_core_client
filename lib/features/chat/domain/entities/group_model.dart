@@ -39,9 +39,13 @@ class GroupModel extends ChatParentClass {
         creatorUserId: json['creator_user_id'],
         categoryId: json['category_id'],
         unreadCount: json['unreadCount'],
-        lastRead: ContentModel.fromJson(json["lastRead"]),
-        lastMessage: ContentModel.fromJson(json["lastMessage"]),
+        lastMessage: json["lastMessage"] != null
+            ? ContentModel.fromJson(json["lastMessage"])
+            : null,
         groupUsers: GroupUsersModel.listFromJson(json['users']),
+        lastRead: json["lastRead"] != null
+            ? ContentModel.fromJson(json["lastRead"])
+            : null,
         createdAt: DateTime.parse(json['created_at']),
         updatedAt: DateTime.parse(json['updated_at']));
   }

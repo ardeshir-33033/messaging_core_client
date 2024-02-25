@@ -6,6 +6,7 @@ import 'package:messaging_core/app/theme/constants.dart';
 
 class Themes {
   static final light = ThemeData(
+    // useMaterial3: false,
       fontFamily: Assets.fontFamily,
       scaffoldBackgroundColor: AppColors.backGroundWhiteColor,
       pageTransitionsTheme: PageTransitionsTheme(

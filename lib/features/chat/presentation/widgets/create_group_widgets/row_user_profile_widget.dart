@@ -136,11 +136,14 @@ class _RowUserProfileWidgetState extends State<RowUserProfileWidget>
                   child: widget.isMultiSelect
                       ? Checkbox(
                           value: widget.isSelected,
-                          checkColor: Colors.white,
+                          checkColor: Colors.blue,
                           fillColor: MaterialStateProperty.resolveWith(
                             (Set states) {
-                              return AppColors.primary1[450];
+                              return Colors.white;
                             },
+                          ),
+                          side: MaterialStateBorderSide.resolveWith(
+                            (states) => const BorderSide(color: Colors.grey),
                           ),
                           onChanged: null,
                         )
