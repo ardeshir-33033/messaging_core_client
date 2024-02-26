@@ -55,7 +55,7 @@ class ChatListItemState extends State<ChatListItem> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  (widget.chat.lastMessage?.updatedAt.messageFormat()) ??
+                  (widget.chat.lastMessage?.updatedAt.getContentDateFromNow()) ??
                       'No last Date',
                   style: AppTextStyles.overline2
                       .copyWith(color: AppColors.primary3),

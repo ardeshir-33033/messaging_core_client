@@ -79,9 +79,15 @@ extension DateTimeEx on DateTime {
       }
       return "${DateTimeUtils.getMonthList()[month - 1]} $day";
     }
-    if (now.month == month && year == now.year && day == now.day) {
-      return "Today";
+    if (now.month == month && year == now.year) {
+      if (now.day == day) {
+        return "Today";
+      }
+      if (differenceDuration == const Duration(days: 1)) {
+        return "Yesterday";
+      }
     }
+
     return "${DateTimeUtils.getMonthList()[month - 1]} $day";
   }
 }
