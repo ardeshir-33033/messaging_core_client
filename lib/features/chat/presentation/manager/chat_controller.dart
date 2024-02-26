@@ -89,6 +89,7 @@ class ChatController extends GetxController {
                 DateTime(1998))
             .compareTo(
                 ((a.updatedAt ?? a.lastMessage?.updatedAt) ?? DateTime(1998))));
+        addStarChat();
 
         chatsStatus.success();
         update(["allChats"]);
@@ -227,6 +228,13 @@ class ChatController extends GetxController {
     print("---------$_roomIdentifier ----");
 
     messagingClient.sendJoinRoom(_roomIdentifier!);
+  }
+
+  addStarChat() {
+    chats.add(ChatParentClass(
+      id: AppGlobalData.userId,
+      name: "Starred Chat",
+    ));
   }
 
   handleReceivedMessages(Map<String, dynamic> json, String roomIdentifier) {
