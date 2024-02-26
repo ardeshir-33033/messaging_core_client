@@ -10,9 +10,10 @@ import 'package:messaging_core/core/services/media_handler/media_progress_data.d
 import 'package:messaging_core/core/services/network/http_helper.dart';
 import 'package:messaging_core/core/utils/utils.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
- class MediaHandler {
+class MediaHandler {
   StreamController<MediaProgressData> progressController =
       StreamController.broadcast();
 
@@ -161,6 +162,28 @@ import 'package:path_provider/path_provider.dart';
     } catch (e) {
       return false;
     }
+  }
+
+  Future<File> fileFromUrl(String url) async {
+    final Response res = await Dio().get<List<int>>(
+      url,
+      options: Options(
+        responseType: ResponseType.bytes,
+      ),
+    );
+
+    /// Get App local storage
+    final Directory appDir = await getApplicationDocumentsDirectory();
+
+    /// Generate Image Name
+    final String imageName = url.split('/').last;
+
+    /// Create Empty File in app dir & fill with new image
+    final File file = File(join(appDir.path, imageName));
+
+    file.writeAsBytesSync(res.data as List<int>);
+
+    return file;
   }
   //
   // sendMedia(String channelId, FileModel fileModel, {String? caption}) async {

@@ -230,6 +230,38 @@ class ChatController extends GetxController {
     messagingClient.sendJoinRoom(_roomIdentifier!);
   }
 
+  Future<bool> starMessage(
+      String text,
+      int receiverId,
+      ContentTypeEnum? contentType,
+      FileModel? file,
+      ContentPayloadModel? contentPayload) async {
+    int uniqueId = generateUniqueId();
+    ContentModel content = ContentModel(
+      contentId: uniqueId,
+      senderId: AppGlobalData.userId,
+      receiverType: ReceiverType.user,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      contentType: contentType ?? ContentTypeEnum.text,
+      contentPayload: contentPayload,
+      messageText: text,
+      filePath: file?.filePath,
+      categoryId: AppGlobalData.categoryId,
+      receiverId: receiverId,
+    );
+
+    ResponseModel response = await sendMessageUsecase(SendMessagesParams(
+      contentModel: content,
+      file: file,
+    ));
+    if (response.result == ResultEnum.success) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   addStarChat() {
     chats.add(ChatParentClass(
       id: AppGlobalData.userId,

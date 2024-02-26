@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'package:messaging_core/core/enums/file_type.dart';
+
+// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:messaging_core/app/component/base_bottom_sheets.dart';
@@ -12,6 +16,8 @@ import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/enums/message_status.dart';
+import 'package:messaging_core/core/services/media_handler/file_model.dart';
+import 'package:messaging_core/core/services/media_handler/media_handler.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/core/utils/text_utils.dart';
 import 'package:messaging_core/core/utils/utils.dart';
@@ -105,6 +111,7 @@ class ChatBoxState extends State<ChatBox> {
       onReply: _onReply,
       onReport: _onReport,
       onEdit: _onEdit,
+      onStar: _onStar,
 
       // onSaveImage: _onSaveImage,
       isMine: isMine,
@@ -521,6 +528,28 @@ class ChatBoxState extends State<ChatBox> {
     // currentChannelContentProvider.deleteUnsentMessage(widget.content);
   }
 
+  Future<void> _onStar() async {
+    _hideBox();
+    FileModel? fileModel;
+    if (widget.content.filePath != null) {
+      File file = await MediaHandler().fileFromUrl(widget.content.filePath!);
+
+      fileModel = FileModel(
+          formData: await File(file.path).readAsBytes(),
+          filePath: file.path,
+          fileName: widget.content.messageText);
+    }
+    bool result = await controller.starMessage(
+        widget.content.messageText,
+        AppGlobalData.userId,
+        widget.content.contentType,
+        widget.content.filePath != null ? fileModel : null,
+        widget.content.contentPayload);
+    if (result) {
+      Fluttertoast.showToast(msg: "Successful");
+    }
+  }
+
   Future<void> _onDeleteLocal() async {
     _hideBox();
     // CurrentChannelContentProvider currentChannelContentProvider =
@@ -573,22 +602,5 @@ class ChatBoxState extends State<ChatBox> {
     // } else {
     //   Fluttertoast.showToast(msg: "first Download the file to save it.");
     // }
-  }
-
-  Widget _noProfileImage(context, int userId, String name, double size) {
-    return Container(
-      height: size ?? 50,
-      width: size ?? 50,
-      decoration:
-          BoxDecoration(shape: BoxShape.circle, color: userId.colorFromId()),
-      child: Center(
-        child: Text(
-          (name?.length ?? 0) > 0
-              ? name?.substring(0, 1).toUpperCase() ?? "A"
-              : "A",
-          style: AppTextStyles.caption2.copyWith(color: Colors.white),
-        ),
-      ),
-    );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
+import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
@@ -26,6 +27,7 @@ class ChatListItemState extends State<ChatListItem> {
   @override
   Widget build(BuildContext context) {
     String? subtitle = _subtitleText(context);
+    bool isStarredChat = widget.chat.id! == AppGlobalData.userId;
     return InkWell(
       onTap: widget.onTap ??
           () async {
@@ -43,7 +45,11 @@ class ChatListItemState extends State<ChatListItem> {
                   chat: widget.chat,
                   size: 50,
                   titleStyle: AppTextStyles.subtitle5,
-                  subTitle: subtitle == "" ? tr(context).noMessage : subtitle,
+                  subTitle: isStarredChat
+                      ? null
+                      : subtitle == ""
+                          ? tr(context).noMessage
+                          : subtitle,
                   subtitleStyle: AppTextStyles.description2.copyWith(
                     color: AppColors.primaryBlack,
                   )),
@@ -54,12 +60,14 @@ class ChatListItemState extends State<ChatListItem> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  (widget.chat.lastMessage?.updatedAt.getContentDateFromNow()) ??
-                      'No last Date',
-                  style: AppTextStyles.overline2
-                      .copyWith(color: AppColors.primary3),
-                ),
+                if (!isStarredChat)
+                  Text(
+                    (widget.chat.lastMessage?.updatedAt
+                            .getContentDateFromNow()) ??
+                        'No last Date',
+                    style: AppTextStyles.overline2
+                        .copyWith(color: AppColors.primary3),
+                  ),
                 (widget.chat.unreadCount ?? 0) > 0
                     ? Container(
                         margin: const EdgeInsets.only(top: 2),
