@@ -449,15 +449,6 @@ class ChatBoxState extends State<ChatBox> {
         ),
         mainTaskText: tr(context).yesReport,
         mainTask: () {
-          // AnalyticsStatics().setAnalyticLog(
-          //   "reportMessage",
-          //   {
-          //     "contentId": widget.content.contentId,
-          //     "channelId": widget.content.channelId,
-          //     "sequence": widget.content.sequenceNumber,
-          //     "time": DateTime.now().toString()
-          //   },
-          // );
           Fluttertoast.showToast(
               msg: 'We review your report as soon as possible');
           Navigator.pop(context);
