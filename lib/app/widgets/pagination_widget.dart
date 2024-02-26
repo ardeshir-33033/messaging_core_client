@@ -47,11 +47,11 @@ class _PaginationWidgetState<T extends Object, W extends PaginationWidget<T>>
     if (offset == 0) {
       offset++;
     }
-    postFrameCallback(() {
-      if (widget.fetchOnInit) {
-        onRefresh();
-      }
-    });
+    // postFrameCallback(() {
+    //   if (widget.fetchOnInit) {
+    //     onRefresh();
+    //   }
+    // });
   }
 
   @override

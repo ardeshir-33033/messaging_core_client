@@ -85,6 +85,11 @@ class ChatController extends GetxController {
         chats.addAll(usersAndGroupsInCategory.users);
         chats.addAll(usersAndGroupsInCategory.groups);
 
+        chats.sort((a, b) => ((b.updatedAt ?? b.lastMessage?.updatedAt) ??
+                DateTime(1998))
+            .compareTo(
+                ((a.updatedAt ?? a.lastMessage?.updatedAt) ?? DateTime(1998))));
+
         chatsStatus.success();
         update(["allChats"]);
       }

@@ -1,3 +1,5 @@
+import 'package:messaging_core/core/enums/content_type_enum.dart';
+import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/group_users_model.dart';
@@ -28,7 +30,7 @@ class GroupModel extends ChatParentClass {
           unreadCount: unreadCount,
           lastRead: lastRead,
           groupUsers: groupUsers,
-          lastMessage: lastRead,
+          lastMessage: lastMessage,
         );
 
   static GroupModel fromJson(Map<String, dynamic> json) {

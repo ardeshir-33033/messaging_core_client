@@ -83,7 +83,7 @@ class _ChatListPageState extends State<ChatListPage> {
                         ),
                       ),
                       onRefresh: (limit, offset) async {
-                        // await controller.getAllChats();
+                        await controller.getAllChats();
                       },
                       onLoading: (limit, offset) async {
                         // await channelProvider.setChannels(limit, offset);
