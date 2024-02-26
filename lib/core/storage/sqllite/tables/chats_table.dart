@@ -7,7 +7,7 @@ class ChatsTable extends Table {
 
   IntColumn get categoryId => integer()();
 
-  IntColumn get level => integer()();
+  IntColumn get level => integer().nullable()();
 
   TextColumn get name => text().nullable()();
 

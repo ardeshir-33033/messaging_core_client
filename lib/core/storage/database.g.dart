@@ -29,8 +29,8 @@ class $ChatsTableTable extends ChatsTable
   static const VerificationMeta _levelMeta = const VerificationMeta('level');
   @override
   late final GeneratedColumn<int> level = GeneratedColumn<int>(
-      'level', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      'level', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -109,8 +109,6 @@ class $ChatsTableTable extends ChatsTable
     if (data.containsKey('level')) {
       context.handle(
           _levelMeta, level.isAcceptableOrUnknown(data['level']!, _levelMeta));
-    } else if (isInserting) {
-      context.missing(_levelMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
@@ -152,7 +150,7 @@ class $ChatsTableTable extends ChatsTable
       categoryId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}category_id'])!,
       level: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}level'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}level']),
       name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name']),
       avatar: attachedDatabase.typeMapping
@@ -178,7 +176,7 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
   final int id;
   final int creatorUserId;
   final int categoryId;
-  final int level;
+  final int? level;
   final String? name;
   final String? avatar;
   final String? username;
@@ -189,7 +187,7 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
       {required this.id,
       required this.creatorUserId,
       required this.categoryId,
-      required this.level,
+      this.level,
       this.name,
       this.avatar,
       this.username,
@@ -202,7 +200,9 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
     map['id'] = Variable<int>(id);
     map['creator_user_id'] = Variable<int>(creatorUserId);
     map['category_id'] = Variable<int>(categoryId);
-    map['level'] = Variable<int>(level);
+    if (!nullToAbsent || level != null) {
+      map['level'] = Variable<int>(level);
+    }
     if (!nullToAbsent || name != null) {
       map['name'] = Variable<String>(name);
     }
@@ -229,7 +229,8 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
       id: Value(id),
       creatorUserId: Value(creatorUserId),
       categoryId: Value(categoryId),
-      level: Value(level),
+      level:
+          level == null && nullToAbsent ? const Value.absent() : Value(level),
       name: name == null && nullToAbsent ? const Value.absent() : Value(name),
       avatar:
           avatar == null && nullToAbsent ? const Value.absent() : Value(avatar),
@@ -254,7 +255,7 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
       id: serializer.fromJson<int>(json['id']),
       creatorUserId: serializer.fromJson<int>(json['creatorUserId']),
       categoryId: serializer.fromJson<int>(json['categoryId']),
-      level: serializer.fromJson<int>(json['level']),
+      level: serializer.fromJson<int?>(json['level']),
       name: serializer.fromJson<String?>(json['name']),
       avatar: serializer.fromJson<String?>(json['avatar']),
       username: serializer.fromJson<String?>(json['username']),
@@ -270,7 +271,7 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
       'id': serializer.toJson<int>(id),
       'creatorUserId': serializer.toJson<int>(creatorUserId),
       'categoryId': serializer.toJson<int>(categoryId),
-      'level': serializer.toJson<int>(level),
+      'level': serializer.toJson<int?>(level),
       'name': serializer.toJson<String?>(name),
       'avatar': serializer.toJson<String?>(avatar),
       'username': serializer.toJson<String?>(username),
@@ -284,7 +285,7 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
           {int? id,
           int? creatorUserId,
           int? categoryId,
-          int? level,
+          Value<int?> level = const Value.absent(),
           Value<String?> name = const Value.absent(),
           Value<String?> avatar = const Value.absent(),
           Value<String?> username = const Value.absent(),
@@ -295,7 +296,7 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
         id: id ?? this.id,
         creatorUserId: creatorUserId ?? this.creatorUserId,
         categoryId: categoryId ?? this.categoryId,
-        level: level ?? this.level,
+        level: level.present ? level.value : this.level,
         name: name.present ? name.value : this.name,
         avatar: avatar.present ? avatar.value : this.avatar,
         username: username.present ? username.value : this.username,
@@ -343,7 +344,7 @@ class ChatsTableCompanion extends UpdateCompanion<ChatsTableData> {
   final Value<int> id;
   final Value<int> creatorUserId;
   final Value<int> categoryId;
-  final Value<int> level;
+  final Value<int?> level;
   final Value<String?> name;
   final Value<String?> avatar;
   final Value<String?> username;
@@ -366,7 +367,7 @@ class ChatsTableCompanion extends UpdateCompanion<ChatsTableData> {
     this.id = const Value.absent(),
     required int creatorUserId,
     required int categoryId,
-    required int level,
+    this.level = const Value.absent(),
     this.name = const Value.absent(),
     this.avatar = const Value.absent(),
     this.username = const Value.absent(),
@@ -374,8 +375,7 @@ class ChatsTableCompanion extends UpdateCompanion<ChatsTableData> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   })  : creatorUserId = Value(creatorUserId),
-        categoryId = Value(categoryId),
-        level = Value(level);
+        categoryId = Value(categoryId);
   static Insertable<ChatsTableData> custom({
     Expression<int>? id,
     Expression<int>? creatorUserId,
@@ -406,7 +406,7 @@ class ChatsTableCompanion extends UpdateCompanion<ChatsTableData> {
       {Value<int>? id,
       Value<int>? creatorUserId,
       Value<int>? categoryId,
-      Value<int>? level,
+      Value<int?>? level,
       Value<String?>? name,
       Value<String?>? avatar,
       Value<String?>? username,
