@@ -56,16 +56,16 @@ class ChatParentClass {
       status: chat.status,
       level: chat.level);
 
-  ChatsTableCompanion toChatTableData() => ChatsTableCompanion(
-      id: Value(id!),
-      name: Value(name!),
-      createdAt: Value(createdAt),
-      updatedAt: Value(updatedAt),
-      avatar: Value(avatar),
-      categoryId: Value(categoryId ?? AppGlobalData.categoryId),
-      creatorUserId: Value(creatorUserId!),
-      status: Value(status),
-      level: Value(level ?? 1));
+  ChatsTableData toChatTableData() => ChatsTableData(
+      id: id!,
+      name: (name!),
+      createdAt: (createdAt),
+      updatedAt: (updatedAt),
+      avatar: (avatar),
+      categoryId: (categoryId ?? AppGlobalData.categoryId),
+      creatorUserId: (creatorUserId),
+      status: (status),
+      level: (level ?? 1));
 
   bool isGroup() => creatorUserId != null;
 

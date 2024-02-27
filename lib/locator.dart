@@ -2,11 +2,15 @@ import 'package:api_handler/feature/api_handler/presentation/presentation_usecas
 import 'package:get_it/get_it.dart';
 import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
 import 'package:messaging_core/core/services/network/websocket/web_socket_connection.dart';
+import 'package:messaging_core/core/storage/database.dart';
+import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/data/data_sources/chat_data_source.dart';
 import 'package:messaging_core/features/chat/data/repositories/chat_repository_impl.dart';
 import 'package:messaging_core/features/chat/data/repositories/contacts_repository_impl.dart';
+import 'package:messaging_core/features/chat/data/repositories/storage/chat_storage_repository_impl.dart';
 import 'package:messaging_core/features/chat/domain/repositories/chat_repository.dart';
 import 'package:messaging_core/features/chat/domain/repositories/contact_repository.dart';
+import 'package:messaging_core/features/chat/domain/repositories/storage/chat_storage_repository.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/create_group_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/edit_message_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
@@ -35,6 +39,8 @@ void dataInjection() {
       .registerLazySingleton<WebSocketConnection>(() => WebSocketConnection());
   locator
       .registerLazySingleton<MessagingClient>(() => MessagingClient(locator()));
+  locator
+      .getOrRegisterSingleton<SQLiteLocalStorage>(() => SQLiteLocalStorage());
 }
 
 void repositoryInjection() {
@@ -42,6 +48,8 @@ void repositoryInjection() {
       () => ChatRepositoryImpl(locator()));
   locator
       .registerLazySingleton<ContactsRepository>(() => ContactRepositoryImpl());
+  locator.getOrRegisterFactory<ChatStorageRepository>(
+      () => ChatStorageRepositoryImpl(database: locator.call()));
 }
 
 void useCaseInjection() {
@@ -60,7 +68,7 @@ void useCaseInjection() {
 }
 
 void controllerInjection() {
-  locator.registerLazySingleton<ChatController>(() => ChatController(
+  locator.registerLazySingleton<ChatController>(() => ChatController(locator(),
       locator(), locator(), locator(), locator(), locator(), locator()));
   locator.registerLazySingleton<ContactsController>(
       () => ContactsController(locator()));

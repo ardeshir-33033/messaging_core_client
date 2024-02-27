@@ -3,7 +3,7 @@ import 'package:drift/drift.dart';
 class ChatsTable extends Table {
   IntColumn get id => integer()();
 
-  IntColumn get creatorUserId => integer()();
+  IntColumn get creatorUserId => integer().nullable()();
 
   IntColumn get categoryId => integer()();
 

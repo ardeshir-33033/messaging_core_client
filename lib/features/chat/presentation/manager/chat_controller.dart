@@ -18,6 +18,7 @@ import 'package:messaging_core/features/chat/domain/entities/category_users.dart
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_payload_model.dart';
+import 'package:messaging_core/features/chat/domain/repositories/storage/chat_storage_repository.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/create_group_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/edit_message_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
@@ -33,6 +34,7 @@ class ChatController extends GetxController {
   final SendMessagesUseCase sendMessageUsecase;
   final EditMessagesUseCase editMessagesUseCase;
   final CreateGroupUseCase createGroupUseCase;
+  final ChatStorageRepository chatStorageRepository;
   final MessagingClient messagingClient;
 
   ChatController(
@@ -41,6 +43,7 @@ class ChatController extends GetxController {
       this.sendMessageUsecase,
       this.messagingClient,
       this.editMessagesUseCase,
+      this.chatStorageRepository,
       this.createGroupUseCase);
 
   RequestStatus chatsStatus = RequestStatus();
@@ -90,6 +93,8 @@ class ChatController extends GetxController {
             .compareTo(
                 ((a.updatedAt ?? a.lastMessage?.updatedAt) ?? DateTime(1998))));
         addStarChat();
+
+        chatStorageRepository.saveChats(chats);
 
         chatsStatus.success();
         update(["allChats"]);
