@@ -36,9 +36,20 @@ class ChatStorageRepositoryImpl extends ChatStorageRepository {
   }
 
   @override
-  Future<List<ContentModel>> getMessages() {
-    // TODO: implement getMessages
-    throw UnimplementedError();
+  Future<List<ContentModel>> getMessages(String roomIdentifier) async {
+    final channels = await (database.messageTable.select()
+          ..where((tbl) => tbl.roomIdentifier.equals(roomIdentifier)
+              // ..limit(limit, offset: (offset - 1) * limit)
+              //   ..orderBy([
+              //         (tbl) =>
+              //         OrderingTerm(expression: tbl.updatedAt, mode: OrderingMode.desc)
+              //   ]
+              //   )
+              )
+    )
+        .get();
+    return List<ContentModel>.from(
+        channels.map((data) => ContentModel.fromMessagesTable(data)));
   }
 
   @override
@@ -57,12 +68,14 @@ class ChatStorageRepositoryImpl extends ChatStorageRepository {
   }
 
   @override
-  Future<void> saveMessages(List<ContentModel> messages) async{
+  Future<void> saveMessages(
+      List<ContentModel> messages, String roomIdentifier) async {
     await database.batch((batch) {
-      // batch.insertAllOnConflictUpdate(
-      //   database.messageTable,
-      //   List<MessageTableData>.from(messages.map((chat) => chat.to())),
-      // );
+      batch.insertAllOnConflictUpdate(
+        database.messageTable,
+        List<MessageTableData>.from(
+            messages.map((chat) => chat.toMessagesTableData(roomIdentifier))),
+      );
     });
   }
 }

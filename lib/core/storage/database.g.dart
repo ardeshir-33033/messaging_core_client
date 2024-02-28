@@ -671,6 +671,12 @@ class $MessageTableTable extends MessageTable
   late final GeneratedColumn<String> sender = GeneratedColumn<String>(
       'sender', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _roomIdentifierMeta =
+      const VerificationMeta('roomIdentifier');
+  @override
+  late final GeneratedColumn<String> roomIdentifier = GeneratedColumn<String>(
+      'room_identifier', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _isForwardedMeta =
       const VerificationMeta('isForwarded');
   @override
@@ -710,6 +716,7 @@ class $MessageTableTable extends MessageTable
         messageType,
         filePath,
         sender,
+        roomIdentifier,
         isForwarded,
         createdAt,
         updatedAt,
@@ -782,6 +789,14 @@ class $MessageTableTable extends MessageTable
       context.handle(_senderMeta,
           sender.isAcceptableOrUnknown(data['sender']!, _senderMeta));
     }
+    if (data.containsKey('room_identifier')) {
+      context.handle(
+          _roomIdentifierMeta,
+          roomIdentifier.isAcceptableOrUnknown(
+              data['room_identifier']!, _roomIdentifierMeta));
+    } else if (isInserting) {
+      context.missing(_roomIdentifierMeta);
+    }
     if (data.containsKey('is_forwarded')) {
       context.handle(
           _isForwardedMeta,
@@ -831,6 +846,8 @@ class $MessageTableTable extends MessageTable
           .read(DriftSqlType.string, data['${effectivePrefix}file_path']),
       sender: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}sender']),
+      roomIdentifier: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}room_identifier'])!,
       isForwarded: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_forwarded'])!,
       createdAt: attachedDatabase.typeMapping
@@ -859,6 +876,7 @@ class MessageTableData extends DataClass
   final String messageType;
   final String? filePath;
   final String? sender;
+  final String roomIdentifier;
   final bool isForwarded;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -873,6 +891,7 @@ class MessageTableData extends DataClass
       required this.messageType,
       this.filePath,
       this.sender,
+      required this.roomIdentifier,
       required this.isForwarded,
       required this.createdAt,
       required this.updatedAt,
@@ -893,6 +912,7 @@ class MessageTableData extends DataClass
     if (!nullToAbsent || sender != null) {
       map['sender'] = Variable<String>(sender);
     }
+    map['room_identifier'] = Variable<String>(roomIdentifier);
     map['is_forwarded'] = Variable<bool>(isForwarded);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
@@ -916,6 +936,7 @@ class MessageTableData extends DataClass
           : Value(filePath),
       sender:
           sender == null && nullToAbsent ? const Value.absent() : Value(sender),
+      roomIdentifier: Value(roomIdentifier),
       isForwarded: Value(isForwarded),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
@@ -938,6 +959,7 @@ class MessageTableData extends DataClass
       messageType: serializer.fromJson<String>(json['messageType']),
       filePath: serializer.fromJson<String?>(json['filePath']),
       sender: serializer.fromJson<String?>(json['sender']),
+      roomIdentifier: serializer.fromJson<String>(json['roomIdentifier']),
       isForwarded: serializer.fromJson<bool>(json['isForwarded']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
@@ -957,6 +979,7 @@ class MessageTableData extends DataClass
       'messageType': serializer.toJson<String>(messageType),
       'filePath': serializer.toJson<String?>(filePath),
       'sender': serializer.toJson<String?>(sender),
+      'roomIdentifier': serializer.toJson<String>(roomIdentifier),
       'isForwarded': serializer.toJson<bool>(isForwarded),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
@@ -974,6 +997,7 @@ class MessageTableData extends DataClass
           String? messageType,
           Value<String?> filePath = const Value.absent(),
           Value<String?> sender = const Value.absent(),
+          String? roomIdentifier,
           bool? isForwarded,
           DateTime? createdAt,
           DateTime? updatedAt,
@@ -988,6 +1012,7 @@ class MessageTableData extends DataClass
         messageType: messageType ?? this.messageType,
         filePath: filePath.present ? filePath.value : this.filePath,
         sender: sender.present ? sender.value : this.sender,
+        roomIdentifier: roomIdentifier ?? this.roomIdentifier,
         isForwarded: isForwarded ?? this.isForwarded,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
@@ -1005,6 +1030,7 @@ class MessageTableData extends DataClass
           ..write('messageType: $messageType, ')
           ..write('filePath: $filePath, ')
           ..write('sender: $sender, ')
+          ..write('roomIdentifier: $roomIdentifier, ')
           ..write('isForwarded: $isForwarded, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
@@ -1024,6 +1050,7 @@ class MessageTableData extends DataClass
       messageType,
       filePath,
       sender,
+      roomIdentifier,
       isForwarded,
       createdAt,
       updatedAt,
@@ -1041,6 +1068,7 @@ class MessageTableData extends DataClass
           other.messageType == this.messageType &&
           other.filePath == this.filePath &&
           other.sender == this.sender &&
+          other.roomIdentifier == this.roomIdentifier &&
           other.isForwarded == this.isForwarded &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
@@ -1057,6 +1085,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
   final Value<String> messageType;
   final Value<String?> filePath;
   final Value<String?> sender;
+  final Value<String> roomIdentifier;
   final Value<bool> isForwarded;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
@@ -1071,6 +1100,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     this.messageType = const Value.absent(),
     this.filePath = const Value.absent(),
     this.sender = const Value.absent(),
+    this.roomIdentifier = const Value.absent(),
     this.isForwarded = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -1086,6 +1116,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     required String messageType,
     this.filePath = const Value.absent(),
     this.sender = const Value.absent(),
+    required String roomIdentifier,
     this.isForwarded = const Value.absent(),
     required DateTime createdAt,
     required DateTime updatedAt,
@@ -1096,6 +1127,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
         receiverType = Value(receiverType),
         messageText = Value(messageText),
         messageType = Value(messageType),
+        roomIdentifier = Value(roomIdentifier),
         createdAt = Value(createdAt),
         updatedAt = Value(updatedAt);
   static Insertable<MessageTableData> custom({
@@ -1108,6 +1140,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     Expression<String>? messageType,
     Expression<String>? filePath,
     Expression<String>? sender,
+    Expression<String>? roomIdentifier,
     Expression<bool>? isForwarded,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
@@ -1123,6 +1156,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
       if (messageType != null) 'message_type': messageType,
       if (filePath != null) 'file_path': filePath,
       if (sender != null) 'sender': sender,
+      if (roomIdentifier != null) 'room_identifier': roomIdentifier,
       if (isForwarded != null) 'is_forwarded': isForwarded,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
@@ -1140,6 +1174,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
       Value<String>? messageType,
       Value<String?>? filePath,
       Value<String?>? sender,
+      Value<String>? roomIdentifier,
       Value<bool>? isForwarded,
       Value<DateTime>? createdAt,
       Value<DateTime>? updatedAt,
@@ -1154,6 +1189,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
       messageType: messageType ?? this.messageType,
       filePath: filePath ?? this.filePath,
       sender: sender ?? this.sender,
+      roomIdentifier: roomIdentifier ?? this.roomIdentifier,
       isForwarded: isForwarded ?? this.isForwarded,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -1191,6 +1227,9 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     if (sender.present) {
       map['sender'] = Variable<String>(sender.value);
     }
+    if (roomIdentifier.present) {
+      map['room_identifier'] = Variable<String>(roomIdentifier.value);
+    }
     if (isForwarded.present) {
       map['is_forwarded'] = Variable<bool>(isForwarded.value);
     }
@@ -1218,6 +1257,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
           ..write('messageType: $messageType, ')
           ..write('filePath: $filePath, ')
           ..write('sender: $sender, ')
+          ..write('roomIdentifier: $roomIdentifier, ')
           ..write('isForwarded: $isForwarded, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')

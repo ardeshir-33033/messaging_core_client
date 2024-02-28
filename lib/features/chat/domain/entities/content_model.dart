@@ -84,26 +84,29 @@ class ContentModel {
         isForwarded: data.isForwarded,
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,
+        filePath: data.filePath,
         readAt: data.readedAt,
         sender: data.sender != null
             ? CategoryUser.fromJson(jsonDecode(data.sender!))
             : null);
   }
 
-  MessageTableData toMessagesTableData() => MessageTableData(
-      id: contentId,
-      receiverId: receiverId,
-      categoryId: categoryId,
-      receiverType: receiverType.name,
-      messageText: messageText,
-      senderId: senderId,
-      messageType: contentType.name,
-      isForwarded: isForwarded,
-      filePath: filePath,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
-      readedAt: readAt,
-      sender: sender != null ? jsonEncode(sender!.toJson()) : null);
+  MessageTableData toMessagesTableData(String roomIdentifier) =>
+      MessageTableData(
+          roomIdentifier: roomIdentifier,
+          id: contentId,
+          receiverId: receiverId,
+          categoryId: categoryId,
+          receiverType: receiverType.name,
+          messageText: messageText,
+          senderId: senderId,
+          messageType: contentType.name,
+          isForwarded: isForwarded,
+          filePath: filePath,
+          createdAt: createdAt,
+          updatedAt: updatedAt,
+          readedAt: readAt,
+          sender: sender != null ? jsonEncode(sender!.toJson()) : null);
 
   static ContentModel fromJson(Map<String, dynamic> json,
       {bool mainContent = true}) {

@@ -19,6 +19,8 @@ class MessageTable extends Table {
 
   TextColumn get sender => text().nullable()();
 
+  TextColumn get roomIdentifier => text()();
+
   BoolColumn get isForwarded => boolean().withDefault(const Constant(false))();
 
   DateTimeColumn get createdAt => dateTime()();

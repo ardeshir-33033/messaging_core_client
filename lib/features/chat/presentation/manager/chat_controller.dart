@@ -94,7 +94,8 @@ class ChatController extends GetxController {
                 ((a.updatedAt ?? a.lastMessage?.updatedAt) ?? DateTime(1998))));
         addStarChat();
 
-        chatStorageRepository.saveChats(chats);
+        // chatStorageRepository.saveChats(chats);
+        // chatStorageRepository.getMessages();
 
         chatsStatus.success();
         update(["allChats"]);
@@ -333,5 +334,17 @@ class ChatController extends GetxController {
     getAllChats(showLoading: false);
     sendLeaveRoomEvent();
     resetState();
+  }
+
+  getMessagesTable() async {
+    List<ContentModel> messages =
+        await chatStorageRepository.getMessages(_roomIdentifier!);
+    print(messages);
+  }
+
+  saveMessages() async {
+    print(messages);
+    await chatStorageRepository.saveMessages(messages, _roomIdentifier!);
+    print("nice");
   }
 }
