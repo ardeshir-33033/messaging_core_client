@@ -48,7 +48,7 @@ class CategoryUser extends ChatParentClass {
       status: json['status'],
       email: json['email'],
       statusEmail: json['status_email'],
-      roles: UserRoles.fromList(json['roles']),
+      roles: json['roles'] != null ? UserRoles.fromList(json['roles']) : null,
       unreadCount: json["unreadCount"],
       lastMessage: json["lastMessage"] != null
           ? ContentModel.fromJson(json["lastMessage"])
@@ -69,7 +69,7 @@ class CategoryUser extends ChatParentClass {
     data['status'] = status;
     data['email'] = email;
     data['status_email'] = statusEmail;
-    data['roles'] = roles;
+    // data['roles'] = roles;
     return data;
   }
 

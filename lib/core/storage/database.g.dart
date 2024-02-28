@@ -666,6 +666,21 @@ class $MessageTableTable extends MessageTable
   late final GeneratedColumn<String> filePath = GeneratedColumn<String>(
       'file_path', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _senderMeta = const VerificationMeta('sender');
+  @override
+  late final GeneratedColumn<String> sender = GeneratedColumn<String>(
+      'sender', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _isForwardedMeta =
+      const VerificationMeta('isForwarded');
+  @override
+  late final GeneratedColumn<bool> isForwarded = GeneratedColumn<bool>(
+      'is_forwarded', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("is_forwarded" IN (0, 1))'),
+      defaultValue: const Constant(false));
   static const VerificationMeta _createdAtMeta =
       const VerificationMeta('createdAt');
   @override
@@ -694,6 +709,8 @@ class $MessageTableTable extends MessageTable
         messageText,
         messageType,
         filePath,
+        sender,
+        isForwarded,
         createdAt,
         updatedAt,
         readedAt
@@ -761,6 +778,16 @@ class $MessageTableTable extends MessageTable
       context.handle(_filePathMeta,
           filePath.isAcceptableOrUnknown(data['file_path']!, _filePathMeta));
     }
+    if (data.containsKey('sender')) {
+      context.handle(_senderMeta,
+          sender.isAcceptableOrUnknown(data['sender']!, _senderMeta));
+    }
+    if (data.containsKey('is_forwarded')) {
+      context.handle(
+          _isForwardedMeta,
+          isForwarded.isAcceptableOrUnknown(
+              data['is_forwarded']!, _isForwardedMeta));
+    }
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
@@ -802,6 +829,10 @@ class $MessageTableTable extends MessageTable
           .read(DriftSqlType.string, data['${effectivePrefix}message_type'])!,
       filePath: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}file_path']),
+      sender: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sender']),
+      isForwarded: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_forwarded'])!,
       createdAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
       updatedAt: attachedDatabase.typeMapping
@@ -827,6 +858,8 @@ class MessageTableData extends DataClass
   final String messageText;
   final String messageType;
   final String? filePath;
+  final String? sender;
+  final bool isForwarded;
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? readedAt;
@@ -839,6 +872,8 @@ class MessageTableData extends DataClass
       required this.messageText,
       required this.messageType,
       this.filePath,
+      this.sender,
+      required this.isForwarded,
       required this.createdAt,
       required this.updatedAt,
       this.readedAt});
@@ -855,6 +890,10 @@ class MessageTableData extends DataClass
     if (!nullToAbsent || filePath != null) {
       map['file_path'] = Variable<String>(filePath);
     }
+    if (!nullToAbsent || sender != null) {
+      map['sender'] = Variable<String>(sender);
+    }
+    map['is_forwarded'] = Variable<bool>(isForwarded);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     if (!nullToAbsent || readedAt != null) {
@@ -875,6 +914,9 @@ class MessageTableData extends DataClass
       filePath: filePath == null && nullToAbsent
           ? const Value.absent()
           : Value(filePath),
+      sender:
+          sender == null && nullToAbsent ? const Value.absent() : Value(sender),
+      isForwarded: Value(isForwarded),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
       readedAt: readedAt == null && nullToAbsent
@@ -895,6 +937,8 @@ class MessageTableData extends DataClass
       messageText: serializer.fromJson<String>(json['messageText']),
       messageType: serializer.fromJson<String>(json['messageType']),
       filePath: serializer.fromJson<String?>(json['filePath']),
+      sender: serializer.fromJson<String?>(json['sender']),
+      isForwarded: serializer.fromJson<bool>(json['isForwarded']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       readedAt: serializer.fromJson<DateTime?>(json['readedAt']),
@@ -912,6 +956,8 @@ class MessageTableData extends DataClass
       'messageText': serializer.toJson<String>(messageText),
       'messageType': serializer.toJson<String>(messageType),
       'filePath': serializer.toJson<String?>(filePath),
+      'sender': serializer.toJson<String?>(sender),
+      'isForwarded': serializer.toJson<bool>(isForwarded),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'readedAt': serializer.toJson<DateTime?>(readedAt),
@@ -927,6 +973,8 @@ class MessageTableData extends DataClass
           String? messageText,
           String? messageType,
           Value<String?> filePath = const Value.absent(),
+          Value<String?> sender = const Value.absent(),
+          bool? isForwarded,
           DateTime? createdAt,
           DateTime? updatedAt,
           Value<DateTime?> readedAt = const Value.absent()}) =>
@@ -939,6 +987,8 @@ class MessageTableData extends DataClass
         messageText: messageText ?? this.messageText,
         messageType: messageType ?? this.messageType,
         filePath: filePath.present ? filePath.value : this.filePath,
+        sender: sender.present ? sender.value : this.sender,
+        isForwarded: isForwarded ?? this.isForwarded,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         readedAt: readedAt.present ? readedAt.value : this.readedAt,
@@ -954,6 +1004,8 @@ class MessageTableData extends DataClass
           ..write('messageText: $messageText, ')
           ..write('messageType: $messageType, ')
           ..write('filePath: $filePath, ')
+          ..write('sender: $sender, ')
+          ..write('isForwarded: $isForwarded, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('readedAt: $readedAt')
@@ -971,6 +1023,8 @@ class MessageTableData extends DataClass
       messageText,
       messageType,
       filePath,
+      sender,
+      isForwarded,
       createdAt,
       updatedAt,
       readedAt);
@@ -986,6 +1040,8 @@ class MessageTableData extends DataClass
           other.messageText == this.messageText &&
           other.messageType == this.messageType &&
           other.filePath == this.filePath &&
+          other.sender == this.sender &&
+          other.isForwarded == this.isForwarded &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
           other.readedAt == this.readedAt);
@@ -1000,6 +1056,8 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
   final Value<String> messageText;
   final Value<String> messageType;
   final Value<String?> filePath;
+  final Value<String?> sender;
+  final Value<bool> isForwarded;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   final Value<DateTime?> readedAt;
@@ -1012,6 +1070,8 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     this.messageText = const Value.absent(),
     this.messageType = const Value.absent(),
     this.filePath = const Value.absent(),
+    this.sender = const Value.absent(),
+    this.isForwarded = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.readedAt = const Value.absent(),
@@ -1025,6 +1085,8 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     required String messageText,
     required String messageType,
     this.filePath = const Value.absent(),
+    this.sender = const Value.absent(),
+    this.isForwarded = const Value.absent(),
     required DateTime createdAt,
     required DateTime updatedAt,
     this.readedAt = const Value.absent(),
@@ -1045,6 +1107,8 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     Expression<String>? messageText,
     Expression<String>? messageType,
     Expression<String>? filePath,
+    Expression<String>? sender,
+    Expression<bool>? isForwarded,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<DateTime>? readedAt,
@@ -1058,6 +1122,8 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
       if (messageText != null) 'message_text': messageText,
       if (messageType != null) 'message_type': messageType,
       if (filePath != null) 'file_path': filePath,
+      if (sender != null) 'sender': sender,
+      if (isForwarded != null) 'is_forwarded': isForwarded,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (readedAt != null) 'readed_at': readedAt,
@@ -1073,6 +1139,8 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
       Value<String>? messageText,
       Value<String>? messageType,
       Value<String?>? filePath,
+      Value<String?>? sender,
+      Value<bool>? isForwarded,
       Value<DateTime>? createdAt,
       Value<DateTime>? updatedAt,
       Value<DateTime?>? readedAt}) {
@@ -1085,6 +1153,8 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
       messageText: messageText ?? this.messageText,
       messageType: messageType ?? this.messageType,
       filePath: filePath ?? this.filePath,
+      sender: sender ?? this.sender,
+      isForwarded: isForwarded ?? this.isForwarded,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       readedAt: readedAt ?? this.readedAt,
@@ -1118,6 +1188,12 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     if (filePath.present) {
       map['file_path'] = Variable<String>(filePath.value);
     }
+    if (sender.present) {
+      map['sender'] = Variable<String>(sender.value);
+    }
+    if (isForwarded.present) {
+      map['is_forwarded'] = Variable<bool>(isForwarded.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -1141,6 +1217,8 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
           ..write('messageText: $messageText, ')
           ..write('messageType: $messageType, ')
           ..write('filePath: $filePath, ')
+          ..write('sender: $sender, ')
+          ..write('isForwarded: $isForwarded, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('readedAt: $readedAt')

@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/enums/message_status.dart';
 import 'package:messaging_core/core/enums/receiver_type.dart';
+import 'package:messaging_core/core/storage/database.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_payload_model.dart';
@@ -61,31 +64,46 @@ class ContentModel {
     this.repliedTo = repliedTo;
   }
 
-  // factory ContentModel.fromContentTable(ContentTableData data) => ContentModel(
-  //       channelId: data.channelId,
-  //       timestamp: data.timestamp,
-  //       contentType: data.contentPayload.getContentType(),
-  //       contentPayload: data.contentPayload,
-  //       senderId: data.senderId,
-  //       sequenceNumber: data.sequenceNumber,
-  //       contentId: data.contentId,
-  //       repliedTo: data.repliedTo,
-  //       isForwarded: data.isForwarded,
-  //       status: data.status,
-  //     );
-  //
-  // ContentTableData toContentTableData() => ContentTableData(
-  //       status: status,
-  //       isForwarded: isForwarded,
-  //       repliedTo: repliedTo,
-  //       contentId: contentId,
-  //       sequenceNumber: sequenceNumber,
-  //       senderId: senderId,
-  //       contentPayload: contentPayload,
-  //       contentType: contentType,
-  //       timestamp: timestamp,
-  //       channelId: channelId,
-  //     );
+  factory ContentModel.fromMessagesTable(MessageTableData data) {
+    var contentType = ContentTypeEnum.fromString(data.messageType);
+    var contentPayload =
+        ContentPayloadModel.create(contentType, data.messageText);
+    // ContentModel? repliedTo = (data['repliedTo'] != null)
+    //     ? ContentModel.fromJson(data['repliedTo'], mainContent: false)
+    //     : null;
+
+    return ContentModel(
+        contentId: data.id,
+        receiverId: data.receiverId,
+        contentType: ContentTypeEnum.fromString(data.messageType),
+        contentPayload: contentPayload,
+        senderId: data.senderId,
+        messageText: data.messageText,
+        receiverType: ReceiverType.fromString(data.receiverType),
+        categoryId: data.categoryId,
+        isForwarded: data.isForwarded,
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
+        readAt: data.readedAt,
+        sender: data.sender != null
+            ? CategoryUser.fromJson(jsonDecode(data.sender!))
+            : null);
+  }
+
+  MessageTableData toMessagesTableData() => MessageTableData(
+      id: contentId,
+      receiverId: receiverId,
+      categoryId: categoryId,
+      receiverType: receiverType.name,
+      messageText: messageText,
+      senderId: senderId,
+      messageType: contentType.name,
+      isForwarded: isForwarded,
+      filePath: filePath,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      readedAt: readAt,
+      sender: sender != null ? jsonEncode(sender!.toJson()) : null);
 
   static ContentModel fromJson(Map<String, dynamic> json,
       {bool mainContent = true}) {

@@ -17,6 +17,10 @@ class MessageTable extends Table {
 
   TextColumn get filePath => text().nullable()();
 
+  TextColumn get sender => text().nullable()();
+
+  BoolColumn get isForwarded => boolean().withDefault(const Constant(false))();
+
   DateTimeColumn get createdAt => dateTime()();
 
   DateTimeColumn get updatedAt => dateTime()();

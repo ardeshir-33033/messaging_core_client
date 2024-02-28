@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:messaging_core/core/storage/database.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
+import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/repositories/storage/chat_storage_repository.dart';
 
 class ChatStorageRepositoryImpl extends ChatStorageRepository {
@@ -35,6 +36,12 @@ class ChatStorageRepositoryImpl extends ChatStorageRepository {
   }
 
   @override
+  Future<List<ContentModel>> getMessages() {
+    // TODO: implement getMessages
+    throw UnimplementedError();
+  }
+
+  @override
   Future<void> saveChat(ChatParentClass chat) async {
     await database.chatsTable.insertOnConflictUpdate(chat.toChatTableData());
   }
@@ -46,6 +53,16 @@ class ChatStorageRepositoryImpl extends ChatStorageRepository {
         database.chatsTable,
         List<ChatsTableData>.from(chats.map((chat) => chat.toChatTableData())),
       );
+    });
+  }
+
+  @override
+  Future<void> saveMessages(List<ContentModel> messages) async{
+    await database.batch((batch) {
+      // batch.insertAllOnConflictUpdate(
+      //   database.messageTable,
+      //   List<MessageTableData>.from(messages.map((chat) => chat.to())),
+      // );
     });
   }
 }
