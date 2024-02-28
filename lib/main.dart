@@ -6,7 +6,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:messaging_core/app/component/base_appBar.dart';
-// import 'package:get/get.dart';
 import 'package:messaging_core/app/theme/theme_service.dart';
 import 'package:messaging_core/app/widgets/scroll_behavior.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
@@ -76,7 +75,7 @@ class MyApp extends StatelessWidget {
               ],
             ),
           ),
-          home: ChooseUserPage(),
+          home: const ChooseUserPage(),
         );
       },
     );
@@ -84,7 +83,7 @@ class MyApp extends StatelessWidget {
 }
 
 class ChooseUserPage extends StatefulWidget {
-  ChooseUserPage({super.key});
+  const ChooseUserPage({super.key});
 
   @override
   State<ChooseUserPage> createState() => _ChooseUserPageState();
@@ -150,7 +149,7 @@ class _ChooseUserPageState extends State<ChooseUserPage> {
             style: ElevatedButton.styleFrom(
               primary: selectedUser != null ? null : Colors.grey,
             ),
-            child: Text("Continue"),
+            child: const Text("Continue"),
           ),
         ],
       ),

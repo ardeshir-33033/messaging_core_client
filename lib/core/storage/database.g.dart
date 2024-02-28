@@ -52,6 +52,24 @@ class $ChatsTableTable extends ChatsTable
   late final GeneratedColumn<String> status = GeneratedColumn<String>(
       'status', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _groupUsersMeta =
+      const VerificationMeta('groupUsers');
+  @override
+  late final GeneratedColumn<String> groupUsers = GeneratedColumn<String>(
+      'group_users', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _lastMessageMeta =
+      const VerificationMeta('lastMessage');
+  @override
+  late final GeneratedColumn<String> lastMessage = GeneratedColumn<String>(
+      'last_message', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _lastReadMeta =
+      const VerificationMeta('lastRead');
+  @override
+  late final GeneratedColumn<String> lastRead = GeneratedColumn<String>(
+      'last_read', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _createdAtMeta =
       const VerificationMeta('createdAt');
   @override
@@ -74,6 +92,9 @@ class $ChatsTableTable extends ChatsTable
         avatar,
         username,
         status,
+        groupUsers,
+        lastMessage,
+        lastRead,
         createdAt,
         updatedAt
       ];
@@ -124,6 +145,22 @@ class $ChatsTableTable extends ChatsTable
       context.handle(_statusMeta,
           status.isAcceptableOrUnknown(data['status']!, _statusMeta));
     }
+    if (data.containsKey('group_users')) {
+      context.handle(
+          _groupUsersMeta,
+          groupUsers.isAcceptableOrUnknown(
+              data['group_users']!, _groupUsersMeta));
+    }
+    if (data.containsKey('last_message')) {
+      context.handle(
+          _lastMessageMeta,
+          lastMessage.isAcceptableOrUnknown(
+              data['last_message']!, _lastMessageMeta));
+    }
+    if (data.containsKey('last_read')) {
+      context.handle(_lastReadMeta,
+          lastRead.isAcceptableOrUnknown(data['last_read']!, _lastReadMeta));
+    }
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
@@ -157,6 +194,12 @@ class $ChatsTableTable extends ChatsTable
           .read(DriftSqlType.string, data['${effectivePrefix}username']),
       status: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}status']),
+      groupUsers: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}group_users']),
+      lastMessage: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}last_message']),
+      lastRead: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}last_read']),
       createdAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
       updatedAt: attachedDatabase.typeMapping
@@ -179,6 +222,9 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
   final String? avatar;
   final String? username;
   final String? status;
+  final String? groupUsers;
+  final String? lastMessage;
+  final String? lastRead;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   const ChatsTableData(
@@ -190,6 +236,9 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
       this.avatar,
       this.username,
       this.status,
+      this.groupUsers,
+      this.lastMessage,
+      this.lastRead,
       this.createdAt,
       this.updatedAt});
   @override
@@ -214,6 +263,15 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
     }
     if (!nullToAbsent || status != null) {
       map['status'] = Variable<String>(status);
+    }
+    if (!nullToAbsent || groupUsers != null) {
+      map['group_users'] = Variable<String>(groupUsers);
+    }
+    if (!nullToAbsent || lastMessage != null) {
+      map['last_message'] = Variable<String>(lastMessage);
+    }
+    if (!nullToAbsent || lastRead != null) {
+      map['last_read'] = Variable<String>(lastRead);
     }
     if (!nullToAbsent || createdAt != null) {
       map['created_at'] = Variable<DateTime>(createdAt);
@@ -241,6 +299,15 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
           : Value(username),
       status:
           status == null && nullToAbsent ? const Value.absent() : Value(status),
+      groupUsers: groupUsers == null && nullToAbsent
+          ? const Value.absent()
+          : Value(groupUsers),
+      lastMessage: lastMessage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastMessage),
+      lastRead: lastRead == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastRead),
       createdAt: createdAt == null && nullToAbsent
           ? const Value.absent()
           : Value(createdAt),
@@ -262,6 +329,9 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
       avatar: serializer.fromJson<String?>(json['avatar']),
       username: serializer.fromJson<String?>(json['username']),
       status: serializer.fromJson<String?>(json['status']),
+      groupUsers: serializer.fromJson<String?>(json['groupUsers']),
+      lastMessage: serializer.fromJson<String?>(json['lastMessage']),
+      lastRead: serializer.fromJson<String?>(json['lastRead']),
       createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
     );
@@ -278,6 +348,9 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
       'avatar': serializer.toJson<String?>(avatar),
       'username': serializer.toJson<String?>(username),
       'status': serializer.toJson<String?>(status),
+      'groupUsers': serializer.toJson<String?>(groupUsers),
+      'lastMessage': serializer.toJson<String?>(lastMessage),
+      'lastRead': serializer.toJson<String?>(lastRead),
       'createdAt': serializer.toJson<DateTime?>(createdAt),
       'updatedAt': serializer.toJson<DateTime?>(updatedAt),
     };
@@ -292,6 +365,9 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
           Value<String?> avatar = const Value.absent(),
           Value<String?> username = const Value.absent(),
           Value<String?> status = const Value.absent(),
+          Value<String?> groupUsers = const Value.absent(),
+          Value<String?> lastMessage = const Value.absent(),
+          Value<String?> lastRead = const Value.absent(),
           Value<DateTime?> createdAt = const Value.absent(),
           Value<DateTime?> updatedAt = const Value.absent()}) =>
       ChatsTableData(
@@ -304,6 +380,9 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
         avatar: avatar.present ? avatar.value : this.avatar,
         username: username.present ? username.value : this.username,
         status: status.present ? status.value : this.status,
+        groupUsers: groupUsers.present ? groupUsers.value : this.groupUsers,
+        lastMessage: lastMessage.present ? lastMessage.value : this.lastMessage,
+        lastRead: lastRead.present ? lastRead.value : this.lastRead,
         createdAt: createdAt.present ? createdAt.value : this.createdAt,
         updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
       );
@@ -318,6 +397,9 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
           ..write('avatar: $avatar, ')
           ..write('username: $username, ')
           ..write('status: $status, ')
+          ..write('groupUsers: $groupUsers, ')
+          ..write('lastMessage: $lastMessage, ')
+          ..write('lastRead: $lastRead, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -325,8 +407,20 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
   }
 
   @override
-  int get hashCode => Object.hash(id, creatorUserId, categoryId, level, name,
-      avatar, username, status, createdAt, updatedAt);
+  int get hashCode => Object.hash(
+      id,
+      creatorUserId,
+      categoryId,
+      level,
+      name,
+      avatar,
+      username,
+      status,
+      groupUsers,
+      lastMessage,
+      lastRead,
+      createdAt,
+      updatedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -339,6 +433,9 @@ class ChatsTableData extends DataClass implements Insertable<ChatsTableData> {
           other.avatar == this.avatar &&
           other.username == this.username &&
           other.status == this.status &&
+          other.groupUsers == this.groupUsers &&
+          other.lastMessage == this.lastMessage &&
+          other.lastRead == this.lastRead &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
 }
@@ -352,6 +449,9 @@ class ChatsTableCompanion extends UpdateCompanion<ChatsTableData> {
   final Value<String?> avatar;
   final Value<String?> username;
   final Value<String?> status;
+  final Value<String?> groupUsers;
+  final Value<String?> lastMessage;
+  final Value<String?> lastRead;
   final Value<DateTime?> createdAt;
   final Value<DateTime?> updatedAt;
   const ChatsTableCompanion({
@@ -363,6 +463,9 @@ class ChatsTableCompanion extends UpdateCompanion<ChatsTableData> {
     this.avatar = const Value.absent(),
     this.username = const Value.absent(),
     this.status = const Value.absent(),
+    this.groupUsers = const Value.absent(),
+    this.lastMessage = const Value.absent(),
+    this.lastRead = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
@@ -375,6 +478,9 @@ class ChatsTableCompanion extends UpdateCompanion<ChatsTableData> {
     this.avatar = const Value.absent(),
     this.username = const Value.absent(),
     this.status = const Value.absent(),
+    this.groupUsers = const Value.absent(),
+    this.lastMessage = const Value.absent(),
+    this.lastRead = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   }) : categoryId = Value(categoryId);
@@ -387,6 +493,9 @@ class ChatsTableCompanion extends UpdateCompanion<ChatsTableData> {
     Expression<String>? avatar,
     Expression<String>? username,
     Expression<String>? status,
+    Expression<String>? groupUsers,
+    Expression<String>? lastMessage,
+    Expression<String>? lastRead,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
   }) {
@@ -399,6 +508,9 @@ class ChatsTableCompanion extends UpdateCompanion<ChatsTableData> {
       if (avatar != null) 'avatar': avatar,
       if (username != null) 'username': username,
       if (status != null) 'status': status,
+      if (groupUsers != null) 'group_users': groupUsers,
+      if (lastMessage != null) 'last_message': lastMessage,
+      if (lastRead != null) 'last_read': lastRead,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
     });
@@ -413,6 +525,9 @@ class ChatsTableCompanion extends UpdateCompanion<ChatsTableData> {
       Value<String?>? avatar,
       Value<String?>? username,
       Value<String?>? status,
+      Value<String?>? groupUsers,
+      Value<String?>? lastMessage,
+      Value<String?>? lastRead,
       Value<DateTime?>? createdAt,
       Value<DateTime?>? updatedAt}) {
     return ChatsTableCompanion(
@@ -424,6 +539,9 @@ class ChatsTableCompanion extends UpdateCompanion<ChatsTableData> {
       avatar: avatar ?? this.avatar,
       username: username ?? this.username,
       status: status ?? this.status,
+      groupUsers: groupUsers ?? this.groupUsers,
+      lastMessage: lastMessage ?? this.lastMessage,
+      lastRead: lastRead ?? this.lastRead,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -456,6 +574,15 @@ class ChatsTableCompanion extends UpdateCompanion<ChatsTableData> {
     if (status.present) {
       map['status'] = Variable<String>(status.value);
     }
+    if (groupUsers.present) {
+      map['group_users'] = Variable<String>(groupUsers.value);
+    }
+    if (lastMessage.present) {
+      map['last_message'] = Variable<String>(lastMessage.value);
+    }
+    if (lastRead.present) {
+      map['last_read'] = Variable<String>(lastRead.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -476,6 +603,9 @@ class ChatsTableCompanion extends UpdateCompanion<ChatsTableData> {
           ..write('avatar: $avatar, ')
           ..write('username: $username, ')
           ..write('status: $status, ')
+          ..write('groupUsers: $groupUsers, ')
+          ..write('lastMessage: $lastMessage, ')
+          ..write('lastRead: $lastRead, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))

@@ -186,15 +186,22 @@ class ContentModel {
 
   toJson({bool mainContent = true}) {
     var json = {
-      'contentId': contentId,
-      'senderId': senderId,
-      'updated_at': updatedAt.millisecondsSinceEpoch,
-      'created_at': createdAt.millisecondsSinceEpoch,
+      'id': contentId,
+      'sender_id': senderId,
+      'receiver_id': receiverId,
+      'receiver_type': receiverType.name,
+      'updated_at': updatedAt.toIso8601String(),
+      'created_at': createdAt.toIso8601String(),
       'contentPayload': contentPayload?.toJson(),
-      'contentType': contentType.name,
+      'message_type': contentType.name,
       'status': status.name,
       'isForwarded': isForwarded,
-      // 'readed_at': readAt,
+      'readed_at': readAt != null ? readAt!.toIso8601String() : null,
+      'message_text': contentType == ContentTypeEnum.other
+          ? contentPayload!.toJson()
+          : messageText.toString(),
+      'category_id': categoryId,
+      'file_path': filePath,
     };
     if (_repliedTo != null && mainContent) {
       json['repliedTo'] = _repliedTo?.toJson(mainContent: false);

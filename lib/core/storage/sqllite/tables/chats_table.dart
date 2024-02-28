@@ -17,14 +17,16 @@ class ChatsTable extends Table {
 
   TextColumn get status => text().nullable()();
 
+  TextColumn get groupUsers => text().nullable()();
+
+  TextColumn get lastMessage => text().nullable()();
+
+  TextColumn get lastRead => text().nullable()();
+
   DateTimeColumn get createdAt => dateTime().nullable()();
 
   DateTimeColumn get updatedAt => dateTime().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};
-
-  // TextColumn get channelSubscriptionStatus => text()
-  //     .withDefault(const Constant('subscribed'))
-  //     .map(const ChannelSubscriptionStatusConvertor())();
 }

@@ -8,6 +8,13 @@ class GroupUsersModel {
     return GroupUsersModel(id: json['id'], name: json['name']);
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+    };
+  }
+
   static List<GroupUsersModel> listFromJson(dynamic json) {
     if (json != null) {
       return json.map<GroupUsersModel>((j) {

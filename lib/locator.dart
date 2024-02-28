@@ -40,7 +40,7 @@ void dataInjection() {
   locator
       .registerLazySingleton<MessagingClient>(() => MessagingClient(locator()));
   locator
-      .getOrRegisterSingleton<SQLiteLocalStorage>(() => SQLiteLocalStorage());
+      .registerLazySingleton<SQLiteLocalStorage>(() => SQLiteLocalStorage());
 }
 
 void repositoryInjection() {
@@ -48,8 +48,8 @@ void repositoryInjection() {
       () => ChatRepositoryImpl(locator()));
   locator
       .registerLazySingleton<ContactsRepository>(() => ContactRepositoryImpl());
-  locator.getOrRegisterFactory<ChatStorageRepository>(
-      () => ChatStorageRepositoryImpl(database: locator.call()));
+  locator.registerLazySingleton<ChatStorageRepository>(
+      () => ChatStorageRepositoryImpl(database: locator()));
 }
 
 void useCaseInjection() {
