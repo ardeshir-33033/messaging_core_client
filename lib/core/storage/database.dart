@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:messaging_core/core/storage/sqllite/tables/chats_table.dart';
+import 'package:messaging_core/core/storage/sqllite/tables/message_table.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
@@ -11,6 +12,7 @@ part 'database.g.dart';
 @DriftDatabase(
   tables: [
     ChatsTable,
+    MessageTable,
   ],
 )
 class SQLiteLocalStorage extends _$SQLiteLocalStorage {
