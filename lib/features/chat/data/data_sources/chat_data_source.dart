@@ -30,6 +30,7 @@ abstract class ChatDataSource {
   Future<ResponseModel> editMessages(String newText, int messageId);
   Future<ResponseModel> createGroup(
       String groupName, List<int> users, FileModel? file);
+  Future<ResponseModel> deleteMessage(int messageId);
 }
 
 class ChatDataSourceImpl extends ChatDataSource {
@@ -166,6 +167,17 @@ class ChatDataSourceImpl extends ChatDataSource {
     if (response.result == ResultEnum.success) {
       response.data = CreateGroupModel.fromJson(response.data);
     }
+    return response;
+  }
+
+  @override
+  Future<ResponseModel> deleteMessage(int messageId) async {
+    ResponseModel response = await api.delete(
+      MessageRouting.deleteMessages(messageId.toString()),
+      headerEnum: HeaderEnum.bearerHeaderEnum,
+      responseEnum: ResponseEnum.responseModelEnum,
+    );
+
     return response;
   }
 }

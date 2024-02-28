@@ -8,4 +8,8 @@ class MessageRouting {
   static String editMessages(String messageId) {
     return "${Environment.apiBaseUrl}/$initial/update-message/$messageId";
   }
+
+  static String deleteMessages(String messageId) {
+    return "${Environment.apiBaseUrl}/$initial/$messageId";
+  }
 }

@@ -94,9 +94,6 @@ class ChatController extends GetxController {
                 ((a.updatedAt ?? a.lastMessage?.updatedAt) ?? DateTime(1998))));
         addStarChat();
 
-        // chatStorageRepository.saveChats(chats);
-        // chatStorageRepository.getMessages();
-
         chatsStatus.success();
         update(["allChats"]);
       }
