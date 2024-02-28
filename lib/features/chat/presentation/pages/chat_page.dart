@@ -264,22 +264,6 @@ class _ChatPageState extends State<ChatPage>
                                     updateScrollToLastMessage();
                                   },
                                 ),
-                                InkWell(
-                                    onTap: () {
-                                      controller.saveMessages();
-                                    },
-                                    child: Container(
-                                      height: 50,
-                                      color: Colors.red,
-                                    )),
-                                InkWell(
-                                    onTap: () {
-                                      controller.getMessagesTable();
-                                    },
-                                    child: Container(
-                                      height: 50,
-                                      color: Colors.blue,
-                                    )),
                               ],
                             ),
                             // if (showOverlay)
