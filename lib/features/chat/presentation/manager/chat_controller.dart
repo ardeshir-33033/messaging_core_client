@@ -18,8 +18,10 @@ import 'package:messaging_core/features/chat/domain/entities/category_users.dart
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_payload_model.dart';
+import 'package:messaging_core/features/chat/domain/entities/group_users_model.dart';
 import 'package:messaging_core/features/chat/domain/repositories/storage/chat_storage_repository.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/create_group_use_case.dart';
+import 'package:messaging_core/features/chat/domain/use_cases/delete_message_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/edit_message_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_messages_use_case.dart';
@@ -34,6 +36,7 @@ class ChatController extends GetxController {
   final SendMessagesUseCase sendMessageUsecase;
   final EditMessagesUseCase editMessagesUseCase;
   final CreateGroupUseCase createGroupUseCase;
+  final DeleteMessageUseCase deleteMessageUseCase;
   final ChatStorageRepository chatStorageRepository;
   final MessagingClient messagingClient;
 
@@ -43,6 +46,7 @@ class ChatController extends GetxController {
       this.sendMessageUsecase,
       this.messagingClient,
       this.editMessagesUseCase,
+      this.deleteMessageUseCase,
       this.chatStorageRepository,
       this.createGroupUseCase);
 
@@ -54,17 +58,19 @@ class ChatController extends GetxController {
   List<CategoryUser> users = [];
   bool isTyping = false;
   ContentModel? editingContent;
-  late ChatParentClass? _currentChat;
+  ContentModel? repliedContent;
+  late ChatParentClass? currentChat;
   late String? _roomIdentifier;
 
   void setCurrentChat(ChatParentClass value) {
-    _currentChat = value;
+    currentChat = value;
   }
 
   resetState() {
     messages = [];
     users = [];
-    _currentChat = null;
+    currentChat = null;
+    repliedContent = null;
     _roomIdentifier = null;
     isTyping = false;
     editingContent = null;
@@ -111,13 +117,13 @@ class ChatController extends GetxController {
       });
 
       ResponseModel response = await getMessagesUseCase(GetMessagesParams(
-        receiverType: _currentChat!.getReceiverType(),
-        receiverId: _currentChat!.id!,
-        senderId: _currentChat!.isGroup() ? null : AppGlobalData.userId,
+        receiverType: currentChat!.getReceiverType(),
+        receiverId: currentChat!.id!,
+        senderId: currentChat!.isGroup() ? null : AppGlobalData.userId,
       ));
       if (response.result == ResultEnum.success) {
         messages = response.data;
-        messages = messages.reversed.toList();
+        // messages = messages.reversed.toList();
 
         messagesStatus.success();
         update(["messages"]);
@@ -135,18 +141,21 @@ class ChatController extends GetxController {
       ContentModel content = ContentModel(
           contentId: uniqueId,
           senderId: AppGlobalData.userId,
-          receiverType: _currentChat!.getReceiverType(),
+          receiverType: currentChat!.getReceiverType(),
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
           contentType: contentType ?? ContentTypeEnum.text,
           contentPayload: contentPayload,
           messageText: text,
+          replied: repliedContent,
+          pinned: 0,
           filePath: file?.filePath,
           categoryId: AppGlobalData.categoryId,
           receiverId: receiverId,
           status: MessageStatus.sending);
+      repliedContent = null;
       messages.insert(0, content);
-      update(["messages"]);
+      update(["messages", "sendMessage"]);
 
       ResponseModel response = await sendMessageUsecase(SendMessagesParams(
         contentModel: content,
@@ -209,15 +218,15 @@ class ChatController extends GetxController {
   }
 
   joinRoom() {
-    if (_currentChat!.isGroup()) {
-      List<int> groupIds = _currentChat!.groupUsers!.map((e) => e.id).toList();
+    if (currentChat!.isGroup()) {
+      List<int> groupIds = currentChat!.groupUsers!.map((e) => e.id).toList();
       groupIds.sort();
       String result = groupIds.join();
-      _roomIdentifier = "${_currentChat!.id}$result";
+      _roomIdentifier = "${currentChat!.id}$result";
     } else {
       List<int> ids = [
         AppGlobalData.userId,
-        _currentChat!.id!,
+        currentChat!.id!,
         AppGlobalData.categoryId
       ];
       // ids.add(AppGlobalData.userId);
@@ -249,6 +258,8 @@ class ChatController extends GetxController {
       contentType: contentType ?? ContentTypeEnum.text,
       contentPayload: contentPayload,
       messageText: text,
+      replied: null,
+      pinned: 0,
       filePath: file?.filePath,
       categoryId: AppGlobalData.categoryId,
       receiverId: receiverId,
@@ -265,6 +276,18 @@ class ChatController extends GetxController {
     }
   }
 
+  Future<bool> deleteMessage(int messageId) async {
+    ResponseModel response = await deleteMessageUseCase(messageId);
+
+    if (response.result == ResultEnum.success) {
+      messages.removeWhere((element) => element.contentId == messageId);
+      update(["messages"]);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   addStarChat() {
     chats.add(ChatParentClass(
       id: AppGlobalData.userId,
@@ -274,7 +297,7 @@ class ChatController extends GetxController {
 
   handleReceivedMessages(Map<String, dynamic> json, String roomIdentifier) {
     ContentModel content = ContentModel.fromSocketJson(json);
-    if (_currentChat != null) {
+    if (currentChat != null) {
       if (_roomIdentifier == roomIdentifier) {
         messages.insert(0, content);
         update(["messages"]);
@@ -296,14 +319,14 @@ class ChatController extends GetxController {
   }
 
   handleUserTypingSignal(int senderId) {
-    if (_currentChat?.id == senderId) {
+    if (currentChat?.id == senderId) {
       isTyping = true;
       update(["isTyping"]);
     }
   }
 
   handleUserStoppedTypingSignal(int senderId) {
-    if (_currentChat?.id == senderId) {
+    if (currentChat?.id == senderId) {
       isTyping = false;
       update(["isTyping"]);
     }

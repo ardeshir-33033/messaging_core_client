@@ -19,6 +19,10 @@ class MessageTable extends Table {
 
   TextColumn get sender => text().nullable()();
 
+  IntColumn get pinned => integer()();
+
+  TextColumn get replied => text().nullable()();
+
   TextColumn get roomIdentifier => text()();
 
   BoolColumn get isForwarded => boolean().withDefault(const Constant(false))();

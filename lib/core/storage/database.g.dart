@@ -671,6 +671,17 @@ class $MessageTableTable extends MessageTable
   late final GeneratedColumn<String> sender = GeneratedColumn<String>(
       'sender', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _pinnedMeta = const VerificationMeta('pinned');
+  @override
+  late final GeneratedColumn<int> pinned = GeneratedColumn<int>(
+      'pinned', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _repliedMeta =
+      const VerificationMeta('replied');
+  @override
+  late final GeneratedColumn<String> replied = GeneratedColumn<String>(
+      'replied', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _roomIdentifierMeta =
       const VerificationMeta('roomIdentifier');
   @override
@@ -716,6 +727,8 @@ class $MessageTableTable extends MessageTable
         messageType,
         filePath,
         sender,
+        pinned,
+        replied,
         roomIdentifier,
         isForwarded,
         createdAt,
@@ -789,6 +802,16 @@ class $MessageTableTable extends MessageTable
       context.handle(_senderMeta,
           sender.isAcceptableOrUnknown(data['sender']!, _senderMeta));
     }
+    if (data.containsKey('pinned')) {
+      context.handle(_pinnedMeta,
+          pinned.isAcceptableOrUnknown(data['pinned']!, _pinnedMeta));
+    } else if (isInserting) {
+      context.missing(_pinnedMeta);
+    }
+    if (data.containsKey('replied')) {
+      context.handle(_repliedMeta,
+          replied.isAcceptableOrUnknown(data['replied']!, _repliedMeta));
+    }
     if (data.containsKey('room_identifier')) {
       context.handle(
           _roomIdentifierMeta,
@@ -846,6 +869,10 @@ class $MessageTableTable extends MessageTable
           .read(DriftSqlType.string, data['${effectivePrefix}file_path']),
       sender: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}sender']),
+      pinned: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}pinned'])!,
+      replied: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}replied']),
       roomIdentifier: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}room_identifier'])!,
       isForwarded: attachedDatabase.typeMapping
@@ -876,6 +903,8 @@ class MessageTableData extends DataClass
   final String messageType;
   final String? filePath;
   final String? sender;
+  final int pinned;
+  final String? replied;
   final String roomIdentifier;
   final bool isForwarded;
   final DateTime createdAt;
@@ -891,6 +920,8 @@ class MessageTableData extends DataClass
       required this.messageType,
       this.filePath,
       this.sender,
+      required this.pinned,
+      this.replied,
       required this.roomIdentifier,
       required this.isForwarded,
       required this.createdAt,
@@ -911,6 +942,10 @@ class MessageTableData extends DataClass
     }
     if (!nullToAbsent || sender != null) {
       map['sender'] = Variable<String>(sender);
+    }
+    map['pinned'] = Variable<int>(pinned);
+    if (!nullToAbsent || replied != null) {
+      map['replied'] = Variable<String>(replied);
     }
     map['room_identifier'] = Variable<String>(roomIdentifier);
     map['is_forwarded'] = Variable<bool>(isForwarded);
@@ -936,6 +971,10 @@ class MessageTableData extends DataClass
           : Value(filePath),
       sender:
           sender == null && nullToAbsent ? const Value.absent() : Value(sender),
+      pinned: Value(pinned),
+      replied: replied == null && nullToAbsent
+          ? const Value.absent()
+          : Value(replied),
       roomIdentifier: Value(roomIdentifier),
       isForwarded: Value(isForwarded),
       createdAt: Value(createdAt),
@@ -959,6 +998,8 @@ class MessageTableData extends DataClass
       messageType: serializer.fromJson<String>(json['messageType']),
       filePath: serializer.fromJson<String?>(json['filePath']),
       sender: serializer.fromJson<String?>(json['sender']),
+      pinned: serializer.fromJson<int>(json['pinned']),
+      replied: serializer.fromJson<String?>(json['replied']),
       roomIdentifier: serializer.fromJson<String>(json['roomIdentifier']),
       isForwarded: serializer.fromJson<bool>(json['isForwarded']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
@@ -979,6 +1020,8 @@ class MessageTableData extends DataClass
       'messageType': serializer.toJson<String>(messageType),
       'filePath': serializer.toJson<String?>(filePath),
       'sender': serializer.toJson<String?>(sender),
+      'pinned': serializer.toJson<int>(pinned),
+      'replied': serializer.toJson<String?>(replied),
       'roomIdentifier': serializer.toJson<String>(roomIdentifier),
       'isForwarded': serializer.toJson<bool>(isForwarded),
       'createdAt': serializer.toJson<DateTime>(createdAt),
@@ -997,6 +1040,8 @@ class MessageTableData extends DataClass
           String? messageType,
           Value<String?> filePath = const Value.absent(),
           Value<String?> sender = const Value.absent(),
+          int? pinned,
+          Value<String?> replied = const Value.absent(),
           String? roomIdentifier,
           bool? isForwarded,
           DateTime? createdAt,
@@ -1012,6 +1057,8 @@ class MessageTableData extends DataClass
         messageType: messageType ?? this.messageType,
         filePath: filePath.present ? filePath.value : this.filePath,
         sender: sender.present ? sender.value : this.sender,
+        pinned: pinned ?? this.pinned,
+        replied: replied.present ? replied.value : this.replied,
         roomIdentifier: roomIdentifier ?? this.roomIdentifier,
         isForwarded: isForwarded ?? this.isForwarded,
         createdAt: createdAt ?? this.createdAt,
@@ -1030,6 +1077,8 @@ class MessageTableData extends DataClass
           ..write('messageType: $messageType, ')
           ..write('filePath: $filePath, ')
           ..write('sender: $sender, ')
+          ..write('pinned: $pinned, ')
+          ..write('replied: $replied, ')
           ..write('roomIdentifier: $roomIdentifier, ')
           ..write('isForwarded: $isForwarded, ')
           ..write('createdAt: $createdAt, ')
@@ -1050,6 +1099,8 @@ class MessageTableData extends DataClass
       messageType,
       filePath,
       sender,
+      pinned,
+      replied,
       roomIdentifier,
       isForwarded,
       createdAt,
@@ -1068,6 +1119,8 @@ class MessageTableData extends DataClass
           other.messageType == this.messageType &&
           other.filePath == this.filePath &&
           other.sender == this.sender &&
+          other.pinned == this.pinned &&
+          other.replied == this.replied &&
           other.roomIdentifier == this.roomIdentifier &&
           other.isForwarded == this.isForwarded &&
           other.createdAt == this.createdAt &&
@@ -1085,6 +1138,8 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
   final Value<String> messageType;
   final Value<String?> filePath;
   final Value<String?> sender;
+  final Value<int> pinned;
+  final Value<String?> replied;
   final Value<String> roomIdentifier;
   final Value<bool> isForwarded;
   final Value<DateTime> createdAt;
@@ -1100,6 +1155,8 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     this.messageType = const Value.absent(),
     this.filePath = const Value.absent(),
     this.sender = const Value.absent(),
+    this.pinned = const Value.absent(),
+    this.replied = const Value.absent(),
     this.roomIdentifier = const Value.absent(),
     this.isForwarded = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -1116,6 +1173,8 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     required String messageType,
     this.filePath = const Value.absent(),
     this.sender = const Value.absent(),
+    required int pinned,
+    this.replied = const Value.absent(),
     required String roomIdentifier,
     this.isForwarded = const Value.absent(),
     required DateTime createdAt,
@@ -1127,6 +1186,7 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
         receiverType = Value(receiverType),
         messageText = Value(messageText),
         messageType = Value(messageType),
+        pinned = Value(pinned),
         roomIdentifier = Value(roomIdentifier),
         createdAt = Value(createdAt),
         updatedAt = Value(updatedAt);
@@ -1140,6 +1200,8 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     Expression<String>? messageType,
     Expression<String>? filePath,
     Expression<String>? sender,
+    Expression<int>? pinned,
+    Expression<String>? replied,
     Expression<String>? roomIdentifier,
     Expression<bool>? isForwarded,
     Expression<DateTime>? createdAt,
@@ -1156,6 +1218,8 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
       if (messageType != null) 'message_type': messageType,
       if (filePath != null) 'file_path': filePath,
       if (sender != null) 'sender': sender,
+      if (pinned != null) 'pinned': pinned,
+      if (replied != null) 'replied': replied,
       if (roomIdentifier != null) 'room_identifier': roomIdentifier,
       if (isForwarded != null) 'is_forwarded': isForwarded,
       if (createdAt != null) 'created_at': createdAt,
@@ -1174,6 +1238,8 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
       Value<String>? messageType,
       Value<String?>? filePath,
       Value<String?>? sender,
+      Value<int>? pinned,
+      Value<String?>? replied,
       Value<String>? roomIdentifier,
       Value<bool>? isForwarded,
       Value<DateTime>? createdAt,
@@ -1189,6 +1255,8 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
       messageType: messageType ?? this.messageType,
       filePath: filePath ?? this.filePath,
       sender: sender ?? this.sender,
+      pinned: pinned ?? this.pinned,
+      replied: replied ?? this.replied,
       roomIdentifier: roomIdentifier ?? this.roomIdentifier,
       isForwarded: isForwarded ?? this.isForwarded,
       createdAt: createdAt ?? this.createdAt,
@@ -1227,6 +1295,12 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
     if (sender.present) {
       map['sender'] = Variable<String>(sender.value);
     }
+    if (pinned.present) {
+      map['pinned'] = Variable<int>(pinned.value);
+    }
+    if (replied.present) {
+      map['replied'] = Variable<String>(replied.value);
+    }
     if (roomIdentifier.present) {
       map['room_identifier'] = Variable<String>(roomIdentifier.value);
     }
@@ -1257,6 +1331,8 @@ class MessageTableCompanion extends UpdateCompanion<MessageTableData> {
           ..write('messageType: $messageType, ')
           ..write('filePath: $filePath, ')
           ..write('sender: $sender, ')
+          ..write('pinned: $pinned, ')
+          ..write('replied: $replied, ')
           ..write('roomIdentifier: $roomIdentifier, ')
           ..write('isForwarded: $isForwarded, ')
           ..write('createdAt: $createdAt, ')

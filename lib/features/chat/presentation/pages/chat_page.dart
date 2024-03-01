@@ -208,7 +208,7 @@ class _ChatPageState extends State<ChatPage>
                                                                   _onReplyTap(controller
                                                                       .messages[
                                                                           index]
-                                                                      .repliedTo),
+                                                                      .replied),
                                                               isFirstSenderContent: index ==
                                                                       controller
                                                                               .messages

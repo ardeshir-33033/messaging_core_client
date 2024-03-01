@@ -20,27 +20,28 @@ class ContentModel {
   DateTime updatedAt;
   DateTime? readAt;
   int categoryId;
+  int pinned;
   String messageText;
   String? filePath;
   ContentPayloadModel? contentPayload;
   ContentTypeEnum contentType;
   MessageStatus status;
-  ContentModel? _repliedTo; // todo possibility of forge from client
+  ContentModel? replied; // todo possibility of forge from client
   bool isForwarded;
   CategoryUser? sender;
 
-  set repliedTo(ContentModel? value) {
-    if (value == null) {
-      _repliedTo = null;
-      return;
-    }
-    ContentModel? model = ContentModel.fromJson(
-        value.toJson(mainContent: false),
-        mainContent: false);
-    _repliedTo = model;
-  }
+  // set repliedTo(ContentModel? value) {
+  //   if (value == null) {
+  //     replied = null;
+  //     return;
+  //   }
+  //   ContentModel? model = ContentModel.fromJson(
+  //       value.toJson(mainContent: false),
+  //       mainContent: false);
+  //   replied = model;
+  // }
 
-  ContentModel? get repliedTo => _repliedTo;
+  // ContentModel? get repliedTo => replied;
 
   ContentModel({
     required this.contentId,
@@ -48,29 +49,25 @@ class ContentModel {
     required this.receiverType,
     required this.createdAt,
     required this.updatedAt,
+    required this.pinned,
     this.readAt,
     required this.contentType,
     this.contentPayload,
     required this.messageText,
     this.isForwarded = false,
-    ContentModel? repliedTo,
+    this.replied,
     required this.categoryId,
     required this.receiverId,
     this.filePath,
     this.sender,
     this.status = MessageStatus
         .sent, // we didn't store message status on server. but keep in mind that if content is received to server, it's definitely 'sent'
-  }) {
-    this.repliedTo = repliedTo;
-  }
+  });
 
   factory ContentModel.fromMessagesTable(MessageTableData data) {
     var contentType = ContentTypeEnum.fromString(data.messageType);
     var contentPayload =
         ContentPayloadModel.create(contentType, data.messageText);
-    // ContentModel? repliedTo = (data['repliedTo'] != null)
-    //     ? ContentModel.fromJson(data['repliedTo'], mainContent: false)
-    //     : null;
 
     return ContentModel(
         contentId: data.id,
@@ -78,6 +75,7 @@ class ContentModel {
         contentType: ContentTypeEnum.fromString(data.messageType),
         contentPayload: contentPayload,
         senderId: data.senderId,
+        pinned: data.pinned,
         messageText: data.messageText,
         receiverType: ReceiverType.fromString(data.receiverType),
         categoryId: data.categoryId,
@@ -85,6 +83,9 @@ class ContentModel {
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,
         filePath: data.filePath,
+        replied: data.replied != null
+            ? ContentModel.fromJson(jsonDecode(data.replied!))
+            : null,
         readAt: data.readedAt,
         sender: data.sender != null
             ? CategoryUser.fromJson(jsonDecode(data.sender!))
@@ -100,6 +101,8 @@ class ContentModel {
           receiverType: receiverType.name,
           messageText: messageText,
           senderId: senderId,
+          pinned: pinned,
+          replied: replied != null ? jsonEncode(replied!.toJson()) : null,
           messageType: contentType.name,
           isForwarded: isForwarded,
           filePath: filePath,
@@ -113,8 +116,8 @@ class ContentModel {
     var contentType = ContentTypeEnum.fromString(json['message_type'] ?? "");
     var contentPayload =
         ContentPayloadModel.create(contentType, json['message_text']);
-    ContentModel? repliedTo = (mainContent && json['repliedTo'] != null)
-        ? ContentModel.fromJson(json['repliedTo'], mainContent: false)
+    ContentModel? reply = (json['reply'] != null)
+        ? ContentModel.fromJson(json['reply'], mainContent: false)
         : null;
 
     return ContentModel(
@@ -128,7 +131,8 @@ class ContentModel {
         contentType: contentType,
         contentPayload: contentPayload,
         status: MessageStatus.sent,
-        repliedTo: repliedTo,
+        pinned: json["pinned"],
+        replied: reply,
         isForwarded: json['isForwarded'] ?? false,
         receiverType: ReceiverType.fromString(json['receiver_type']),
         messageText: json['message_text'],
@@ -145,8 +149,8 @@ class ContentModel {
     var contentType = ContentTypeEnum.fromString(json['messageType'] ?? "text");
     // var contentPayload =
     //     ContentPayloadModel.create(contentType, json['text']);
-    ContentModel? repliedTo = (mainContent && json['repliedTo'] != null)
-        ? ContentModel.fromJson(json['repliedTo'], mainContent: false)
+    ContentModel? reply = (mainContent && json['reply'] != null)
+        ? ContentModel.fromJson(json['reply'], mainContent: false)
         : null;
 
     return ContentModel(
@@ -160,7 +164,8 @@ class ContentModel {
         contentType: contentType,
         // contentPayload: contentPayload,
         status: MessageStatus.sent,
-        repliedTo: repliedTo,
+        replied: reply,
+        pinned: json["replied"],
         isForwarded: json['isForwarded'] ?? false,
         receiverType: ReceiverType.fromString(json['receiverType']),
         messageText: json['text'],
@@ -178,9 +183,9 @@ class ContentModel {
     // .fromString(json['message_text'] ?? "");
     var contentPayload =
         ContentPayloadModel.create(contentType, json['message_text']);
-    ContentModel? repliedTo = (mainContent && json['repliedTo'] != null)
-        ? ContentModel.fromJson(json['repliedTo'], mainContent: false)
-        : null;
+    // ContentModel? reply = (mainContent && json['reply'] != null)
+    //     ? ContentModel.fromJson(json['reply'], mainContent: false)
+    //     : null;
 
     return ContentModel(
         contentId: json['id'],
@@ -193,7 +198,8 @@ class ContentModel {
         contentType: contentType,
         contentPayload: contentPayload,
         status: MessageStatus.sent,
-        repliedTo: repliedTo,
+        // replied: reply,
+        pinned: json["replied"] == null ? 0 : json["replied"],
         isForwarded: json['isForwarded'] ?? false,
         receiverType: ReceiverType.fromString(json['receiver_type']),
         messageText: json['message_text'],
@@ -223,9 +229,10 @@ class ContentModel {
           : messageText.toString(),
       'category_id': categoryId,
       'file_path': filePath,
+      'pinned': pinned,
     };
-    if (_repliedTo != null && mainContent) {
-      json['repliedTo'] = _repliedTo?.toJson(mainContent: false);
+    if (replied != null && mainContent) {
+      json['replied'] = replied?.toJson(mainContent: false);
     }
     return json;
   }

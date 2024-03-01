@@ -12,6 +12,7 @@ import 'package:messaging_core/features/chat/domain/repositories/chat_repository
 import 'package:messaging_core/features/chat/domain/repositories/contact_repository.dart';
 import 'package:messaging_core/features/chat/domain/repositories/storage/chat_storage_repository.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/create_group_use_case.dart';
+import 'package:messaging_core/features/chat/domain/use_cases/delete_message_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/edit_message_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_contacts_use_case.dart';
@@ -39,8 +40,7 @@ void dataInjection() {
       .registerLazySingleton<WebSocketConnection>(() => WebSocketConnection());
   locator
       .registerLazySingleton<MessagingClient>(() => MessagingClient(locator()));
-  locator
-      .registerLazySingleton<SQLiteLocalStorage>(() => SQLiteLocalStorage());
+  locator.registerLazySingleton<SQLiteLocalStorage>(() => SQLiteLocalStorage());
 }
 
 void repositoryInjection() {
@@ -63,13 +63,22 @@ void useCaseInjection() {
       () => GetContactsUseCase(locator()));
   locator.registerLazySingleton<EditMessagesUseCase>(
       () => EditMessagesUseCase(locator()));
+  locator.registerLazySingleton<DeleteMessageUseCase>(
+      () => DeleteMessageUseCase(locator()));
   locator.registerLazySingleton<CreateGroupUseCase>(
       () => CreateGroupUseCase(locator()));
 }
 
 void controllerInjection() {
-  locator.registerLazySingleton<ChatController>(() => ChatController(locator(),
-      locator(), locator(), locator(), locator(), locator(), locator()));
+  locator.registerLazySingleton<ChatController>(() => ChatController(
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator()));
   locator.registerLazySingleton<ContactsController>(
       () => ContactsController(locator()));
   locator.registerLazySingleton<EmojiController>(() => EmojiController());

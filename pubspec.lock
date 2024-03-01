@@ -38,7 +38,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "3b1653bff2220682625f048163482f067e121192"
+      resolved-ref: "082d6092363177b791f3d426cf65557216606816"
       url: "https://github.com/ardeshir-33033/api_helper.git"
     source: git
     version: "1.1.0"

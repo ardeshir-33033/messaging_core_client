@@ -248,7 +248,7 @@ class ChatBoxState extends State<ChatBox> {
                                     ? CrossAxisAlignment.end
                                     : CrossAxisAlignment.start,
                                 children: [
-                                  if (widget.content.repliedTo != null)
+                                  if (widget.content.replied != null)
                                     InkWell(
                                       onTap: widget.onReplyTap,
                                       child: Padding(
@@ -265,11 +265,8 @@ class ChatBoxState extends State<ChatBox> {
                                               VerticalDivider(
                                                 color: widget.isGroup
                                                     ? AppColors.getColorByHash(
-                                                        widget
-                                                            .content
-                                                            .repliedTo!
-                                                            .senderId
-                                                            .hashCode)
+                                                        widget.content.replied!
+                                                            .senderId.hashCode)
                                                     : AppColors.primary1[450],
                                                 width: 2,
                                                 thickness: 1,
@@ -282,8 +279,7 @@ class ChatBoxState extends State<ChatBox> {
                                                   children: [
                                                     Text(
                                                       getSenderName(
-                                                        widget
-                                                            .content.repliedTo!,
+                                                        widget.content.replied!,
                                                       ),
                                                       style: AppTextStyles.body4.copyWith(
                                                           color: widget.isGroup
@@ -295,12 +291,12 @@ class ChatBoxState extends State<ChatBox> {
                                                                   800]),
                                                     ),
                                                     Text(
-                                                      widget.content.repliedTo!
+                                                      widget.content.replied!
                                                                   .contentPayload !=
                                                               null
                                                           ? widget
                                                               .content
-                                                              .repliedTo!
+                                                              .replied!
                                                               .contentPayload!
                                                               .shortDisplayName()
                                                           : "",
@@ -396,15 +392,16 @@ class ChatBoxState extends State<ChatBox> {
 
   String getSenderName(ContentModel content) {
     String senderName = "";
+    if (isMine) {
+      senderName = AppGlobalData.userName;
+    } else {
+      if (controller.currentChat!.isGroup()) {
+        senderName = content.sender?.name ?? "";
+      } else {
+        senderName = controller.currentChat!.name ?? "";
+      }
+    }
 
-    // if (currentChannelProvider.members.containsKey(content.senderId)) {
-    //   senderName =
-    //       currentChannelProvider.members[content.senderId]!.profile.displayName;
-    // } else {
-    //   senderName = currentChannelProvider
-    //           .removedMembers[content.senderId]?.profile.displayName ??
-    //       content.senderId.toHex().midEllipsis(head: 4, tail: 4);
-    // }
     if (content.contentType == ContentTypeEnum.unsupported) {
       return '${tr(context).unsupportedContentFrom} $senderName';
     } else {
@@ -432,6 +429,8 @@ class ChatBoxState extends State<ChatBox> {
   }
 
   Future<void> _onReply() async {
+    controller.repliedContent = widget.content;
+    controller.update(["sendMessage"]);
     _hideBox();
   }
 
@@ -543,9 +542,8 @@ class ChatBoxState extends State<ChatBox> {
 
   Future<void> _onDeleteLocal() async {
     _hideBox();
-    // CurrentChannelContentProvider currentChannelContentProvider =
-    //     getIt<CurrentChannelContentProvider>();
-    // currentChannelContentProvider.localDeleteSentMessage(widget.content);
+    bool response = await controller.deleteMessage(widget.content.contentId);
+    if (response) Fluttertoast.showToast(msg: "Message is deleted");
   }
 
   Future<void> _onResend() async {

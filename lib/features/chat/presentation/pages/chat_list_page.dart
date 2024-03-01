@@ -8,6 +8,7 @@ import 'package:messaging_core/core/env/environment.dart';
 import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
 import 'package:messaging_core/core/services/network/websocket/web_socket_connection.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
+import 'package:messaging_core/features/chat/data/data_sources/chat_data_source.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/emoji_controller.dart';
@@ -36,6 +37,7 @@ class _ChatListPageState extends State<ChatListPage> {
   void initState() {
     connect();
     controller.getAllChats();
+    getSiamakToken();
 
     super.initState();
   }
@@ -93,5 +95,9 @@ class _ChatListPageState extends State<ChatListPage> {
                 })),
       ),
     );
+  }
+
+  getSiamakToken() {
+    ChatDataSourceImpl(locator()).loginSiamak();
   }
 }

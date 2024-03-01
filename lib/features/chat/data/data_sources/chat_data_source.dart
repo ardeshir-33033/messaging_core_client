@@ -31,6 +31,7 @@ abstract class ChatDataSource {
   Future<ResponseModel> createGroup(
       String groupName, List<int> users, FileModel? file);
   Future<ResponseModel> deleteMessage(int messageId);
+  void loginSiamak();
 }
 
 class ChatDataSourceImpl extends ChatDataSource {
@@ -91,7 +92,7 @@ class ChatDataSourceImpl extends ChatDataSource {
     );
 
     if (response.result == ResultEnum.success) {
-      response.data = ContentModel.listFromJson(response.data);
+      response.data = ContentModel.listFromJson(response.data["messages"]);
     }
     return response;
   }
@@ -105,6 +106,8 @@ class ChatDataSourceImpl extends ChatDataSource {
       if (file != null)
         'file': await MultipartFile.fromFile(file.filePath!,
             filename: file.fileName),
+      if (contentModel.replied != null)
+        'parent_id': contentModel.replied!.contentId,
       'category_id': contentModel.categoryId,
       'sender_id': contentModel.senderId,
       'receiver_id': contentModel.receiverId,
@@ -172,6 +175,8 @@ class ChatDataSourceImpl extends ChatDataSource {
 
   @override
   Future<ResponseModel> deleteMessage(int messageId) async {
+    api.setToken("56|lvhEN6AQjiI1x9wArHO412jjbIlBiBavYofDpXjg");
+
     ResponseModel response = await api.delete(
       MessageRouting.deleteMessages(messageId.toString()),
       headerEnum: HeaderEnum.bearerHeaderEnum,
@@ -179,5 +184,25 @@ class ChatDataSourceImpl extends ChatDataSource {
     );
 
     return response;
+  }
+
+  loginSiamak() async {
+    var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+    var data = {'username': 'Siamak', 'password': 'Sia123456'};
+    var dio = Dio();
+    var response = await dio.request(
+      'https://zoomiran.com/api/v1/login',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      api.setToken(response.data["token"]);
+    } else {
+      print(response.statusMessage);
+    }
   }
 }

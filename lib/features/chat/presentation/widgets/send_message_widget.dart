@@ -13,6 +13,7 @@ import 'package:messaging_core/features/chat/presentation/manager/record_voice_c
 import 'package:messaging_core/features/chat/presentation/widgets/attach_file_bottom_sheet_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/conversaion_voice_recording_option_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/send_button_widget.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/send_message_widgets/reply_send_message_widget.dart';
 import 'package:messaging_core/locator.dart';
 
 class SendMessageWidget extends StatefulWidget {
@@ -58,6 +59,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
         builder: (_) {
           return Column(
             children: [
+              if (controller.repliedContent != null) ReplySendMessageWidget(),
               const Divider(
                 color: Color(0xFFD6D6D6),
                 thickness: 2,
