@@ -9,6 +9,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "64.0.0"
+  agora_rtc_engine:
+    dependency: transitive
+    description:
+      name: agora_rtc_engine
+      sha256: ec84db08cd6727e3e480abe9089df4a9522aa4315f688ac2abf25a82f26c4055
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.3.0"
+  agora_rtm:
+    dependency: transitive
+    description:
+      name: agora_rtm
+      sha256: "6c65cf6c9658acc9024322798c546e9dc61c39605b67d0af069793d4ee81d199"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.9"
+  agora_uikit:
+    dependency: "direct main"
+    description:
+      name: agora_uikit
+      sha256: "8582678447ccbbde416031910ba38446253e8101c9bcc1c8ae1e43b48ddb001a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.4"
   analyzer:
     dependency: transitive
     description:
@@ -38,7 +62,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "082d6092363177b791f3d426cf65557216606816"
+      resolved-ref: "29469c9f9e6f14123e72b074159497c18cf289cf"
       url: "https://github.com/ardeshir-33033/api_helper.git"
     source: git
     version: "1.1.0"
@@ -306,6 +330,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.10.1"
+  dbus:
+    dependency: transitive
+    description:
+      name: dbus
+      sha256: "365c771ac3b0e58845f39ec6deebc76e3276aa9922b0cc60840712094d9047ac"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.10"
   device_info_plus:
     dependency: "direct main"
     description:
@@ -354,6 +386,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  expandable_bottom_sheet:
+    dependency: "direct main"
+    description:
+      name: expandable_bottom_sheet
+      sha256: d62455231ccd53bf7a153c87e2cdecd2c8e7d737cb5262a5fc9481c5e3aed7d1
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1+1"
   fake_async:
     dependency: transitive
     description:
@@ -546,10 +586,10 @@ packages:
     dependency: "direct main"
     description:
       name: google_fonts
-      sha256: "6b6f10f0ce3c42f6552d1c70d2c28d764cf22bb487f50f66cca31dcd5194f4d6"
+      sha256: "2776c66b3e97c6cdd58d1bd3281548b074b64f1fd5c8f82391f7456e38849567"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.4"
+    version: "4.0.5"
   graphs:
     dependency: transitive
     description:
@@ -570,10 +610,10 @@ packages:
     dependency: transitive
     description:
       name: http
-      sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
+      sha256: a2bbf9d017fcced29139daa8ed2bba4ece450ab222871df93ca9eec6f80c34ba
       url: "https://pub.dev"
     source: hosted
-    version: "0.13.6"
+    version: "1.2.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -602,26 +642,26 @@ packages:
     dependency: "direct main"
     description:
       name: image_cropper
-      sha256: "542c3453109d16bcc388e43ae2276044d2cd6a6d20c68bdcff2c94ab9363ea15"
+      sha256: f4bad5ed2dfff5a7ce0dfbad545b46a945c702bb6182a921488ef01ba7693111
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.1"
+    version: "5.0.1"
   image_cropper_for_web:
     dependency: transitive
     description:
       name: image_cropper_for_web
-      sha256: "89c936aa772a35b69ca67b78049ae9fa163a4fb8da2f6dee3893db8883fb49d2"
+      sha256: "865d798b5c9d826f1185b32e5d0018c4183ddb77b7b82a931e1a06aa3b74974e"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0"
+    version: "3.0.0"
   image_cropper_platform_interface:
     dependency: transitive
     description:
       name: image_cropper_platform_interface
-      sha256: b232175c132b2f7ede3e1f101652bcd635cb4079a77c6dded8e6d32e6578d685
+      sha256: ee160d686422272aa306125f3b6fb1c1894d9b87a5e20ed33fa008e7285da11e
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.0"
+    version: "5.0.0"
   image_gallery_saver:
     dependency: "direct main"
     description:
@@ -710,6 +750,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  iris_method_channel:
+    dependency: transitive
+    description:
+      name: iris_method_channel
+      sha256: "78caede20be4a1dd258262fb13704aab2f16fd05ef414bed06e7b1e3b95b3413"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   js:
     dependency: transitive
     description:
@@ -762,10 +810,10 @@ packages:
     dependency: transitive
     description:
       name: lints
-      sha256: "0a217c6c989d21039f1498c3ed9f3ed71b354e69873f13a8dfc3c9fe76f1b452"
+      sha256: "5e4a9cd06d447758280a8ac2405101e0e2094d2a1dbdd3756aec3fe7775ba593"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.1"
+    version: "2.0.1"
   logging:
     dependency: transitive
     description:
@@ -830,6 +878,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  package_info_plus:
+    dependency: transitive
+    description:
+      name: package_info_plus
+      sha256: "88bc797f44a94814f2213db1c9bd5badebafdfb8290ca9f78d4b9ee2a3db4d79"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.1"
+  package_info_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: package_info_plus_platform_interface
+      sha256: "9bc8ba46813a4cc42c66ab781470711781940780fd8beddd0c3da62506d3a6c6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   path:
     dependency: "direct main"
     description:
@@ -1483,6 +1547,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.3"
+  wakelock_plus:
+    dependency: "direct main"
+    description:
+      name: wakelock_plus
+      sha256: f268ca2116db22e57577fb99d52515a24bdc1d570f12ac18bb762361d43b043d
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.4"
+  wakelock_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: wakelock_plus_platform_interface
+      sha256: "40fabed5da06caff0796dc638e1f07ee395fb18801fbff3255a2372db2d80385"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   watcher:
     dependency: transitive
     description:

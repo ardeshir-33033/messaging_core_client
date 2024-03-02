@@ -52,8 +52,12 @@ class Assets {
       "$_baseIconPath/group_topic_picture_icon.svg";
   static const String choosePhotoIcon = "$_baseIconPath/choose_photo_icon.svg";
   static const String close = "$_baseIconPath/close.svg";
+  static const String closeAgora = "$_baseIconPath/close_agora.svg";
+  static const String flipAgoraIcon = "$_baseIconPath/flip_agora_icon.svg";
 
   /// -----------------------Tone Assets -------------------------
   static const String _baseTonePath = "assets/tones";
   static const String notificationTone = "$_baseTonePath/notif_tone.wav";
+  static const String ringingPhoneAudio = "$_baseTonePath/Simple-Ringtone.mp3";
+  static const String callingPhoneAudio = "$_baseTonePath/Phone-Ringing.mp3";
 }

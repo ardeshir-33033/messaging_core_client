@@ -68,5 +68,8 @@
   "choosePhoto": "Choose photo",
   "takePhoto": "Take photo",
   "groupName": "Group Name",
-  "create": "Create"
+  "create": "Create",
+  "speaker": "Speaker",
+  "decline": "Decline",
+  "accept": "Accept"
 }

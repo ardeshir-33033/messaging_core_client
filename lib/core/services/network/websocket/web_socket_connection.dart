@@ -6,6 +6,7 @@ import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/core/env/environment.dart';
 import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
+import 'package:messaging_core/features/chat/presentation/manager/call_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/online_users_controller.dart';
 import 'package:messaging_core/locator.dart';
@@ -64,6 +65,7 @@ class WebSocketConnection {
     channel?.on("signaling", (data) {
       print(data);
       Fluttertoast.showToast(msg: data);
+      locator<CallController>().receiveCallSignal(data["signalingData"]);
     });
 
     channel?.on("notification", (data) {
@@ -81,10 +83,7 @@ class WebSocketConnection {
           onlineUsers.add(element["userId"]);
         }
       });
-      final OnlineUsersController onlineUsersController =
-          Get.find<OnlineUsersController>();
-
-      onlineUsersController.setOnlineUsers(onlineUsers);
+      locator<OnlineUsersController>().setOnlineUsers(onlineUsers);
     });
 
     channel?.on("userTyping", (data) {

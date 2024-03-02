@@ -1,4 +1,6 @@
 import 'package:api_handler/feature/api_handler/presentation/presentation_usecase.dart';
+import 'package:get/get.dart';
+import 'package:get/get_instance/get_instance.dart';
 import 'package:get_it/get_it.dart';
 import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
 import 'package:messaging_core/core/services/network/websocket/web_socket_connection.dart';
@@ -71,7 +73,7 @@ void useCaseInjection() {
 }
 
 void controllerInjection() {
-  locator.registerLazySingleton<ChatController>(() => ChatController(
+  locator.registerSingleton<ChatController>(Get.put(ChatController(
       locator(),
       locator(),
       locator(),
@@ -79,10 +81,10 @@ void controllerInjection() {
       locator(),
       locator(),
       locator(),
-      locator()));
-  locator.registerLazySingleton<ContactsController>(
-      () => ContactsController(locator()));
-  locator.registerLazySingleton<OnlineUsersController>(
-      () => OnlineUsersController());
-  locator.registerLazySingleton<EmojiController>(() => EmojiController());
+      locator())));
+  locator.registerSingleton<ContactsController>(
+      Get.put(ContactsController(locator())));
+  locator.registerSingleton<OnlineUsersController>(
+      Get.put(OnlineUsersController()));
+  locator.registerSingleton<EmojiController>(Get.put(EmojiController()));
 }

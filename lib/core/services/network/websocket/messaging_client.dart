@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/services/network/websocket/web_socket_connection.dart';
+import 'package:messaging_core/features/chat/data/models/call_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 
 class MessagingClient {
@@ -49,11 +52,11 @@ class MessagingClient {
     });
   }
 
-  sendSignal() async {
+  sendSignal(List<int> ids, CallModel callModel) async {
     webSocketConnection.sendMessage("signaling", {
-      'targetUserIds': [391 , 177],
+      'targetUserIds': ids,
       'categoryId': AppGlobalData.categoryId,
-      'signalingData': "test",
+      'signalingData': jsonEncode(callModel.toJson()),
     });
   }
 

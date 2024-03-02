@@ -8,6 +8,7 @@ class OnlineUsersController extends GetxController {
   setOnlineUsers(List<int> users) {
     onlineUsers = [];
     onlineUsers.addAll(users);
+    update(["onlineUsers"]);
     ChatController chatController = locator<ChatController>();
     chatController.update(["allChats"]);
   }

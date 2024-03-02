@@ -13,6 +13,11 @@
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission  android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission  android:name="android.permission.MODIFY_AUDIO_SETTINGS"  />
+    <uses-permission  android:name="android.permission.ACCESS_NETWORK_STATE"  />
+    <uses-permission  android:name="android.permission.BLUETOOTH"  />
+
     <queries>
         <intent>
             <action android:name="android.intent.action.VIEW" />
