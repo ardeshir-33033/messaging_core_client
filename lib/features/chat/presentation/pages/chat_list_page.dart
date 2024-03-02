@@ -12,6 +12,7 @@ import 'package:messaging_core/features/chat/data/data_sources/chat_data_source.
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/emoji_controller.dart';
+import 'package:messaging_core/features/chat/presentation/manager/online_users_controller.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_list_item.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_list_widgets/chat_list_floating_button.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/conversation_skeleton_widget.dart';
@@ -28,6 +29,8 @@ class ChatListPage extends StatefulWidget {
 class _ChatListPageState extends State<ChatListPage> {
   final ChatController controller = Get.put<ChatController>(locator());
   final EmojiController emojiController = Get.put(EmojiController());
+  final OnlineUsersController onlineUsersController =
+      Get.put(OnlineUsersController());
 
   connect() {
     locator<MessagingClient>().initState();
@@ -57,41 +60,46 @@ class _ChatListPageState extends State<ChatListPage> {
           horizontal: 15,
         ),
         child: SafeArea(
-            child: GetBuilder<ChatController>(
-                id: "allChats",
+            child: GetBuilder<OnlineUsersController>(
+                id: "onlineUsers",
                 builder: (_) {
-                  if (controller.chatsStatus.status == Status.loading) {
-                    return ListView.separated(
-                      itemBuilder: (context, index) =>
-                          const ConversationSkeletonWidget(),
-                      itemCount: 15,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      separatorBuilder: (context, index) => Divider(
-                        height: 15,
-                        color: Colors.grey[100],
-                      ),
-                    );
-                  } else {
-                    return PaginationWidget<ChatParentClass>(
-                      itemBuilder: (index, item) {
-                        return ChatListItem(chat: item);
-                      },
-                      items: controller.chats,
-                      separatorBuilder: (index) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Divider(
-                          height: 1,
-                          color: Colors.grey[100],
-                        ),
-                      ),
-                      onRefresh: (limit, offset) async {
-                        await controller.getAllChats();
-                      },
-                      onLoading: (limit, offset) async {
-                        // await channelProvider.setChannels(limit, offset);
-                      },
-                    );
-                  }
+                  return GetBuilder<ChatController>(
+                      id: "allChats",
+                      builder: (_) {
+                        if (controller.chatsStatus.status == Status.loading) {
+                          return ListView.separated(
+                            itemBuilder: (context, index) =>
+                                const ConversationSkeletonWidget(),
+                            itemCount: 15,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            separatorBuilder: (context, index) => Divider(
+                              height: 15,
+                              color: Colors.grey[100],
+                            ),
+                          );
+                        } else {
+                          return PaginationWidget<ChatParentClass>(
+                            itemBuilder: (index, item) {
+                              return ChatListItem(chat: item);
+                            },
+                            items: controller.chats,
+                            separatorBuilder: (index) => Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Divider(
+                                height: 1,
+                                color: Colors.grey[100],
+                              ),
+                            ),
+                            onRefresh: (limit, offset) async {
+                              await controller.getAllChats();
+                            },
+                            onLoading: (limit, offset) async {
+                              // await channelProvider.setChannels(limit, offset);
+                            },
+                          );
+                        }
+                      });
                 })),
       ),
     );

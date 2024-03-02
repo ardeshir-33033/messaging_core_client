@@ -340,13 +340,8 @@ class _ChatPageState extends State<ChatPage>
   }
 
   _scrollToSeqNo(int seqNo, {bool ignoreScrollToFirst = false}) async {
-    int scrollToIndex = controller
-        .messages
-        // _currentChannelContentProvider
-        //     .getContents()
-        .reversed
-        .toList()
-        .indexWhere((e) => e.contentId == seqNo);
+    int scrollToIndex =
+        controller.messages.indexWhere((e) => e.contentId == seqNo);
 
     if (!ignoreScrollToFirst || scrollToIndex > 0) {
       WidgetsBinding.instance.addPostFrameCallback((timestamp) {

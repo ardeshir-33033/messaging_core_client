@@ -49,6 +49,14 @@ class MessagingClient {
     });
   }
 
+  sendSignal() async {
+    webSocketConnection.sendMessage("signaling", {
+      'targetUserIds': [391 , 177],
+      'categoryId': AppGlobalData.categoryId,
+      'signalingData': "test",
+    });
+  }
+
   sendTyping() async {
     webSocketConnection.sendMessage("typing", {
       'senderName': AppGlobalData.userName,

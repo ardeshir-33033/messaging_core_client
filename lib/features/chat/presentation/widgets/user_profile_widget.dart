@@ -20,6 +20,7 @@ class UserProfileWidget extends StatelessWidget {
   final bool showIcon;
   final ChatParentClass chat;
   final double? size;
+  final bool? isOnline;
 
   const UserProfileWidget(
       {super.key,
@@ -30,6 +31,7 @@ class UserProfileWidget extends StatelessWidget {
       this.onTap,
       this.titleStyle,
       this.subtitleStyle,
+      this.isOnline,
       this.showIcon = true,
       required this.chat,
       this.size});
@@ -114,40 +116,65 @@ class UserProfileWidget extends StatelessWidget {
   }
 
   Widget _profileImage(BuildContext context) {
-    return ImageWidget(
-      onTap: onTap,
-      imageUrl: url!,
-      // width: size,
-      boxFit: BoxFit.fill,
-      // height: size,
-      boxShape: BoxShape.circle,
-      placeHolder: _profilePlaceHolder(),
-      tagAlignment: Alignment.bottomRight,
-      tagWidget: IconWidget(
-        icon: Icons.edit,
-        iconColor: Colors.white,
-        onPressed: onTap,
-        backgroundColor: Colors.blue,
-        borderRadius: 1000,
-        padding: 3,
-      ),
+    return Stack(
+      children: [
+        ImageWidget(
+          onTap: onTap,
+          imageUrl: url!,
+          // width: size,
+          boxFit: BoxFit.fill,
+          // height: size,
+          boxShape: BoxShape.circle,
+          placeHolder: _profilePlaceHolder(),
+          tagAlignment: Alignment.bottomRight,
+          tagWidget: IconWidget(
+            icon: Icons.edit,
+            iconColor: Colors.white,
+            onPressed: onTap,
+            backgroundColor: Colors.blue,
+            borderRadius: 1000,
+            padding: 3,
+          ),
+        ),
+        if (isGroup == false)
+          Container(
+            height: 5,
+            width: 5,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: (isOnline ?? false) ? Colors.green : Colors.grey),
+          )
+      ],
     );
   }
 
   Widget _noProfileImage(context, ChatParentClass chat) {
-    return Container(
-      height: size ?? 50,
-      width: size ?? 50,
-      decoration:
-          BoxDecoration(shape: BoxShape.circle, color: chat.id!.colorFromId()),
-      child: Center(
-        child: Text(
-          (chat.name?.length ?? 0) > 0
-              ? chat.name?.substring(0, 1).toUpperCase() ?? "A"
-              : "A",
-          style: AppTextStyles.caption2.copyWith(color: Colors.white),
+    return Stack(
+      alignment: Alignment.bottomRight,
+      children: [
+        Container(
+          height: size ?? 50,
+          width: size ?? 50,
+          decoration: BoxDecoration(
+              shape: BoxShape.circle, color: chat.id!.colorFromId()),
+          child: Center(
+            child: Text(
+              (chat.name?.length ?? 0) > 0
+                  ? chat.name?.substring(0, 1).toUpperCase() ?? "A"
+                  : "A",
+              style: AppTextStyles.caption2.copyWith(color: Colors.white),
+            ),
+          ),
         ),
-      ),
+        if (isGroup == false)
+          Container(
+            height: 5,
+            width: 5,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: (isOnline ?? false) ? Colors.green : Colors.grey),
+          )
+      ],
     );
   }
 

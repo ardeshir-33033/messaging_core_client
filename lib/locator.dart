@@ -21,6 +21,7 @@ import 'package:messaging_core/features/chat/domain/use_cases/send_messags_use_c
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/contacts_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/emoji_controller.dart';
+import 'package:messaging_core/features/chat/presentation/manager/online_users_controller.dart';
 
 final locator = GetIt.instance;
 
@@ -81,5 +82,7 @@ void controllerInjection() {
       locator()));
   locator.registerLazySingleton<ContactsController>(
       () => ContactsController(locator()));
+  locator.registerLazySingleton<OnlineUsersController>(
+      () => OnlineUsersController());
   locator.registerLazySingleton<EmojiController>(() => EmojiController());
 }

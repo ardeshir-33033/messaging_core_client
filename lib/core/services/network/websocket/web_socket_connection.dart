@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/core/env/environment.dart';
 import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
+import 'package:messaging_core/features/chat/presentation/manager/online_users_controller.dart';
 import 'package:messaging_core/locator.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:socket_io_client/socket_io_client.dart';
@@ -58,11 +61,30 @@ class WebSocketConnection {
       }
     });
 
+    channel?.on("signaling", (data) {
+      print(data);
+      Fluttertoast.showToast(msg: data);
+    });
+
     channel?.on("notification", (data) {
       print(data);
       ChatController controller = locator<ChatController>();
       controller.handleNotificationSignal(
           data["senderId"], ReceiverType.fromString(data["receiverType"]));
+    });
+
+    channel?.on("onlineUsers", (data) {
+      print(data);
+      List<int> onlineUsers = [];
+      (data as List).forEach((element) {
+        if (element["categoryId"] == AppGlobalData.categoryId) {
+          onlineUsers.add(element["userId"]);
+        }
+      });
+      final OnlineUsersController onlineUsersController =
+          Get.find<OnlineUsersController>();
+
+      onlineUsersController.setOnlineUsers(onlineUsers);
     });
 
     channel?.on("userTyping", (data) {

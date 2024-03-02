@@ -219,23 +219,17 @@ class ChatController extends GetxController {
 
   joinRoom() {
     if (currentChat!.isGroup()) {
-      List<int> groupIds = currentChat!.groupUsers!.map((e) => e.id).toList();
-      groupIds.sort();
-      String result = groupIds.join();
-      _roomIdentifier = "${currentChat!.id}$result";
+      List<int> ids = [currentChat!.id!, AppGlobalData.categoryId];
+      _roomIdentifier = ids.join('-');
     } else {
       List<int> ids = [
         AppGlobalData.userId,
         currentChat!.id!,
         AppGlobalData.categoryId
       ];
-      // ids.add(AppGlobalData.userId);
-      // ids.add(_currentChat!.id!);
+
       ids.sort();
       _roomIdentifier = ids.join('-');
-
-      // [AppGlobalData.userId, _currentChat!.id, AppGlobalData.categoryId].sort();
-      // _roomIdentifier = ids.join();
     }
     print("---------$_roomIdentifier ----");
 
