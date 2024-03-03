@@ -23,6 +23,7 @@ import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_
 import 'package:messaging_core/features/chat/domain/use_cases/get_messages_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/send_messags_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/update_read_use_case.dart';
+import 'package:messaging_core/features/chat/presentation/manager/connection_status_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/emoji_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/record_voice_controller.dart';
 import 'package:messaging_core/locator.dart';
@@ -86,18 +87,22 @@ class ChatController extends GetxController {
 
       ResponseModel response = await getAllChatsUseCase(null);
       if (response.result == ResultEnum.success) {
-        UsersAndGroupsInCategory usersAndGroupsInCategory = response.data;
+        if (!locator<ConnectionStatusProvider>().isConnected) {
+          chats.addAll(response.data);
+        } else {
+          UsersAndGroupsInCategory usersAndGroupsInCategory = response.data;
 
-        users.addAll(usersAndGroupsInCategory.users);
+          users.addAll(usersAndGroupsInCategory.users);
 
-        chats.addAll(usersAndGroupsInCategory.users);
-        chats.addAll(usersAndGroupsInCategory.groups);
+          chats.addAll(usersAndGroupsInCategory.users);
+          chats.addAll(usersAndGroupsInCategory.groups);
 
-        chats.sort((a, b) => ((b.updatedAt ?? b.lastMessage?.updatedAt) ??
-                DateTime(1998))
-            .compareTo(
-                ((a.updatedAt ?? a.lastMessage?.updatedAt) ?? DateTime(1998))));
-        addStarChat();
+          chats.sort((a, b) =>
+              ((b.updatedAt ?? b.lastMessage?.updatedAt) ?? DateTime(1998))
+                  .compareTo(((a.updatedAt ?? a.lastMessage?.updatedAt) ??
+                      DateTime(1998))));
+          addStarChat();
+        }
 
         chatsStatus.success();
         update(["allChats"]);
@@ -116,17 +121,24 @@ class ChatController extends GetxController {
       });
       int index = chats.indexWhere((element) => element.id == currentChat!.id);
       chats[index].unreadCount = 0;
+      if (locator<ConnectionStatusProvider>().isConnected) {
+        ResponseModel response = await getMessagesUseCase(GetMessagesParams(
+          receiverType: currentChat!.getReceiverType(),
+          receiverId: currentChat!.id!,
+          senderId: currentChat!.isGroup() ? null : AppGlobalData.userId,
+        ));
+        if (response.result == ResultEnum.success) {
+          messages = response.data;
+          // messages = messages.reversed.toList();
+          updateReadStatus();
+          saveMessages();
 
-      ResponseModel response = await getMessagesUseCase(GetMessagesParams(
-        receiverType: currentChat!.getReceiverType(),
-        receiverId: currentChat!.id!,
-        senderId: currentChat!.isGroup() ? null : AppGlobalData.userId,
-      ));
-      if (response.result == ResultEnum.success) {
-        messages = response.data;
-        // messages = messages.reversed.toList();
-        updateReadStatus();
-
+          messagesStatus.success();
+          update(["messages"]);
+        }
+      } else {
+        messages = await getMessagesTable();
+        messages = messages.reversed.toList();
         messagesStatus.success();
         update(["messages"]);
       }
@@ -362,10 +374,10 @@ class ChatController extends GetxController {
     resetState();
   }
 
-  getMessagesTable() async {
-    List<ContentModel> messages =
+  Future<List<ContentModel>> getMessagesTable() async {
+    List<ContentModel> contents =
         await chatStorageRepository.getMessages(_roomIdentifier!);
-    print(messages);
+    return contents;
   }
 
   saveMessages() async {

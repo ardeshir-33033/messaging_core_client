@@ -19,6 +19,8 @@ import 'package:messaging_core/features/chat/data/models/users_groups_category.d
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/group_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:messaging_core/features/chat/presentation/manager/connection_status_controller.dart';
+import 'package:messaging_core/locator.dart';
 
 abstract class ChatDataSource {
   Future<ResponseModel> getUsersInCategory();
@@ -230,22 +232,24 @@ class ChatDataSourceImpl extends ChatDataSource {
   }
 
   loginSiamak() async {
-    var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
-    var data = {'username': 'Siamak', 'password': 'Sia123456'};
-    var dio = Dio();
-    var response = await dio.request(
-      'https://zoomiran.com/api/v1/login',
-      options: Options(
-        method: 'POST',
-        headers: headers,
-      ),
-      data: data,
-    );
+    if (locator<ConnectionStatusProvider>().isConnected) {
+      var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+      var data = {'username': 'Siamak', 'password': 'Sia123456'};
+      var dio = Dio();
+      var response = await dio.request(
+        'https://zoomiran.com/api/v1/login',
+        options: Options(
+          method: 'POST',
+          headers: headers,
+        ),
+        data: data,
+      );
 
-    if (response.statusCode == 200) {
-      api.setToken(response.data["token"]);
-    } else {
-      print(response.statusMessage);
+      if (response.statusCode == 200) {
+        api.setToken(response.data["token"]);
+      } else {
+        print(response.statusMessage);
+      }
     }
   }
 }

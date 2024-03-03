@@ -2,20 +2,49 @@ import 'package:api_handler/api_handler.dart';
 import 'package:api_handler/feature/api_handler/data/models/response_model.dart';
 import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
+import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
+import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/repositories/chat_repository.dart';
+import 'package:messaging_core/features/chat/domain/repositories/storage/chat_storage_repository.dart';
+import 'package:messaging_core/features/chat/presentation/manager/connection_status_controller.dart';
+import 'package:messaging_core/locator.dart';
 
 import '../data_sources/chat_data_source.dart';
 
 class ChatRepositoryImpl extends ChatRepository {
   final ChatDataSource _chatDataSource;
+  final ChatStorageRepository _chatStorageRepository;
 
-  ChatRepositoryImpl(this._chatDataSource);
+  ChatRepositoryImpl(this._chatDataSource, this._chatStorageRepository);
 
   @override
   Future<ResponseModel> getAllChats() async {
     try {
-      return await _chatDataSource.getUsersInCategory();
+      List<ChatParentClass> chats = [];
+      if (locator<ConnectionStatusProvider>().isConnected) {
+        ResponseModel response = await _chatDataSource.getUsersInCategory();
+
+        UsersAndGroupsInCategory usersAndGroupsInCategory = response.data;
+
+        chats.addAll(usersAndGroupsInCategory.users);
+        chats.addAll(usersAndGroupsInCategory.groups);
+
+        chats.sort((a, b) => ((b.updatedAt ?? b.lastMessage?.updatedAt) ??
+                DateTime(1998))
+            .compareTo(
+                ((a.updatedAt ?? a.lastMessage?.updatedAt) ?? DateTime(1998))));
+        _chatStorageRepository.saveChats(chats);
+
+        return response;
+      } else {
+
+        chats = await _chatStorageRepository.getChats();
+        return ResponseModel(
+          data: chats,
+          result: ResultEnum.success,
+        );
+      }
     } catch (e) {
       return ResponseModel(
         statusCode: 510,

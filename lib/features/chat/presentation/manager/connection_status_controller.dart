@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
+
 class ConnectionStatusProvider extends GetxController {
   // final WebSocketConnection webSocketConnection;
   // final ChannelsProvider channelsProvider;
@@ -13,13 +14,13 @@ class ConnectionStatusProvider extends GetxController {
   //   required this.callUsecase,
   // });
   //
-  // bool hasNetwork = false;
-  // bool isConnected = false;
-  // bool updated = false;
-  // bool retryFailed = false;
-  // bool _updateLock = false;
-  // bool _connectLock = false;
-  //
+  bool hasNetwork = false;
+  bool isConnected = true;
+  bool updated = false;
+  bool retryFailed = false;
+  bool _updateLock = false;
+  bool _connectLock = false;
+
   // @override
   // void onInit() {
   //   init();
@@ -36,30 +37,37 @@ class ConnectionStatusProvider extends GetxController {
   //   update();
   // }
   //
-  // void init() {
-  //   Connectivity().checkConnectivity().then((result) {
-  //     hasNetwork = result != ConnectivityResult.none;
-  //     isConnected = hasNetwork && isConnected;
-  //     updated = hasNetwork && isConnected && updated;
-  //     _handleNewStatus();
-  //     notifyListeners();
-  //   });
-  //
-  //   webSocketConnection.addListener(() {
-  //     isConnected = webSocketConnection.isConnected;
-  //     updated = hasNetwork && isConnected && updated;
-  //     _handleNewStatus();
-  //     notifyListeners();
-  //   });
-  //
-  //   Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-  //     hasNetwork = result != ConnectivityResult.none;
-  //     isConnected = hasNetwork && isConnected;
-  //     updated = hasNetwork && isConnected && updated;
-  //     _handleNewStatus();
-  //     notifyListeners();
-  //   });
-  // }
+
+  @override
+  void onInit() {
+    init();
+    super.onInit();
+  }
+
+  void init() {
+    Connectivity().checkConnectivity().then((result) {
+      hasNetwork = result != ConnectivityResult.none;
+      isConnected = hasNetwork && isConnected;
+      updated = hasNetwork && isConnected && updated;
+      // _handleNewStatus();
+      // notifyListeners();
+    });
+    //
+    //   webSocketConnection.addListener(() {
+    //     isConnected = webSocketConnection.isConnected;
+    //     updated = hasNetwork && isConnected && updated;
+    //     _handleNewStatus();
+    //     notifyListeners();
+    //   });
+    //
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      hasNetwork = result != ConnectivityResult.none;
+      isConnected = hasNetwork && isConnected;
+      updated = hasNetwork && isConnected && updated;
+      // _handleNewStatus();
+      // notifyListeners();
+    });
+  }
   //
   // _handleNewStatus() {
   //   if (hasNetwork) {

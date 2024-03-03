@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
+import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
+import 'package:messaging_core/features/chat/domain/repositories/storage/chat_storage_repository.dart';
 import 'package:messaging_core/features/chat/presentation/pages/create_new_group_page.dart';
 import 'package:messaging_core/locator.dart';
 
@@ -10,9 +12,12 @@ class ChatListFloatingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => CreateNewGroupPage()));
+      onPressed: () async {
+        List<ContentModel> contents =
+            await locator<ChatStorageRepository>().getMessages("177-330-391");
+        print(contents);
+        // Navigator.push(context,
+        //     MaterialPageRoute(builder: (context) => CreateNewGroupPage()));
       },
       elevation: 0,
       backgroundColor: Colors.transparent,

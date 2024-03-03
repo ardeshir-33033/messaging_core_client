@@ -23,6 +23,7 @@ import 'package:messaging_core/features/chat/domain/use_cases/send_messags_use_c
 import 'package:messaging_core/features/chat/domain/use_cases/update_read_use_case.dart';
 import 'package:messaging_core/features/chat/presentation/manager/call_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
+import 'package:messaging_core/features/chat/presentation/manager/connection_status_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/contacts_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/emoji_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/online_users_controller.dart';
@@ -50,7 +51,7 @@ void dataInjection() {
 
 void repositoryInjection() {
   locator.registerLazySingleton<ChatRepository>(
-      () => ChatRepositoryImpl(locator()));
+      () => ChatRepositoryImpl(locator(), locator()));
   locator
       .registerLazySingleton<ContactsRepository>(() => ContactRepositoryImpl());
   locator.registerLazySingleton<ChatStorageRepository>(
@@ -89,6 +90,8 @@ void controllerInjection() {
       locator())));
   locator.registerSingleton<ContactsController>(
       Get.put(ContactsController(locator())));
+  locator.registerSingleton<ConnectionStatusProvider>(
+      Get.put(ConnectionStatusProvider()));
   locator.registerSingleton<OnlineUsersController>(
       Get.put(OnlineUsersController()));
   locator.registerSingleton<EmojiController>(Get.put(EmojiController()));
