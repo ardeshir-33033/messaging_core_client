@@ -5,11 +5,14 @@ import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/image_widget.dart';
+import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
+import 'package:messaging_core/features/chat/presentation/manager/call_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/pages/waiting_call_page.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/user_profile_widget.dart';
+import 'package:messaging_core/locator.dart';
 
 class ConversationAppBar extends StatelessWidget {
   const ConversationAppBar({
@@ -81,8 +84,11 @@ class ConversationAppBar extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const WaitingCallPage()));
+            locator<CallController>().reset();
+            locator<CallController>().requestCall(
+                chat.id!, AppGlobalData.userId, chat.username!, false);
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => const WaitingCallPage()));
           },
           child: Container(
             width: 40,

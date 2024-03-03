@@ -64,8 +64,7 @@ class WebSocketConnection {
 
     channel?.on("signaling", (data) {
       print(data);
-      Fluttertoast.showToast(msg: data);
-      locator<CallController>().receiveCallSignal(data["signalingData"]);
+      locator<CallController>().receiveCallSignal(data);
     });
 
     channel?.on("notification", (data) {

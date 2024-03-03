@@ -27,8 +27,8 @@ class ChatListPage extends StatefulWidget {
 }
 
 class _ChatListPageState extends State<ChatListPage> {
-  final ChatController controller = Get.put<ChatController>(locator());
-  final EmojiController emojiController = Get.put(EmojiController());
+  final ChatController controller = locator<ChatController>();
+  final EmojiController emojiController = locator<EmojiController>();
   // final OnlineUsersController onlineUsersController =
   //     Get.put(OnlineUsersController());
 

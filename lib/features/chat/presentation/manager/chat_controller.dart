@@ -361,4 +361,8 @@ class ChatController extends GetxController {
     await chatStorageRepository.saveMessages(messages, _roomIdentifier!);
     print("nice");
   }
+
+  String? getRoomId() {
+    return _roomIdentifier;
+  }
 }

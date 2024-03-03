@@ -20,6 +20,7 @@ import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_
 import 'package:messaging_core/features/chat/domain/use_cases/get_contacts_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_messages_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/send_messags_use_case.dart';
+import 'package:messaging_core/features/chat/presentation/manager/call_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/contacts_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/emoji_controller.dart';
@@ -28,11 +29,11 @@ import 'package:messaging_core/features/chat/presentation/manager/online_users_c
 final locator = GetIt.instance;
 
 void injectDependencies() {
-  controllerInjection();
   useCaseInjection();
   repositoryInjection();
-
   dataInjection();
+
+  controllerInjection();
 }
 
 void dataInjection() {
@@ -56,6 +57,7 @@ void repositoryInjection() {
 }
 
 void useCaseInjection() {
+  // locator.registerSingleton<GetAllChatsUseCase>(GetAllChatsUseCase(locator()));
   locator.registerLazySingleton<GetAllChatsUseCase>(
       () => GetAllChatsUseCase(locator()));
   locator.registerLazySingleton<GetMessagesUseCase>(
@@ -87,4 +89,6 @@ void controllerInjection() {
   locator.registerSingleton<OnlineUsersController>(
       Get.put(OnlineUsersController()));
   locator.registerSingleton<EmojiController>(Get.put(EmojiController()));
+  locator.registerSingleton<CallController>(
+      Get.put(CallController(locator(), locator())));
 }

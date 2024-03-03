@@ -31,6 +31,7 @@ abstract class ChatDataSource {
   Future<ResponseModel> createGroup(
       String groupName, List<int> users, FileModel? file);
   Future<ResponseModel> deleteMessage(int messageId);
+  Future<String> generateAgoraToken(String roomIdentifier);
   void loginSiamak();
 }
 
@@ -175,7 +176,7 @@ class ChatDataSourceImpl extends ChatDataSource {
 
   @override
   Future<ResponseModel> deleteMessage(int messageId) async {
-    api.setToken("56|lvhEN6AQjiI1x9wArHO412jjbIlBiBavYofDpXjg");
+    // api.setToken("56|lvhEN6AQjiI1x9wArHO412jjbIlBiBavYofDpXjg");
 
     ResponseModel response = await api.delete(
       MessageRouting.deleteMessages(messageId.toString()),
@@ -184,6 +185,26 @@ class ChatDataSourceImpl extends ChatDataSource {
     );
 
     return response;
+  }
+
+  @override
+  Future<String> generateAgoraToken(String roomIdentifier) async {
+    var data = {
+      'channelName': roomIdentifier,
+      'userId': AppGlobalData.userId.toString()
+    };
+    var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+    var dio = Dio();
+    var response = await dio.request(
+      MessageRouting.agoraToken,
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    return response.data["token"];
   }
 
   loginSiamak() async {

@@ -1,20 +1,27 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:agora_uikit/agora_uikit.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:messaging_core/app/component/dialog_box.dart';
+import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
+import 'package:messaging_core/features/chat/data/data_sources/chat_data_source.dart';
 import 'package:messaging_core/features/chat/data/models/call_content_payload_model.dart';
 import 'package:messaging_core/features/chat/data/models/call_model.dart';
+import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/pages/call/call_page.dart';
+import 'package:messaging_core/locator.dart';
 import 'package:messaging_core/main.dart';
 
 class CallController extends GetxController {
   MessagingClient messagingClient;
+  ChatDataSource chatDataSource;
 
-  CallController(this.messagingClient);
+  CallController(this.messagingClient, this.chatDataSource);
 
   static const String INVITE_COMMAND = 'invite';
   static const String LEAVE_COMMAND = 'leave';
@@ -25,12 +32,15 @@ class CallController extends GetxController {
 
   String? callName;
   String? token;
+  String? callerName;
+  String? calleeName;
   int? calleeId;
   int? callerId;
-  String? channelId;
+  int? initiatorId;
+  int? receiverId;
   bool? enableVideo;
   AgoraClient? client;
-  late CallStatus status;
+  CallStatus status = CallStatus.NO_CALL;
   String? opponentCallRejectionReason;
   // ContactProfile? profile;
   String? opponentId;
@@ -48,7 +58,10 @@ class CallController extends GetxController {
 
   reset() {
     callName = null;
-    channelId = null;
+    initiatorId = null;
+    receiverId = null;
+    callerName = null;
+    calleeName = null;
     token = null;
     calleeId = null;
     opponentCallRejectionReason = null;
@@ -70,12 +83,14 @@ class CallController extends GetxController {
 
   void receiveCallSignal(String signal) async {
     CallModel callModel = CallModel.fromJson(jsonDecode(signal));
+    Fluttertoast.showToast(msg: callModel.token ?? "",toastLength: Toast.LENGTH_LONG);
+
     if (callModel.callCommand == null) return;
 
     switch (callModel.callCommand) {
       case INVITE_COMMAND:
         if (callModel.callName == null ||
-            callModel.channelId == null ||
+            callModel.initiatorId == null ||
             callModel.enableVideo == null ||
             callModel.token == null ||
             callModel.calleeId == null) return;
@@ -93,7 +108,7 @@ class CallController extends GetxController {
         incomingAcceptCall(callModel);
         break;
       case REJECT_COMMAND:
-        if (callModel.callName == null || callModel.channelId == null) return;
+        if (callModel.callName == null || callModel.initiatorId == null) return;
         incomingRejectCall(callModel);
         break;
       default:
@@ -102,19 +117,22 @@ class CallController extends GetxController {
   }
 
   void incomingCall(CallModel callModel) async {
-    if (status != CallStatus.NO_CALL && callModel.channelId != channelId) {
+    if (status != CallStatus.NO_CALL && callModel.initiatorId != initiatorId) {
       rejectCall('busy', callModel, false);
     } else if (status != CallStatus.NO_CALL &&
-        callModel.channelId == channelId) {
+        callModel.initiatorId == initiatorId) {
       return;
     } else {
       status = CallStatus.RINGING; // fixme change to ringing
 
       enableVideo = callModel.enableVideo;
       callName = callModel.callName;
-      channelId = callModel.channelId;
+      initiatorId = callModel.initiatorId;
+      receiverId = callModel.receiverId;
       token = callModel.token;
       calleeId = callModel.calleeId;
+      callerName = callModel.callerName;
+      calleeName = callModel.calleeName;
       // _getOpponentUserId().then((id) {
       //   if (id == null) return;
       //   opponentId = id;
@@ -140,6 +158,99 @@ class CallController extends GetxController {
         disconnect(false);
       }
     }
+  }
+
+  Future<void> requestCall(
+      int opponentId, int myId, String calleeName, bool enableVideo) async {
+    if (status != CallStatus.NO_CALL) return; //fixme
+
+    bool permission = await callPermissions(enableVideo);
+    if (!permission) {
+      showPermissionMessage();
+      return;
+    }
+
+    var rng = Random();
+    callName = rng.nextInt(100000).toString();
+    callerId = rng.nextInt(100);
+    calleeId = rng.nextInt(100);
+    this.calleeName = calleeName;
+    callerName = AppGlobalData.userName;
+
+    String? currentCallName = callName;
+
+    status = CallStatus.WAITING_TOKEN;
+
+    Navigator.push(MyApp.navigatorKey.currentContext!,
+        MaterialPageRoute(builder: (context) => const CallPage()));
+    waitingTokenTimer = Timer(const Duration(seconds: 30), () {
+      if (currentCallName != callName) {
+        return; // check we are  in same call with 15 seconds ago
+      }
+      if (status != CallStatus.WAITING_TOKEN) return;
+      missedCall = true;
+      Navigator.pop(MyApp.navigatorKey.currentContext!);
+      disconnect(true);
+    });
+
+    initiatorId = myId;
+    receiverId = opponentId;
+    this.enableVideo = enableVideo;
+
+    // _getOpponentUserId().then((id) {
+    //   if (id == null) return;
+    //   opponentId = id;
+    //   notifyListeners();
+    //   userUsecase.getUserById(id).then((profile) {
+    //     this.profile = profile;
+    //     notifyListeners();
+    //   });
+    // });
+
+    chatDataSource
+        .generateAgoraToken(locator<ChatController>().getRoomId()!)
+        .then((value) {
+      if (currentCallName != callName) {
+        return; // check we are  in same call with 15 seconds ago
+      }
+      if (status != CallStatus.WAITING_TOKEN && status != CallStatus.WAITING) {
+        return;
+      }
+      String calleeToken = value;
+      CallModel payload = CallModel(
+          callCommand: INVITE_COMMAND,
+          callName: callName,
+          calleeId: calleeId,
+          calleeName: callerName,
+          callerName: callerName,
+          token: calleeToken,
+          receiverId: receiverId,
+          initiatorId: initiatorId,
+          enableVideo: this.enableVideo);
+      messagingClient.sendSignal([receiverId!], payload);
+    });
+
+    chatDataSource
+        .generateAgoraToken(locator<ChatController>().getRoomId()!)
+        .then((value) {
+      if (currentCallName != callName) {
+        return; // check we are  in same call with 15 secods ago
+      }
+      if (status != CallStatus.WAITING_TOKEN) return;
+
+      String callerToken = value;
+      token = callerToken;
+      starter = true;
+
+      status = CallStatus.WAITING;
+      waitingTimer = Timer(const Duration(seconds: 25), () {
+        if (status != CallStatus.WAITING) return;
+        missedCall = true;
+        Navigator.pop(MyApp.navigatorKey.currentContext!);
+        disconnect(true);
+      });
+      update();
+    });
   }
 
   void incomingAcceptCall(CallModel callModel) async {
@@ -179,8 +290,9 @@ class CallController extends GetxController {
         callCommand: REJECT_COMMAND,
         reason: reason, //fixme
         callName: busyCallModel == null ? callName : busyCallModel.callName,
-        channelId: busyCallModel == null ? channelId : busyCallModel.channelId);
-    messagingClient.sendSignal([177], payload);
+        initiatorId:
+            busyCallModel == null ? initiatorId : busyCallModel.initiatorId);
+    messagingClient.sendSignal([initiatorId!], payload);
     if (popPage) {
       status = CallStatus.NO_CALL;
       Navigator.pop(MyApp.navigatorKey.currentContext!);
@@ -207,7 +319,7 @@ class CallController extends GetxController {
         callCommand: ACCEPT_COMMAND,
         callName: callName,
       );
-      await messagingClient.sendSignal([177], payload);
+      await messagingClient.sendSignal([initiatorId!], payload);
       client = AgoraClient(
         agoraConnectionData: AgoraConnectionData(
           appId: appId,
@@ -228,13 +340,13 @@ class CallController extends GetxController {
       CallModel payload = CallModel(
         callCommand: LEAVE_COMMAND,
         callName: callName,
-        channelId: '_',
+        initiatorId: 999,
       );
 
-      messagingClient.sendSignal([177], payload);
+      messagingClient.sendSignal([initiatorId!, receiverId!], payload);
     }
 
-    if (starter != null && channelId != null && starter!) {
+    if (starter != null && initiatorId != null && starter!) {
       if (missedCall != null && missedCall!) {
         callStatus = CallStatusEnum.missed;
         // currentChannelContentProvider.sendContent(
@@ -349,6 +461,16 @@ class CallController extends GetxController {
     update();
 
     client!.sessionController.value.engine?.enableLocalVideo(enableVideo!);
+  }
+
+  showPermissionMessage() {
+    DialogBoxes(
+        title: "Permission Denied",
+        des:
+            "To continue using this feature you have to give access to the application",
+        mainTask: () {
+          Navigator.pop(MyApp.navigatorKey.currentContext!);
+        }).showMyDialog();
   }
 }
 

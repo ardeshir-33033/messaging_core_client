@@ -12,4 +12,7 @@ class MessageRouting {
   static String deleteMessages(String messageId) {
     return "${Environment.apiBaseUrl}/$initial/$messageId";
   }
+
+  static final agoraToken = "${Environment.apiBaseUrl}/$initial/generate-agora-token";
+
 }

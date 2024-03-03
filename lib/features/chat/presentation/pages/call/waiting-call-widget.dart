@@ -55,47 +55,46 @@ class _WaitingCallPageState extends State<WaitingCallPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Flexible(
-                //   child: SingleChildScrollView(
-                //     child: Container(
-                //         height: 150,
-                //         margin: const EdgeInsets.symmetric(horizontal: 22),
-                //         child: GetBuilder<CallController>(
-                //             builder: (_) {
-                //           return Row(
-                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //             children: [
-                //               AgoraCustomButton(
-                //                   icon:
-                //                   widget.controller.mutedBeforeCall
-                //                       ? Icons.mic_off
-                //                       : Icons.mic,
-                //                   onPressed: () {
-                //                     widget.controller.changeBeforeCallMuteValue();
-                //                   },
-                //                   buttonName: "mute"),
-                //               AgoraCustomButton(
-                //                   icon: widget.controller.speakerBeforeCall
-                //                       ? Icons.volume_up
-                //                       : Icons.volume_off,
-                //                   onPressed: () {
-                //                     widget.controller.changeBeforeCallSpeakerValue();
-                //                   },
-                //                   buttonName: "Speaker"),
-                //               AgoraCustomButton(
-                //                   assetIcon: Assets.closeAgora,
-                //                   color: const Color(0xFFEB5757),
-                //                   onPressed: () {
-                //                     widget.stopCallCallback();
-                //                     Navigator.pop(context);
-                //                     widget.controller.disconnect(true);
-                //                   },
-                //                   buttonName: "end"),
-                //             ],
-                //           );
-                //         })),
-                //   ),
-                // ),
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: Container(
+                        height: 100,
+                        margin: const EdgeInsets.symmetric(horizontal: 22),
+                        child: GetBuilder<CallController>(builder: (_) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // AgoraCustomButton(
+                              //     icon:
+                              //     widget.controller.mutedBeforeCall
+                              //         ? Icons.mic_off
+                              //         : Icons.mic,
+                              //     onPressed: () {
+                              //       widget.controller.changeBeforeCallMuteValue();
+                              //     },
+                              //     buttonName: "mute"),
+                              // AgoraCustomButton(
+                              //     icon: widget.controller.speakerBeforeCall
+                              //         ? Icons.volume_up
+                              //         : Icons.volume_off,
+                              //     onPressed: () {
+                              //       widget.controller.changeBeforeCallSpeakerValue();
+                              //     },
+                              //     buttonName: "Speaker"),
+                              AgoraCustomButton(
+                                  assetIcon: Assets.closeAgora,
+                                  color: const Color(0xFFEB5757),
+                                  onPressed: () {
+                                    widget.stopCallCallback();
+                                    Navigator.pop(context);
+                                    widget.controller.disconnect(true);
+                                  },
+                                  buttonName: "end"),
+                            ],
+                          );
+                        })),
+                  ),
+                ),
               ],
             ),
           ),
@@ -167,16 +166,16 @@ class _WaitingCallPageState extends State<WaitingCallPage> {
                           borderRadius: BorderRadius.circular(1000),
                           child: Image(
                             image:
-                            // (widget.controller.profile == null ||
-                            //         widget.controller.profile!.avatarUrl ==
-                            //             null ||
-                            //         widget.controller.profile!.avatarUrl
-                            //                 ?.isEmpty ==
-                            //             true)
-                            //     ?
-                            Image.asset('assets/images/default.jpg').image,
-                                // : NetworkImage(widget
-                                //     .controller.profile!.avatarUrl.last),
+                                // (widget.controller.profile == null ||
+                                //         widget.controller.profile!.avatarUrl ==
+                                //             null ||
+                                //         widget.controller.profile!.avatarUrl
+                                //                 ?.isEmpty ==
+                                //             true)
+                                //     ?
+                                Image.asset('assets/images/default.jpg').image,
+                            // : NetworkImage(widget
+                            //     .controller.profile!.avatarUrl.last),
                             fit: BoxFit.cover,
                           ),
                         ),

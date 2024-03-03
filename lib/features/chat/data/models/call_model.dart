@@ -2,9 +2,12 @@ class CallModel {
   String? callCommand;
   String? reason;
   String? callName;
+  String? callerName;
+  String? calleeName;
   String? token;
   int? calleeId;
-  String? channelId;
+  int? initiatorId;
+  int? receiverId;
   bool? enableVideo;
 
   CallModel(
@@ -12,8 +15,11 @@ class CallModel {
       this.reason,
       this.callName,
       this.calleeId,
-      this.channelId,
+      this.initiatorId,
       this.token,
+      this.calleeName,
+      this.callerName,
+      this.receiverId,
       this.enableVideo});
 
   CallModel.fromJson(Map<String, dynamic> json) {
@@ -22,7 +28,10 @@ class CallModel {
     callName = json['callName'];
     token = json['token'];
     calleeId = json['userId'];
-    channelId = json['channelId'];
+    calleeName = json['calleeName'];
+    callerName = json["callerName"];
+    initiatorId = json['initiatorId'];
+    receiverId = json['receiverId'];
     enableVideo = json['enableVideo'];
   }
 
@@ -33,7 +42,10 @@ class CallModel {
     data['callName'] = callName;
     data['token'] = token;
     data['userId'] = calleeId;
-    data['channelId'] = channelId;
+    data['calleeName'] = calleeName;
+    data['callerName'] = callerName;
+    data['initiatorId'] = initiatorId;
+    data['receiverId'] = receiverId;
     data['enableVideo'] = enableVideo;
     return data;
   }
