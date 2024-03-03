@@ -104,8 +104,8 @@ class ChatController extends GetxController {
           chats.addAll(usersAndGroupsInCategory.groups);
 
           chats.sort((a, b) =>
-              ((b.updatedAt ?? b.lastMessage?.updatedAt) ?? DateTime(1998))
-                  .compareTo(((a.updatedAt ?? a.lastMessage?.updatedAt) ??
+              ((b.lastMessage?.updatedAt ?? b.updatedAt) ?? DateTime(1998))
+                  .compareTo(((a.lastMessage?.updatedAt ?? a.updatedAt) ??
                       DateTime(1998))));
           addStarChat();
         }
@@ -308,13 +308,17 @@ class ChatController extends GetxController {
   }
 
   Future pinMessage(int messageId) async {
-    ResponseModel response = await pinMessageUseCase(messageId);
-    if (response.result == ResultEnum.success) {
-      List<ContentModel> pinnedMessages = response.data;
-      if (pinnedMessages.isNotEmpty) {
-        pinnedMessage = pinnedMessages.first;
-        update(['pin']);
+    try {
+      ResponseModel response = await pinMessageUseCase(messageId);
+      if (response.result == ResultEnum.success) {
+        List<ContentModel> pinnedMessages = response.data;
+        if (pinnedMessages.isNotEmpty) {
+          pinnedMessage = pinnedMessages.first;
+          update(['pin']);
+        }
       }
+    } catch (e) {
+      print(e);
     }
   }
 

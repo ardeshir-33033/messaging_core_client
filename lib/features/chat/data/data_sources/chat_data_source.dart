@@ -216,10 +216,10 @@ class ChatDataSourceImpl extends ChatDataSource {
 
   @override
   Future<ResponseModel> pinMessage(int messageId) async {
-    var data = {'messageId': messageId, 'pinned': '1', '_method': 'PUT'};
+    var data = {'messageId': messageId.toString(), 'pinned': 1, '_method': 'PUT'};
 
     ResponseModel response = await api.post(
-      MessageRouting.updateRead,
+      MessageRouting.pinMessages,
       body: data,
       headerEnum: HeaderEnum.bearerHeaderEnum,
       responseEnum: ResponseEnum.responseModelEnum,
