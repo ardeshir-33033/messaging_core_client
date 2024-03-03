@@ -57,6 +57,8 @@ class ReplySendMessageWidget extends StatelessWidget {
                         TextWidget(
                           controller.repliedContent!.shortDisplayMessage(),
                           style: AppTextStyles.overline2,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
                       ],
                     ),

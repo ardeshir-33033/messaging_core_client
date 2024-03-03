@@ -19,6 +19,7 @@ import 'package:messaging_core/features/chat/domain/use_cases/edit_message_use_c
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_contacts_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_messages_use_case.dart';
+import 'package:messaging_core/features/chat/domain/use_cases/pin_message_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/send_messags_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/update_read_use_case.dart';
 import 'package:messaging_core/features/chat/presentation/manager/call_controller.dart';
@@ -75,10 +76,13 @@ void useCaseInjection() {
       () => DeleteMessageUseCase(locator()));
   locator.registerLazySingleton<CreateGroupUseCase>(
       () => CreateGroupUseCase(locator()));
+  locator.registerLazySingleton<PinMessageUseCase>(
+      () => PinMessageUseCase(locator()));
 }
 
 void controllerInjection() {
   locator.registerSingleton<ChatController>(Get.put(ChatController(
+      locator(),
       locator(),
       locator(),
       locator(),

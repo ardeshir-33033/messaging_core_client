@@ -36,7 +36,7 @@ class _PinnedMessagesWidgetState extends State<PinnedMessagesWidget> {
     return InkWell(
       onTap: widget.onPinTap,
       child: Container(
-        width: double.infinity,
+        width: context.screenWidth / 1.1,
         height: 40,
         decoration: BoxDecoration(
             color: Colors.grey[400],
@@ -48,38 +48,46 @@ class _PinnedMessagesWidgetState extends State<PinnedMessagesWidget> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  IconWidget(
-                    icon: Assets.pin,
-                    iconColor: Colors.grey[700],
-                  ),
-                  const SizedBox(width: 10),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        getSenderName(
-                          controller.pinnedMessage!,
-                        ),
-                        style: AppTextStyles.body4.copyWith(
-                            color: widget.isGroup
-                                ? getSenderColor(controller.pinnedMessage!)
-                                : AppColors.primary3[800]),
+              Expanded(
+                child: Row(
+                  children: [
+                    IconWidget(
+                      icon: Assets.pin,
+                      iconColor: Colors.grey[700],
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            getSenderName(
+                              controller.pinnedMessage!,
+                            ),
+                            style: AppTextStyles.body4.copyWith(
+                                color: widget.isGroup
+                                    ? getSenderColor(controller.pinnedMessage!)
+                                    : AppColors.primary3[800]),
+                          ),
+                          SizedBox(
+                            // width: 100,
+                            child: Text(
+                              controller.pinnedMessage!.contentPayload != null
+                                  ? controller.pinnedMessage!.contentPayload!
+                                      .shortDisplayName()
+                                  : "",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: AppTextStyles.overline2
+                                  .copyWith(color: AppColors.primary3[600]),
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        controller.pinnedMessage!.contentPayload != null
-                            ? controller.pinnedMessage!.contentPayload!
-                                .shortDisplayName()
-                            : "",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: AppTextStyles.overline2
-                            .copyWith(color: AppColors.primary3[600]),
-                      ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
               IconWidget(
                 onPressed: () {

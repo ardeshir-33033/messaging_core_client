@@ -36,6 +36,7 @@ abstract class ChatDataSource {
   Future<ResponseModel> deleteMessage(int messageId);
   Future<String> generateAgoraToken(String roomIdentifier);
   Future<bool> updateReadStatus(int messageId);
+  Future<ResponseModel> pinMessage(int messageId);
 
   void loginSiamak();
 }
@@ -210,6 +211,23 @@ class ChatDataSourceImpl extends ChatDataSource {
       responseEnum: ResponseEnum.responseModelEnum,
     );
 
+    return response;
+  }
+
+  @override
+  Future<ResponseModel> pinMessage(int messageId) async {
+    var data = {'messageId': messageId, 'pinned': '1', '_method': 'PUT'};
+
+    ResponseModel response = await api.post(
+      MessageRouting.updateRead,
+      body: data,
+      headerEnum: HeaderEnum.bearerHeaderEnum,
+      responseEnum: ResponseEnum.responseModelEnum,
+    );
+
+    if (response.result == ResultEnum.success) {
+      response.data = ContentModel.listFromJson(response.data);
+    }
     return response;
   }
 

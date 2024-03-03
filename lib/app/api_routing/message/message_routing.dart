@@ -16,4 +16,5 @@ class MessageRouting {
   static final agoraToken =
       "${Environment.apiBaseUrl}/$initial/generate-agora-token";
   static final updateRead = "${Environment.apiBaseUrl}/$initial/update";
+  static final pinMessages = "${Environment.apiBaseUrl}/$initial/update-pin";
 }

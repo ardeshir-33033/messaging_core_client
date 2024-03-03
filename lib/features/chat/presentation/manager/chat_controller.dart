@@ -22,6 +22,7 @@ import 'package:messaging_core/features/chat/domain/use_cases/delete_message_use
 import 'package:messaging_core/features/chat/domain/use_cases/edit_message_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_messages_use_case.dart';
+import 'package:messaging_core/features/chat/domain/use_cases/pin_message_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/send_messags_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/update_read_use_case.dart';
 import 'package:messaging_core/features/chat/presentation/manager/connection_status_controller.dart';
@@ -37,6 +38,7 @@ class ChatController extends GetxController {
   final CreateGroupUseCase createGroupUseCase;
   final DeleteMessageUseCase deleteMessageUseCase;
   final UpdateReadUseCase updateReadUseCase;
+  final PinMessageUseCase pinMessageUseCase;
   final ChatStorageRepository chatStorageRepository;
   final MessagingClient messagingClient;
 
@@ -48,6 +50,7 @@ class ChatController extends GetxController {
       this.editMessagesUseCase,
       this.deleteMessageUseCase,
       this.updateReadUseCase,
+      this.pinMessageUseCase,
       this.chatStorageRepository,
       this.createGroupUseCase);
 
@@ -301,6 +304,17 @@ class ChatController extends GetxController {
       return true;
     } else {
       return false;
+    }
+  }
+
+  Future pinMessage(int messageId) async {
+    ResponseModel response = await pinMessageUseCase(messageId);
+    if (response.result == ResultEnum.success) {
+      List<ContentModel> pinnedMessages = response.data;
+      if (pinnedMessages.isNotEmpty) {
+        pinnedMessage = pinnedMessages.first;
+        update(['pin']);
+      }
     }
   }
 

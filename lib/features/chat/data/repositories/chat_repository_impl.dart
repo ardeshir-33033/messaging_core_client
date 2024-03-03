@@ -38,7 +38,6 @@ class ChatRepositoryImpl extends ChatRepository {
 
         return response;
       } else {
-
         chats = await _chatStorageRepository.getChats();
         return ResponseModel(
           data: chats,
@@ -113,6 +112,19 @@ class ChatRepositoryImpl extends ChatRepository {
   Future<ResponseModel> deleteMessage(int messageId) async {
     try {
       return await _chatDataSource.deleteMessage(messageId);
+    } catch (e) {
+      return ResponseModel(
+        statusCode: 510,
+        result: ResultEnum.error,
+        message: e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<ResponseModel> pinMessage(int messageId) async {
+    try {
+      return await _chatDataSource.pinMessage(messageId);
     } catch (e) {
       return ResponseModel(
         statusCode: 510,

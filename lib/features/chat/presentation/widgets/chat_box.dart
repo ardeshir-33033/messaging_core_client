@@ -115,6 +115,7 @@ class ChatBoxState extends State<ChatBox> {
       onReport: _onReport,
       onEdit: _onEdit,
       onStar: _onStar,
+      onPin: _onPin,
 
       // onSaveImage: _onSaveImage,
       isMine: isMine,
@@ -519,6 +520,13 @@ class ChatBoxState extends State<ChatBox> {
     // CurrentChannelContentProvider currentChannelContentProvider =
     //     getIt<CurrentChannelContentProvider>();
     // currentChannelContentProvider.deleteUnsentMessage(widget.content);
+  }
+
+  Future<void> _onPin() async {
+    _hideBox();
+    controller.pinnedMessage = widget.content;
+    controller.update(["pin"]);
+    controller.pinMessage(widget.content.contentId);
   }
 
   Future<void> _onStar() async {
