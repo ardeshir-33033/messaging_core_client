@@ -8,6 +8,7 @@ import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/enums/file_type.dart';
+import 'package:messaging_core/core/enums/message_status.dart';
 import 'package:messaging_core/core/services/media_handler/file_handler.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/core/utils/utils.dart';
@@ -73,6 +74,7 @@ class _FileContentWidgetState extends State<FileContentWidget> {
       }
     });
   }
+
   @override
   void initState() {
     checkCachingFile();
@@ -116,6 +118,7 @@ class _FileContentWidgetState extends State<FileContentWidget> {
                         },
                       );
                     }
+
                     if (_cachedFile != null) {
                       return const IconWidget(
                         icon: Icons.file_copy_outlined,
@@ -123,6 +126,9 @@ class _FileContentWidgetState extends State<FileContentWidget> {
                         height: 32,
                         boxShape: BoxShape.circle,
                       );
+                    }
+                    if (widget.contentModel.status != MessageStatus.sent) {
+                      return const CircularProgressIndicator();
                     }
                     return IconWidget(
                       icon: Icons.arrow_downward_rounded,

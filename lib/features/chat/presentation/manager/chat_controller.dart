@@ -303,7 +303,6 @@ class ChatController extends GetxController {
         break;
       }
     }
-    print("object");
   }
 
   addStarChat() {

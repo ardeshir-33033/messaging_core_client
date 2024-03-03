@@ -13,11 +13,8 @@ class ChatListFloatingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () async {
-        List<ContentModel> contents =
-            await locator<ChatStorageRepository>().getMessages("177-330-391");
-        print(contents);
-        // Navigator.push(context,
-        //     MaterialPageRoute(builder: (context) => CreateNewGroupPage()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const CreateNewGroupPage()));
       },
       elevation: 0,
       backgroundColor: Colors.transparent,
