@@ -83,8 +83,12 @@ extension DateTimeEx on DateTime {
       if (now.day == day) {
         return "Today";
       }
-      if (differenceDuration == const Duration(days: 1)) {
-        return "Yesterday";
+      if (differenceDuration < const Duration(days: 7)) {
+        if (differenceDuration < const Duration(days: 1)) {
+          return "Yesterday";
+        } else {
+          return DateFormat('EEEE').format(this);
+        }
       }
     }
 

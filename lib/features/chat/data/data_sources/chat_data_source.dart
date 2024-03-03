@@ -15,6 +15,7 @@ import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/features/chat/data/models/create_group_model.dart';
+import 'package:messaging_core/features/chat/data/models/get_messages_model.dart';
 import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/group_model.dart';
@@ -97,7 +98,8 @@ class ChatDataSourceImpl extends ChatDataSource {
     );
 
     if (response.result == ResultEnum.success) {
-      response.data = ContentModel.listFromJson(response.data["messages"]);
+      response.data = GetMessagesModel.fromJson(response
+          .data); // response.data = ContentModel.listFromJson(response.data["messages"]);
     }
     return response;
   }

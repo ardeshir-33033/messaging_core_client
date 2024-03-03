@@ -10,6 +10,7 @@ import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
 import 'package:messaging_core/core/utils/utils.dart';
+import 'package:messaging_core/features/chat/data/models/get_messages_model.dart';
 import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
 import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
@@ -59,6 +60,7 @@ class ChatController extends GetxController {
   bool isTyping = false;
   ContentModel? editingContent;
   ContentModel? repliedContent;
+  ContentModel? pinnedMessage;
   late ChatParentClass? currentChat;
   late String? _roomIdentifier;
 
@@ -74,6 +76,7 @@ class ChatController extends GetxController {
     _roomIdentifier = null;
     isTyping = false;
     editingContent = null;
+    pinnedMessage = null;
   }
 
   getAllChats({bool showLoading = true}) async {
@@ -128,7 +131,12 @@ class ChatController extends GetxController {
           senderId: currentChat!.isGroup() ? null : AppGlobalData.userId,
         ));
         if (response.result == ResultEnum.success) {
-          messages = response.data;
+          messages = (response.data as GetMessagesModel).messages;
+          if ((response.data as GetMessagesModel).pinnedMessages.isNotEmpty) {
+            pinnedMessage =
+                (response.data as GetMessagesModel).pinnedMessages.first;
+            update(["pin"]);
+          }
           // messages = messages.reversed.toList();
           updateReadStatus();
           saveMessages();

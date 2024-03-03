@@ -17,6 +17,7 @@ import 'package:messaging_core/features/chat/presentation/manager/emoji_controll
 import 'package:messaging_core/features/chat/presentation/manager/record_voice_controller.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/animated_app_bar.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_box.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/chat_page_widgets/pinned_messages_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/content_date_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/conversation_appbar.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/emoji_picker.dart';
@@ -127,6 +128,17 @@ class _ChatPageState extends State<ChatPage>
                                   chat: widget.chat,
                                   size: 40,
                                 ),
+                                GetBuilder<ChatController>(
+                                    id: "pin",
+                                    builder: (_) {
+                                      if (controller.pinnedMessage != null) {
+                                        return PinnedMessagesWidget(
+                                            isGroup: widget.chat.isGroup(),
+                                            onPinTap: () => _onPinTap(
+                                                controller.pinnedMessage));
+                                      }
+                                      return const SizedBox();
+                                    }),
                                 const SizedBox(height: 10),
                                 Expanded(
                                   child: GetBuilder<ChatController>(
@@ -320,6 +332,14 @@ class _ChatPageState extends State<ChatPage>
         ),
       ),
     );
+  }
+
+  _onPinTap(ContentModel? pinnedContent) async {
+    if (pinnedContent == null) return;
+    _repliedItemToAnimate = pinnedContent.contentId;
+    setState(() {});
+    _scrollToSeqNo(pinnedContent.contentId);
+    await _replyToAnimationController.forward(from: 0);
   }
 
   _onReplyTap(ContentModel? replyContent) async {
