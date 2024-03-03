@@ -55,10 +55,17 @@ class AttachFileBottomSheet extends StatelessWidget {
                 icon: Assets.file),
             AttachDataItem(
                 title: tr(context).camera,
-                onPressed: () {
+                onPressed: () async {
                   final navigator = Navigator.of(context);
                   navigator.pop();
-                  ImageHandler().selectImageFile(source: ImageSource.camera);
+                  FileModel? file = await ImageHandler()
+                      .selectImageFile(source: ImageSource.camera);
+                  if (file != null) {
+                    // navigator.pop();
+                    final ChatController controller = locator<ChatController>();
+                    controller.sendTextMessage(file.fileName ?? "Image",
+                        chat.id!, ContentTypeEnum.image, file, null);
+                  }
                 },
                 icon: Assets.camera),
             AttachDataItem(

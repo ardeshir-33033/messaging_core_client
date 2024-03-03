@@ -5,6 +5,7 @@ import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
+import 'package:messaging_core/core/services/media_handler/media_handler.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
@@ -119,17 +120,22 @@ class _ForwardContentSheetState extends State<ForwardContentSheet> {
     final navigator = Navigator.of(context);
     isLoading = true;
     setState(() {});
+    FileModel? file;
+    if (widget.contentModel.filePath != null) {
+      File fileFromWeb =
+          await MediaHandler().fileFromUrl(widget.contentModel.filePath!);
+      file = FileModel(
+          formData: await File(fileFromWeb.path).readAsBytes(),
+          filePath: fileFromWeb.path,
+          fileName: widget.contentModel.messageText);
+    }
     controller.setCurrentChat(chat);
     controller.joinRoom();
-    controller.sendTextMessage(
+    await controller.sendTextMessage(
         widget.contentModel.messageText,
         chat.id!,
         widget.contentModel.contentType,
-        widget.contentModel.filePath != null
-            ? FileModel(
-                formData: File(widget.contentModel.filePath!).readAsBytesSync(),
-                fileName: widget.contentModel.messageText)
-            : null,
+        widget.contentModel.filePath != null ? file : null,
         null);
     await Future.delayed(const Duration(milliseconds: 600));
     isLoading = false;

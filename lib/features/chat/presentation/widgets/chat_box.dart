@@ -84,9 +84,12 @@ class ChatBoxState extends State<ChatBox> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final RenderBox box = key.currentContext?.findRenderObject() as RenderBox;
-      position = box.localToGlobal(Offset.zero);
-      setState(() {});
+      if (key.currentContext != null) {
+        final RenderBox box =
+            key.currentContext?.findRenderObject() as RenderBox;
+        position = box.localToGlobal(Offset.zero);
+        setState(() {});
+      }
     });
     // userId = getIt<UserCertStorage>().userId ?? "";
     isMine = mine(widget.content);

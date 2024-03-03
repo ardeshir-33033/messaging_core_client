@@ -111,28 +111,28 @@ class ImageHandler extends MediaHandler {
   }) async {
     File? image;
     final picker = ImagePicker();
-    final pickedFile =
-        await picker.pickImage(source: source ?? ImageSource.gallery);
+    final pickedFile = await picker.pickImage(
+        source: source ?? ImageSource.gallery, imageQuality: 50);
 
     String? mainFilePath = pickedFile?.path;
     if (pickedFile != null) {
-      if (allowCrop == true) {
-        final fileExtension = getFileExtension(pickedFile.path);
-        if (['jpg', 'jpeg', 'png'].contains(fileExtension)) {
-          final compressFormat = fileExtension == 'png'
-              ? ImageCompressFormat.png
-              : ImageCompressFormat.jpg;
-          final imageCropper = ImageCropper();
-          final croppedFile = await imageCropper.cropImage(
-              sourcePath: pickedFile.path,
-              // aspectRatio: filePosition == FilePosition.profile
-              //     ? const CropAspectRatio(ratioX: 1.0, ratioY: 1.0)
-              //     : null,
-              compressQuality: 100,
-              compressFormat: compressFormat);
-          mainFilePath = croppedFile?.path;
-        }
-      }
+      // if (allowCrop == true) {
+      //   final fileExtension = getFileExtension(pickedFile.path);
+      //   if (['jpg', 'jpeg', 'png'].contains(fileExtension)) {
+      //     final compressFormat = fileExtension == 'png'
+      //         ? ImageCompressFormat.png
+      //         : ImageCompressFormat.jpg;
+      //     final imageCropper = ImageCropper();
+      //     final croppedFile = await imageCropper.cropImage(
+      //         sourcePath: pickedFile.path,
+      //         // aspectRatio: filePosition == FilePosition.profile
+      //         //     ? const CropAspectRatio(ratioX: 1.0, ratioY: 1.0)
+      //         //     : null,
+      //         compressQuality: 100,
+      //         compressFormat: compressFormat);
+      //     mainFilePath = croppedFile?.path;
+      //   }
+      // }
 
       if (mainFilePath != null) {
         image = File(mainFilePath);

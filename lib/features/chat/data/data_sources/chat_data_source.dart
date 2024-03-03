@@ -246,7 +246,7 @@ class ChatDataSourceImpl extends ChatDataSource {
       );
 
       if (response.statusCode == 200) {
-        api.setToken(response.data["token"]);
+        api.setToken(response.data["data"]["token"]);
       } else {
         print(response.statusMessage);
       }
