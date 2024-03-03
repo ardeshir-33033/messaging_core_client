@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:api_handler/api_handler.dart';
 import 'package:api_handler/feature/api_handler/data/models/response_model.dart';
 import 'package:get/get.dart';
@@ -12,13 +10,11 @@ import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
 import 'package:messaging_core/core/utils/utils.dart';
-import 'package:messaging_core/features/chat/data/models/create_group_model.dart';
 import 'package:messaging_core/features/chat/data/models/users_groups_category.dart';
 import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_payload_model.dart';
-import 'package:messaging_core/features/chat/domain/entities/group_users_model.dart';
 import 'package:messaging_core/features/chat/domain/repositories/storage/chat_storage_repository.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/create_group_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/delete_message_use_case.dart';
@@ -26,6 +22,7 @@ import 'package:messaging_core/features/chat/domain/use_cases/edit_message_use_c
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_messages_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/send_messags_use_case.dart';
+import 'package:messaging_core/features/chat/domain/use_cases/update_read_use_case.dart';
 import 'package:messaging_core/features/chat/presentation/manager/emoji_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/record_voice_controller.dart';
 import 'package:messaging_core/locator.dart';
@@ -37,6 +34,7 @@ class ChatController extends GetxController {
   final EditMessagesUseCase editMessagesUseCase;
   final CreateGroupUseCase createGroupUseCase;
   final DeleteMessageUseCase deleteMessageUseCase;
+  final UpdateReadUseCase updateReadUseCase;
   final ChatStorageRepository chatStorageRepository;
   final MessagingClient messagingClient;
 
@@ -47,6 +45,7 @@ class ChatController extends GetxController {
       this.messagingClient,
       this.editMessagesUseCase,
       this.deleteMessageUseCase,
+      this.updateReadUseCase,
       this.chatStorageRepository,
       this.createGroupUseCase);
 
@@ -115,6 +114,8 @@ class ChatController extends GetxController {
         messagesStatus.loading();
         update(["messages"]);
       });
+      int index = chats.indexWhere((element) => element.id == currentChat!.id);
+      chats[index].unreadCount = 0;
 
       ResponseModel response = await getMessagesUseCase(GetMessagesParams(
         receiverType: currentChat!.getReceiverType(),
@@ -124,6 +125,7 @@ class ChatController extends GetxController {
       if (response.result == ResultEnum.success) {
         messages = response.data;
         // messages = messages.reversed.toList();
+        updateReadStatus();
 
         messagesStatus.success();
         update(["messages"]);
@@ -280,6 +282,16 @@ class ChatController extends GetxController {
     } else {
       return false;
     }
+  }
+
+  updateReadStatus() {
+    for (int i = 0; i < messages.length; i++) {
+      if (messages[i].senderId != AppGlobalData.userId) {
+        updateReadUseCase(messages[0].contentId);
+        break;
+      }
+    }
+    print("object");
   }
 
   addStarChat() {

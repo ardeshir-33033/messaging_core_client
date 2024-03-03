@@ -32,6 +32,8 @@ abstract class ChatDataSource {
       String groupName, List<int> users, FileModel? file);
   Future<ResponseModel> deleteMessage(int messageId);
   Future<String> generateAgoraToken(String roomIdentifier);
+  Future<bool> updateReadStatus(int messageId);
+
   void loginSiamak();
 }
 
@@ -172,6 +174,26 @@ class ChatDataSourceImpl extends ChatDataSource {
       response.data = CreateGroupModel.fromJson(response.data);
     }
     return response;
+  }
+
+  @override
+  Future<bool> updateReadStatus(int messageId) async {
+    var data = {
+      'messageId': messageId,
+      'userId': AppGlobalData.userId,
+      '_method': 'PUT'
+    };
+    ResponseModel response = await api.post(
+      MessageRouting.updateRead,
+      body: data,
+      headerEnum: HeaderEnum.bearerHeaderEnum,
+      responseEnum: ResponseEnum.responseModelEnum,
+    );
+
+    if (response.result == ResultEnum.success) {
+      return true;
+    }
+    return false;
   }
 
   @override

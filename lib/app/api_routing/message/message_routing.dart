@@ -13,6 +13,7 @@ class MessageRouting {
     return "${Environment.apiBaseUrl}/$initial/$messageId";
   }
 
-  static final agoraToken = "${Environment.apiBaseUrl}/$initial/generate-agora-token";
-
+  static final agoraToken =
+      "${Environment.apiBaseUrl}/$initial/generate-agora-token";
+  static final updateRead = "${Environment.apiBaseUrl}/$initial/update";
 }

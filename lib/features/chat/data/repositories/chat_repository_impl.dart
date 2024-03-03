@@ -92,4 +92,13 @@ class ChatRepositoryImpl extends ChatRepository {
       );
     }
   }
+
+  @override
+  Future<bool> updateRead(int messageId) async {
+    try {
+      return await _chatDataSource.updateReadStatus(messageId);
+    } catch (e) {
+      return false;
+    }
+  }
 }
