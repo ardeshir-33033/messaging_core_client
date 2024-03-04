@@ -71,7 +71,10 @@ class WebSocketConnection {
       print(data);
       ChatController controller = locator<ChatController>();
       controller.handleNotificationSignal(
-          data["senderId"], ReceiverType.fromString(data["receiverType"]));
+          data["senderId"].runtimeType == int
+              ? data["senderId"]
+              : int.parse(data["senderId"]),
+          ReceiverType.fromString(data["receiverType"]));
     });
 
     channel?.on("onlineUsers", (data) {
