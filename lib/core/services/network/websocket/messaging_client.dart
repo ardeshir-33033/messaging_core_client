@@ -31,7 +31,9 @@ class MessagingClient {
       'receiverId': contentModel.receiverId,
       'receiverType': contentModel.receiverType.toString(),
       'messageId': contentModel.contentId,
-      'messageType': contentModel.contentType.toString()
+      'messageType': contentModel.contentType.toString(),
+      'file_path': contentModel.filePath,
+      if (contentModel.replied != null) 'reply': contentModel.replied!.toJson()
       // "timestamp": DateTime.now().millisecondsSinceEpoch,
     });
   }

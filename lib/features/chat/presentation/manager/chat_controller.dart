@@ -348,17 +348,15 @@ class ChatController extends GetxController {
     }
   }
 
-  handleNotificationSignal(int chatId, ReceiverType receiverType) {
-    chats.forEach((element) {
+  handleNotificationSignal(int chatId, ReceiverType receiverType) async {
+    await getAllChats(showLoading: false);
+    for (var element in chats) {
       if (element.id == chatId) {
-        element.unreadCount = element.unreadCount ?? 0 + 1;
-        chats.remove(element);
-        chats.insert(0, element);
         locator<RecordVoiceController>()
             .playSimpleAudio(Assets.notificationTone);
-        update(["allChats"]);
+        break;
       }
-    });
+    }
   }
 
   handleUserTypingSignal(int senderId) {

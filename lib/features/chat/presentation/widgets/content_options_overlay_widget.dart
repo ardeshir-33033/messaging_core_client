@@ -28,7 +28,7 @@ class ContentOptionsOverlayWidget extends StatefulWidget {
   final String contentId;
   final OverlayController overlayController;
   final Widget child;
-  final bool? isMine;
+  final bool isMine;
   final Offset? offset;
 
   const ContentOptionsOverlayWidget({
@@ -46,7 +46,7 @@ class ContentOptionsOverlayWidget extends StatefulWidget {
     this.onSaveImage,
     this.onForward,
     this.onResend,
-    this.isMine,
+    required this.isMine,
     this.onReport,
     this.onStar,
     this.onPin,
@@ -179,7 +179,7 @@ class _ContentOptionsOverlayWidgetState
         icon: Assets.trash,
         onTap: widget.onDeleteLocal,
         textColor: AppColors.primaryRed,
-        visible: true,
+        visible: widget.isMine ? true :false,
       ),
     ];
     options.removeWhere((element) => element.visible == false);

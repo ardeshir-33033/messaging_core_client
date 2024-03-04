@@ -216,7 +216,11 @@ class ChatDataSourceImpl extends ChatDataSource {
 
   @override
   Future<ResponseModel> pinMessage(int messageId) async {
-    var data = {'messageId': messageId.toString(), 'pinned': 1, '_method': 'PUT'};
+    var data = {
+      'messageId': messageId.toString(),
+      'pinned': 1,
+      '_method': 'PUT'
+    };
 
     ResponseModel response = await api.post(
       MessageRouting.pinMessages,
@@ -255,6 +259,10 @@ class ChatDataSourceImpl extends ChatDataSource {
     if (locator<ConnectionStatusProvider>().isConnected) {
       var headers = {'Content-Type': 'application/x-www-form-urlencoded'};
       var data = {'username': 'Siamak', 'password': 'Sia123456'};
+
+      if (AppGlobalData.userId != 391) {
+        data = {'username': AppGlobalData.userName, 'password': '1234sr'};
+      }
       var dio = Dio();
       var response = await dio.request(
         'https://zoomiran.com/api/v1/login',

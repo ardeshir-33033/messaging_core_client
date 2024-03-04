@@ -27,12 +27,16 @@ class ConversationAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: chat.isGroup()
+          ? MainAxisAlignment.center
+          : MainAxisAlignment.spaceBetween,
+      // mainAxisSize: MainAxisSize.max,
       children: [
-        const SizedBox(
-          width: 40,
-          height: 40,
-        ),
+        if (!chat.isGroup())
+          const SizedBox(
+            width: 40,
+            height: 40,
+          ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -82,27 +86,28 @@ class ConversationAppBar extends StatelessWidget {
             ),
           ],
         ),
-        InkWell(
-          onTap: () {
-            locator<CallController>().reset();
-            locator<CallController>().requestCall(
-                chat.id!, AppGlobalData.userId, chat.username!, false);
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context) => const WaitingCallPage()));
-          },
-          child: Container(
-            width: 40,
-            height: 40,
-            decoration: const BoxDecoration(
-                color: Color(0xFFCCCCCC), shape: BoxShape.circle),
-            child: const IconWidget(
-              icon: Assets.callOutlined,
-              iconColor: Colors.black87,
-              width: 30,
-              boxFit: BoxFit.scaleDown,
+        if (!chat.isGroup())
+          InkWell(
+            onTap: () {
+              locator<CallController>().reset();
+              locator<CallController>().requestCall(
+                  chat.id!, AppGlobalData.userId, chat.username!, false);
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => const WaitingCallPage()));
+            },
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: const BoxDecoration(
+                  color: Color(0xFFCCCCCC), shape: BoxShape.circle),
+              child: const IconWidget(
+                icon: Assets.callOutlined,
+                iconColor: Colors.black87,
+                width: 30,
+                boxFit: BoxFit.scaleDown,
+              ),
             ),
-          ),
-        )
+          )
       ],
     );
   }

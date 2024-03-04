@@ -165,7 +165,7 @@ class ContentModel {
         // contentPayload: contentPayload,
         status: MessageStatus.sent,
         replied: reply,
-        pinned: json["replied"],
+        pinned: json["pinned"] ?? 0,
         isForwarded: json['isForwarded'] ?? false,
         receiverType: ReceiverType.fromString(json['receiverType']),
         messageText: json['text'],
