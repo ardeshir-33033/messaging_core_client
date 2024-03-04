@@ -172,7 +172,7 @@ class ContentModel {
         categoryId: AppGlobalData.categoryId,
         receiverId: json['receiverId'].runtimeType == int
             ? json['receiverId']
-            : json['receiverId'].toString(),
+            : int.parse(json['receiverId']),
         filePath: json['file_path'],
         sender: json['sender'] != null
             ? CategoryUser.fromJson(json['sender'])
