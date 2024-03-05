@@ -255,18 +255,6 @@ class _CreateNewGroupPageState extends State<CreateNewGroupPage> {
         lastRead: group.group.lastRead,
         groupUsers: group.groupUsers);
 
-    // ChatParentClass chat = ChatParentClass(
-    //     id: 28,
-    //     name: "group.group.name",
-    //     avatar: null,
-    //     creatorUserId: 194,
-    //     categoryId: 330,
-    //     createdAt: DateTime.now(),
-    //     updatedAt: DateTime.now(),
-    //     unreadCount: 0,
-    //     lastMessage: null,
-    //     lastRead: null,
-    //     groupUsers: [GroupUsersModel(id: 1, name: "admin")]);
     navigator.pushReplacement(
         MaterialPageRoute(builder: (context) => ChatPage(chat: chat)));
   }
