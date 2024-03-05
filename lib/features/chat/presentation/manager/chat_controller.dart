@@ -17,7 +17,7 @@ import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_payload_model.dart';
 import 'package:messaging_core/features/chat/domain/repositories/storage/chat_storage_repository.dart';
-import 'package:messaging_core/features/chat/domain/use_cases/create_group_use_case.dart';
+import 'package:messaging_core/features/chat/domain/use_cases/group/create_group_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/delete_message_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/edit_message_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';

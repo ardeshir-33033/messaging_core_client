@@ -13,7 +13,7 @@ import 'package:messaging_core/features/chat/data/repositories/storage/chat_stor
 import 'package:messaging_core/features/chat/domain/repositories/chat_repository.dart';
 import 'package:messaging_core/features/chat/domain/repositories/contact_repository.dart';
 import 'package:messaging_core/features/chat/domain/repositories/storage/chat_storage_repository.dart';
-import 'package:messaging_core/features/chat/domain/use_cases/create_group_use_case.dart';
+import 'package:messaging_core/features/chat/domain/use_cases/group/create_group_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/delete_message_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/edit_message_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
