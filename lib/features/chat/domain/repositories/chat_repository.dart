@@ -12,6 +12,8 @@ abstract class ChatRepository {
   Future<ResponseModel> editMessages(String newText, int messageId);
   Future<ResponseModel> createGroup(
       String groupName, List<int> users, FileModel? file);
+  Future<ResponseModel> editGroup(
+      String groupName, List<int> users, int groupId, FileModel? file);
   Future<ResponseModel> deleteMessage(int messageId);
   Future<bool> updateRead(int messageId);
   Future<ResponseModel> pinMessage(int messageId);

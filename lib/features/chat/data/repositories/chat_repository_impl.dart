@@ -109,6 +109,20 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
+  Future<ResponseModel> editGroup(
+      String groupName, List<int> users, int groupId, FileModel? file) async {
+    try {
+      return await _chatDataSource.editGroup(groupName, users, groupId, file);
+    } catch (e) {
+      return ResponseModel(
+        statusCode: 510,
+        result: ResultEnum.error,
+        message: e.toString(),
+      );
+    }
+  }
+
+  @override
   Future<ResponseModel> deleteMessage(int messageId) async {
     try {
       return await _chatDataSource.deleteMessage(messageId);
