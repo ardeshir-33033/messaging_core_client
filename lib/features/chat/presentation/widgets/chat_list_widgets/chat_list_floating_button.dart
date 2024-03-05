@@ -3,7 +3,7 @@ import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/repositories/storage/chat_storage_repository.dart';
-import 'package:messaging_core/features/chat/presentation/pages/create_new_group_page.dart';
+import 'package:messaging_core/features/chat/presentation/pages/group/create_new_group_page.dart';
 import 'package:messaging_core/locator.dart';
 
 class ChatListFloatingButton extends StatelessWidget {
