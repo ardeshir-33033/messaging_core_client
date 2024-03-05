@@ -33,6 +33,8 @@ abstract class ChatDataSource {
   Future<ResponseModel> editMessages(String newText, int messageId);
   Future<ResponseModel> createGroup(
       String groupName, List<int> users, FileModel? file);
+  Future<ResponseModel> editGroup(
+      String groupName, List<int> users, int groupId, FileModel? file);
   Future<ResponseModel> deleteMessage(int messageId);
   Future<String> generateAgoraToken(String roomIdentifier);
   Future<bool> updateReadStatus(int messageId);
@@ -170,6 +172,32 @@ class ChatDataSourceImpl extends ChatDataSource {
 
     ResponseModel response = await api.post(
       ChatGroupRouting.createChat,
+      body: data,
+      headerEnum: HeaderEnum.bearerHeaderEnum,
+      responseEnum: ResponseEnum.responseModelEnum,
+    );
+
+    if (response.result == ResultEnum.success) {
+      response.data = CreateGroupModel.fromJson(response.data);
+    }
+    return response;
+  }
+
+  @override
+  Future<ResponseModel> editGroup(
+      String groupName, List<int> users, int groupId, FileModel? file) async {
+    var data = FormData.fromMap({
+      if (file != null)
+        'file': await MultipartFile.fromFile(file.filePath!,
+            filename: file.fileName),
+      'name': groupName,
+      'users': users,
+      'category_id': AppGlobalData.categoryId,
+      'creator_user_id': AppGlobalData.userId,
+    }, ListFormat.multiCompatible);
+
+    ResponseModel response = await api.post(
+      ChatGroupRouting.editGroup(groupId),
       body: data,
       headerEnum: HeaderEnum.bearerHeaderEnum,
       responseEnum: ResponseEnum.responseModelEnum,

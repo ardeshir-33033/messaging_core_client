@@ -8,8 +8,8 @@ class ChatGroupRouting {
     return "${Environment.apiBaseUrl}/$initial/$path/$category";
   }
 
-  static String editGroup(int categoryId) {
-    return "${Environment.apiBaseUrl}/$initial/$categoryId";
+  static String editGroup(int groupId) {
+    return "${Environment.apiBaseUrl}/$initial/$groupId";
   }
 
   static final String createChat = "${Environment.apiBaseUrl}/$initial";
