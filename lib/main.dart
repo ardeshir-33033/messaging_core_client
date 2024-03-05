@@ -147,7 +147,7 @@ class _ChooseUserPageState extends State<ChooseUserPage> {
                   }
                 : null,
             style: ElevatedButton.styleFrom(
-              primary: selectedUser != null ? null : Colors.grey,
+              backgroundColor: selectedUser != null ? null : Colors.grey,
             ),
             child: const Text("Continue"),
           ),

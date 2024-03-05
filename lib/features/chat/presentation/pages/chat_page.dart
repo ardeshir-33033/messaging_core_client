@@ -81,7 +81,9 @@ class _ChatPageState extends State<ChatPage>
     controller.setCurrentChat(widget.chat);
     controller.joinRoom();
 
-    controller.getMessages();
+    // if (widget.chat.lastMessage != null) {
+      controller.getMessages();
+    // }
     scrollNotificationController = StreamController();
     _overlayController = OverlayController();
     _initAnimations();

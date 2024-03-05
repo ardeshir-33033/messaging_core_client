@@ -18,6 +18,7 @@ import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/data/models/create_group_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
+import 'package:messaging_core/features/chat/domain/entities/group_users_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/pages/chat_page.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/create_group_widgets/bottom_sheet_item.dart';
@@ -246,10 +247,26 @@ class _CreateNewGroupPageState extends State<CreateNewGroupPage> {
         name: group.group.name,
         avatar: group.group.avatar,
         creatorUserId: group.group.creatorUserId,
-        categoryId: group.group.creatorUserId,
+        categoryId: group.group.categoryId,
         createdAt: group.group.createdAt,
         updatedAt: group.group.updatedAt,
+        unreadCount: group.group.unreadCount ?? 0,
+        lastMessage: group.group.lastMessage,
+        lastRead: group.group.lastRead,
         groupUsers: group.groupUsers);
+
+    // ChatParentClass chat = ChatParentClass(
+    //     id: 28,
+    //     name: "group.group.name",
+    //     avatar: null,
+    //     creatorUserId: 194,
+    //     categoryId: 330,
+    //     createdAt: DateTime.now(),
+    //     updatedAt: DateTime.now(),
+    //     unreadCount: 0,
+    //     lastMessage: null,
+    //     lastRead: null,
+    //     groupUsers: [GroupUsersModel(id: 1, name: "admin")]);
     navigator.pushReplacement(
         MaterialPageRoute(builder: (context) => ChatPage(chat: chat)));
   }

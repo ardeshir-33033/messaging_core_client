@@ -125,8 +125,7 @@ class ChatController extends GetxController {
         messagesStatus.loading();
         update(["messages"]);
       });
-      int index = chats.indexWhere((element) => element.id == currentChat!.id);
-      chats[index].unreadCount = 0;
+
       if (locator<ConnectionStatusProvider>().isConnected) {
         ResponseModel response = await getMessagesUseCase(GetMessagesParams(
           receiverType: currentChat!.getReceiverType(),
