@@ -71,5 +71,6 @@
   "create": "Create",
   "speaker": "Speaker",
   "decline": "Decline",
-  "accept": "Accept"
+  "accept": "Accept",
+  "editGroupTitle": "Edit Group"
 }

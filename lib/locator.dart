@@ -19,6 +19,7 @@ import 'package:messaging_core/features/chat/domain/use_cases/edit_message_use_c
 import 'package:messaging_core/features/chat/domain/use_cases/get_all_chats_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_contacts_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/get_messages_use_case.dart';
+import 'package:messaging_core/features/chat/domain/use_cases/group/edit_group_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/pin_message_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/send_messags_use_case.dart';
 import 'package:messaging_core/features/chat/domain/use_cases/update_read_use_case.dart';
@@ -27,6 +28,7 @@ import 'package:messaging_core/features/chat/presentation/manager/chat_controlle
 import 'package:messaging_core/features/chat/presentation/manager/connection_status_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/contacts_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/emoji_controller.dart';
+import 'package:messaging_core/features/chat/presentation/manager/group_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/online_users_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/record_voice_controller.dart';
 
@@ -79,6 +81,8 @@ void useCaseInjection() {
       () => CreateGroupUseCase(locator()));
   locator.registerLazySingleton<PinMessageUseCase>(
       () => PinMessageUseCase(locator()));
+  locator.registerLazySingleton<EditGroupUseCase>(
+      () => EditGroupUseCase(locator()));
 }
 
 void controllerInjection() {
@@ -95,6 +99,8 @@ void controllerInjection() {
       locator())));
   locator.registerSingleton<ContactsController>(
       Get.put(ContactsController(locator())));
+  locator
+      .registerSingleton<GroupController>(Get.put(GroupController(locator())));
   locator.registerSingleton<ConnectionStatusProvider>(
       Get.put(ConnectionStatusProvider()));
   locator.registerSingleton<OnlineUsersController>(

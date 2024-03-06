@@ -15,7 +15,8 @@ class GroupController extends GetxController {
 
   GroupController(this.editGroupUseCase);
 
-  Future editGroup(String groupName, List<int> users, int groupId,
+  Future<ResponseModel> editGroup(
+      String groupName, List<int> users, int groupId,
       {FileModel? file}) async {
     getContactsStatus.loading();
     update(["edit"]);
@@ -41,5 +42,6 @@ class GroupController extends GetxController {
           ..avatar = groupModel.group.avatar;
       }
     }
+    return response;
   }
 }

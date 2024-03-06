@@ -82,7 +82,7 @@ class _ChatPageState extends State<ChatPage>
     controller.joinRoom();
 
     // if (widget.chat.lastMessage != null) {
-      controller.getMessages();
+    controller.getMessages();
     // }
     scrollNotificationController = StreamController();
     _overlayController = OverlayController();
@@ -107,7 +107,9 @@ class _ChatPageState extends State<ChatPage>
       child: Scaffold(
         body: Column(
           children: [
-            const AnimatedAppBar(),
+            AnimatedAppBar(
+              isGroup: widget.chat.isGroup(),
+            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),

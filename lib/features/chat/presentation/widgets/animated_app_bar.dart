@@ -4,9 +4,12 @@ import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
+import 'package:messaging_core/features/chat/presentation/pages/group/edit_group_page.dart';
 
 class AnimatedAppBar extends StatefulWidget {
-  const AnimatedAppBar({super.key});
+  const AnimatedAppBar({super.key, required this.isGroup});
+
+  final bool isGroup;
 
   @override
   State<AnimatedAppBar> createState() => _AnimatedAppBarState();
@@ -42,16 +45,17 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
                         fontWeight: FontWeight.w400,
                         color: Colors.white),
                   ),
-                  IconWidget(
-                    icon: openedFullMenu
-                        ? Icons.keyboard_arrow_up_outlined
-                        : Icons.keyboard_arrow_down_outlined,
-                    iconColor: Colors.white,
-                    size: 25,
-                    onPressed: () {
-                      tapAnimatedAppBar();
-                    },
-                  ),
+                  if (widget.isGroup)
+                    IconWidget(
+                      icon: openedFullMenu
+                          ? Icons.keyboard_arrow_up_outlined
+                          : Icons.keyboard_arrow_down_outlined,
+                      iconColor: Colors.white,
+                      size: 25,
+                      onPressed: () {
+                        tapAnimatedAppBar();
+                      },
+                    ),
                 ],
               ),
             ),
@@ -78,26 +82,37 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
                       AnimatedAppBarItem(
                         icon: Assets.addMenu,
                         title: tr(context).add,
+                        onTap: () {},
                       ),
                       AnimatedAppBarItem(
                         icon: Assets.editMenu,
                         title: tr(context).edit,
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const EditGroupPage()));
+                        },
                       ),
                       AnimatedAppBarItem(
                         icon: Assets.trashReviewVoice,
                         title: tr(context).delete,
+                        onTap: () {},
                       ),
                       AnimatedAppBarItem(
                         icon: Assets.contact,
                         title: tr(context).users,
+                        onTap: () {},
                       ),
                       AnimatedAppBarItem(
                         icon: Assets.camera,
                         title: tr(context).camera,
+                        onTap: () {},
                       ),
                       AnimatedAppBarItem(
                         icon: Assets.videoMenu,
                         title: tr(context).video,
+                        onTap: () {},
                       ),
                     ],
                   )
@@ -130,26 +145,33 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
 
 class AnimatedAppBarItem extends StatelessWidget {
   const AnimatedAppBarItem(
-      {super.key, required this.icon, required this.title});
+      {super.key,
+      required this.icon,
+      required this.title,
+      required this.onTap});
 
   final String icon;
   final String title;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        IconWidget(
-          icon: icon,
-          iconColor: Colors.white,
-          size: 20,
-        ),
-        const SizedBox(height: 5),
-        TextWidget(
-          title,
-          style: AppTextStyles.overline2.copyWith(color: Colors.white),
-        ),
-      ],
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        children: [
+          IconWidget(
+            icon: icon,
+            iconColor: Colors.white,
+            size: 20,
+          ),
+          const SizedBox(height: 5),
+          TextWidget(
+            title,
+            style: AppTextStyles.overline2.copyWith(color: Colors.white),
+          ),
+        ],
+      ),
     );
   }
 }

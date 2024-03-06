@@ -48,7 +48,9 @@ class GroupModel extends ChatParentClass {
         lastMessage: json["lastMessage"] != null
             ? ContentModel.fromJson(json["lastMessage"])
             : null,
-        groupUsers: GroupUsersModel.listFromJson(json['users']),
+        groupUsers: json['users'] != null
+            ? GroupUsersModel.listFromJson(json['users'])
+            : [],
         lastRead: json["lastRead"] != null
             ? ContentModel.fromJson(json["lastRead"])
             : null,
