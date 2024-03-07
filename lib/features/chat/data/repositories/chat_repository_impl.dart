@@ -136,9 +136,9 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Future<ResponseModel> pinMessage(int messageId) async {
+  Future<ResponseModel> pinMessage(int messageId, bool pin) async {
     try {
-      return await _chatDataSource.pinMessage(messageId);
+      return await _chatDataSource.pinMessage(messageId, pin);
     } catch (e) {
       return ResponseModel(
         statusCode: 510,

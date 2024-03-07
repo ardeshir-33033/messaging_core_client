@@ -26,6 +26,7 @@ class ContentOptionsOverlayWidget extends StatefulWidget {
   final MessageStatus messageStatus;
   final ContentTypeEnum contentType;
   final String contentId;
+  final int? pin;
   final OverlayController overlayController;
   final Widget child;
   final bool isMine;
@@ -38,6 +39,7 @@ class ContentOptionsOverlayWidget extends StatefulWidget {
     required this.overlayController,
     required this.contentId,
     required this.child,
+    this.pin,
     this.onCopy,
     this.onSaveFile,
     this.onDeleteUnsent,
@@ -163,7 +165,7 @@ class _ContentOptionsOverlayWidgetState
         visible: true,
       ),
       OptionModel(
-        title: tr(context).pin,
+        title: widget.pin! == 0 ? tr(context).pin : tr(context).unpin,
         icon: Assets.pin,
         onTap: widget.onPin,
         visible: true,
@@ -179,7 +181,7 @@ class _ContentOptionsOverlayWidgetState
         icon: Assets.trash,
         onTap: widget.onDeleteLocal,
         textColor: AppColors.primaryRed,
-        visible: widget.isMine ? true :false,
+        visible: widget.isMine ? true : false,
       ),
     ];
     options.removeWhere((element) => element.visible == false);

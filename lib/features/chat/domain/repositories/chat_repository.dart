@@ -16,5 +16,5 @@ abstract class ChatRepository {
       String groupName, List<int> users, int groupId, FileModel? file);
   Future<ResponseModel> deleteMessage(int messageId);
   Future<bool> updateRead(int messageId);
-  Future<ResponseModel> pinMessage(int messageId);
+  Future<ResponseModel> pinMessage(int messageId, bool pin);
 }

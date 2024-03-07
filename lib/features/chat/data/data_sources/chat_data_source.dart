@@ -38,7 +38,7 @@ abstract class ChatDataSource {
   Future<ResponseModel> deleteMessage(int messageId);
   Future<String> generateAgoraToken(String roomIdentifier);
   Future<bool> updateReadStatus(int messageId);
-  Future<ResponseModel> pinMessage(int messageId);
+  Future<ResponseModel> pinMessage(int messageId, bool pin);
 
   void loginSiamak();
 }
@@ -244,10 +244,10 @@ class ChatDataSourceImpl extends ChatDataSource {
   }
 
   @override
-  Future<ResponseModel> pinMessage(int messageId) async {
+  Future<ResponseModel> pinMessage(int messageId, bool pin) async {
     var data = {
       'messageId': messageId.toString(),
-      'pinned': 1,
+      'pinned': pin ? 1 : 0,
       '_method': 'PUT'
     };
 

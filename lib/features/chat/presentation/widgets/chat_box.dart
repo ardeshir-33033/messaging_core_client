@@ -105,6 +105,7 @@ class ChatBoxState extends State<ChatBox> {
       contentId: widget.content.contentId.toString(),
       messageStatus: widget.content.status,
       contentType: widget.content.contentType,
+      pin: widget.content.pinned,
       onResend: _onResend,
       onSaveFile: _onSaveFile,
       onCopy: _onCopy,
@@ -524,9 +525,17 @@ class ChatBoxState extends State<ChatBox> {
 
   Future<void> _onPin() async {
     _hideBox();
-    controller.pinnedMessage = widget.content;
-    controller.update(["pin"]);
-    controller.pinMessage(widget.content.contentId);
+    if (widget.content.pinned == 0) {
+      controller.pinnedMessage = widget.content;
+      widget.content.pinned = 1;
+      controller.update(["pin"]);
+      controller.pinMessage(widget.content.contentId, true);
+    } else {
+      controller.pinnedMessage = null;
+      widget.content.pinned = 0;
+      controller.update(["pin"]);
+      controller.pinMessage(widget.content.contentId, false);
+    }
   }
 
   Future<void> _onStar() async {

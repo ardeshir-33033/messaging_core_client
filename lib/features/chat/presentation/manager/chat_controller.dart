@@ -63,6 +63,7 @@ class ChatController extends GetxController {
   bool isTyping = false;
   ContentModel? editingContent;
   ContentModel? repliedContent;
+  List<ContentModel>? pinnedMessages;
   ContentModel? pinnedMessage;
   late ChatParentClass? currentChat;
   late String? _roomIdentifier;
@@ -79,6 +80,7 @@ class ChatController extends GetxController {
     _roomIdentifier = null;
     isTyping = false;
     editingContent = null;
+    pinnedMessages = [];
     pinnedMessage = null;
   }
 
@@ -135,9 +137,8 @@ class ChatController extends GetxController {
         if (response.result == ResultEnum.success) {
           messages = (response.data as GetMessagesModel).messages;
           if ((response.data as GetMessagesModel).pinnedMessages.isNotEmpty) {
-            pinnedMessage =
-                (response.data as GetMessagesModel).pinnedMessages.first;
-            update(["pin"]);
+            pinnedMessages = (response.data as GetMessagesModel).pinnedMessages;
+            setPinnedMessage();
           }
           // messages = messages.reversed.toList();
           updateReadStatus();
@@ -306,16 +307,15 @@ class ChatController extends GetxController {
     }
   }
 
-  Future pinMessage(int messageId) async {
+  Future pinMessage(int messageId, bool pin) async {
     try {
-      ResponseModel response = await pinMessageUseCase(messageId);
-      if (response.result == ResultEnum.success) {
-        List<ContentModel> pinnedMessages = response.data;
-        if (pinnedMessages.isNotEmpty) {
-          pinnedMessage = pinnedMessages.first;
-          update(['pin']);
-        }
+      if (pin == false) {
+        unPinAllMessages();
+      } else {
+        unPinAllMessages();
+        pinDesignatedMessage(messageId);
       }
+      update(["messages"]);
     } catch (e) {
       print(e);
     }
@@ -335,6 +335,40 @@ class ChatController extends GetxController {
       id: AppGlobalData.userId,
       name: "Starred Chat",
     ));
+  }
+
+  setPinnedMessage() {
+    if (pinnedMessages != null) {
+      pinnedMessages?.sort((a, b) => a.updatedAt.compareTo(b.updatedAt));
+      pinnedMessage = pinnedMessages?.first;
+      update(["pin"]);
+
+      unPinAllMessages();
+      pinDesignatedMessage(pinnedMessage!.contentId);
+    }
+  }
+
+  unPinAllMessages() {
+    pinnedMessages!.forEach((element) {
+      ContentModel foundItem = messages
+          .firstWhere((content) => content.contentId == element.contentId);
+      foundItem.pinned = 0;
+
+      pinMessageUseCase(PinMessageParams(element.contentId, false));
+    });
+    pinnedMessages = [];
+  }
+
+  pinDesignatedMessage(int messageId) {
+    messages.firstWhere((element) {
+      if (element.contentId == messageId) {
+        pinnedMessages?.add(element);
+        element.pinned = 1;
+        return true;
+      }
+      return false;
+    });
+    pinMessageUseCase(PinMessageParams(messageId, true));
   }
 
   handleReceivedMessages(Map<String, dynamic> json, String roomIdentifier) {
