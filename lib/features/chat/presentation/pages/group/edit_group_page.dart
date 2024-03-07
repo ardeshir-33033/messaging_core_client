@@ -93,7 +93,6 @@ class _EditGroupPageState extends State<EditGroupPage> {
                                     Navigator.pop(context);
                                     groupImage =
                                         await ImageHandler().selectImageFile();
-                                    print(groupImage);
                                   },
                                   child: BottomSheetItem(
                                     asset: Assets.choosePhotoIcon,
