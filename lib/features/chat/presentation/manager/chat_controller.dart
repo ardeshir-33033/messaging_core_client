@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/app_states/result_state.dart';
+import 'package:messaging_core/core/enums/change_message_modes.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/enums/message_status.dart';
 import 'package:messaging_core/core/enums/receiver_type.dart';
@@ -223,6 +224,11 @@ class ChatController extends GetxController {
           EditMessagesParams(newMessage: newMessage, messageId: messageId));
 
       if (response.result != ResultEnum.success) {
+        messagingClient.sendChangeMessage(
+            roomIdentifier: _roomIdentifier!,
+            changeMessageType: ChangeMessageEnum.edit,
+            data: newMessage);
+
         messages[messageIndex].messageText = editingContent!.messageText;
       }
       editingContent = null;

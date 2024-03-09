@@ -88,6 +88,10 @@ class WebSocketConnection {
       locator<OnlineUsersController>().setOnlineUsers(onlineUsers);
     });
 
+    channel?.on("change message", (data) {
+      print(data);
+    });
+
     channel?.on("userTyping", (data) {
       print(data);
       ChatController controller = locator<ChatController>();

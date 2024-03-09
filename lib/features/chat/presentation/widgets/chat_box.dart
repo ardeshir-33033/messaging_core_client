@@ -529,7 +529,7 @@ class ChatBoxState extends State<ChatBox> {
       controller.pinnedMessage = widget.content;
       widget.content.pinned = 1;
       controller.update(["pin"]);
-      controller.pinMessage(widget.content.contentId, true);
+      controller.pinMessage(widget.content. contentId, true);
     } else {
       controller.pinnedMessage = null;
       widget.content.pinned = 0;

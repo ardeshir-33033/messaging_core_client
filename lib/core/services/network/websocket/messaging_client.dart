@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:messaging_core/core/app_states/app_global_data.dart';
+import 'package:messaging_core/core/enums/change_message_modes.dart';
 import 'package:messaging_core/core/services/network/websocket/web_socket_connection.dart';
 import 'package:messaging_core/features/chat/data/models/call_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
@@ -72,6 +73,19 @@ class MessagingClient {
   sendStopTyping() async {
     webSocketConnection.sendMessage("stopTyping", {
       'senderId': AppGlobalData.userId,
+    });
+  }
+
+  sendChangeMessage(
+      {required String roomIdentifier,
+      String? data,
+      required ChangeMessageEnum changeMessageType}) async {
+    webSocketConnection.sendMessage("change message", {
+      'senderId': AppGlobalData.userId,
+      'categoryId': AppGlobalData.categoryId,
+      'roomIdentifier': roomIdentifier,
+      if (data != null) 'data': data,
+      'mode': changeMessageType.toString()
     });
   }
 
