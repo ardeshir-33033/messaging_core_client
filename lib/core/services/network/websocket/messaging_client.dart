@@ -4,6 +4,7 @@ import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/enums/change_message_modes.dart';
 import 'package:messaging_core/core/services/network/websocket/web_socket_connection.dart';
 import 'package:messaging_core/features/chat/data/models/call_model.dart';
+import 'package:messaging_core/features/chat/data/models/change_message_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 
 class MessagingClient {
@@ -81,14 +82,24 @@ class MessagingClient {
       String? data,
       required int messageId,
       required ChangeMessageEnum changeMessageType}) async {
-    webSocketConnection.sendMessage("change message", {
-      'senderId': AppGlobalData.userId,
-      'categoryId': AppGlobalData.categoryId,
-      'roomIdentifier': roomIdentifier,
-      'messageId': messageId,
-      if (data != null) 'data': data,
-      'mode': changeMessageType.toString()
-    });
+    ChangeMessageModel model = ChangeMessageModel(
+        roomIdentifier: roomIdentifier,
+        data: data,
+        messageId: messageId,
+        categoryId: AppGlobalData.categoryId,
+        senderId: AppGlobalData.userId,
+        mode: changeMessageType);
+    webSocketConnection.sendMessage("change message", model.toJson()
+
+        //     {
+        //   'senderId': AppGlobalData.userId,
+        //   'categoryId': AppGlobalData.categoryId,
+        //   'roomIdentifier': roomIdentifier,
+        //   'messageId': messageId,
+        //   if (data != null) 'data': data,
+        //   'mode': changeMessageType.toString()
+        // }
+        );
   }
 
   sendJoinRoom(String roomIdentifier) async {

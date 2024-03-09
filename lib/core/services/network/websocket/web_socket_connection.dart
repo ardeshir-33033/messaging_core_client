@@ -2,9 +2,11 @@ import 'dart:async';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
+import 'package:messaging_core/core/enums/change_message_modes.dart';
 import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/core/env/environment.dart';
 import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
+import 'package:messaging_core/features/chat/data/models/change_message_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/call_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
@@ -90,6 +92,17 @@ class WebSocketConnection {
 
     channel?.on("change message", (data) {
       print(data);
+
+      ChangeMessageModel model = ChangeMessageModel.fromJson(data);
+      ChatController controller = locator<ChatController>();
+
+      if (model.mode == ChangeMessageEnum.edit) {
+        controller.editMessageFromSocket(
+            model.messageId, model.roomIdentifier, model.data ?? "");
+      } else {
+        controller.deleteMessageFromSocket(
+            model.messageId, model.roomIdentifier);
+      }
     });
 
     channel?.on("userTyping", (data) {
