@@ -318,6 +318,13 @@ class ChatController extends GetxController {
     }
   }
 
+  deleteMessageFromSocket(int messageId, String roomIdentifier) {
+    if (_roomIdentifier == roomIdentifier) {
+      messages.removeWhere((content) => content.contentId == messageId);
+      update(["messages"]);
+    }
+  }
+
   Future pinMessage(int messageId, bool pin) async {
     try {
       if (pin == false) {
