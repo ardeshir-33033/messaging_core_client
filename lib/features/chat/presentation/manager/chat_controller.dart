@@ -305,6 +305,11 @@ class ChatController extends GetxController {
     ResponseModel response = await deleteMessageUseCase(messageId);
 
     if (response.result == ResultEnum.success) {
+      messagingClient.sendChangeMessage(
+          roomIdentifier: _roomIdentifier!,
+          changeMessageType: ChangeMessageEnum.delete,
+          data: messageId.toString());
+
       messages.removeWhere((element) => element.contentId == messageId);
       update(["messages"]);
       return true;
