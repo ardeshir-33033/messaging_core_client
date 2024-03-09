@@ -79,11 +79,13 @@ class MessagingClient {
   sendChangeMessage(
       {required String roomIdentifier,
       String? data,
+      required int messageId,
       required ChangeMessageEnum changeMessageType}) async {
     webSocketConnection.sendMessage("change message", {
       'senderId': AppGlobalData.userId,
       'categoryId': AppGlobalData.categoryId,
       'roomIdentifier': roomIdentifier,
+      'messageId': messageId,
       if (data != null) 'data': data,
       'mode': changeMessageType.toString()
     });

@@ -227,6 +227,7 @@ class ChatController extends GetxController {
         messagingClient.sendChangeMessage(
             roomIdentifier: _roomIdentifier!,
             changeMessageType: ChangeMessageEnum.edit,
+            messageId: messageId,
             data: newMessage);
 
         messages[messageIndex].messageText = editingContent!.messageText;
@@ -308,7 +309,7 @@ class ChatController extends GetxController {
       messagingClient.sendChangeMessage(
           roomIdentifier: _roomIdentifier!,
           changeMessageType: ChangeMessageEnum.delete,
-          data: messageId.toString());
+          messageId: messageId);
 
       messages.removeWhere((element) => element.contentId == messageId);
       update(["messages"]);
@@ -321,6 +322,20 @@ class ChatController extends GetxController {
   deleteMessageFromSocket(int messageId, String roomIdentifier) {
     if (_roomIdentifier == roomIdentifier) {
       messages.removeWhere((content) => content.contentId == messageId);
+      update(["messages"]);
+    }
+  }
+
+  editMessageFromSocket(
+      int messageId, String roomIdentifier, String newMessage) {
+    if (_roomIdentifier == roomIdentifier) {
+      ContentModel? itemToEdit = messages.firstWhereOrNull(
+        (content) => content.contentId == messageId,
+      );
+      if (itemToEdit != null) {
+        itemToEdit.messageText = newMessage;
+      }
+
       update(["messages"]);
     }
   }
