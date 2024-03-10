@@ -13,6 +13,7 @@ import 'package:messaging_core/features/chat/presentation/manager/record_voice_c
 import 'package:messaging_core/features/chat/presentation/widgets/attach_file_bottom_sheet_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/conversaion_voice_recording_option_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/send_button_widget.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/send_message_widgets/edit_message_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/send_message_widgets/reply_send_message_widget.dart';
 import 'package:messaging_core/locator.dart';
 
@@ -57,9 +58,18 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
     return GetBuilder<ChatController>(
         id: "sendMessage",
         builder: (_) {
+          if (controller.editingContent != null) {
+            widget.textController.text = controller.editingContent!.messageText;
+          }
           return Column(
             children: [
               if (controller.repliedContent != null) ReplySendMessageWidget(),
+              if (controller.editingContent != null)
+                EditMessageWidget(
+                  onRemoveEdit: () {
+                    widget.textController.text = "";
+                  },
+                ),
               const Divider(
                 color: Color(0xFFD6D6D6),
                 thickness: 2,
@@ -120,15 +130,16 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                                     ),
                                   ),
                                   const SizedBox(width: 5),
-                                  InkWell(
-                                    onTap: () {
-                                      showAttachFileBottomSheet();
-                                    },
-                                    child: const IconWidget(
-                                      icon: Assets.attach,
-                                      size: 30,
+                                  if (controller.editingContent == null)
+                                    InkWell(
+                                      onTap: () {
+                                        showAttachFileBottomSheet();
+                                      },
+                                      child: const IconWidget(
+                                        icon: Assets.attach,
+                                        size: 30,
+                                      ),
                                     ),
-                                  ),
                                   Expanded(
                                       child: TextField(
                                           key: const Key("messageField"),

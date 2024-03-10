@@ -434,6 +434,7 @@ class ChatBoxState extends State<ChatBox> {
   }
 
   Future<void> _onReply() async {
+    controller.editingContent = null;
     controller.repliedContent = widget.content;
     controller.update(["sendMessage"]);
     _hideBox();
@@ -466,54 +467,57 @@ class ChatBoxState extends State<ChatBox> {
   _onEdit() {
     _hideBox();
     TextEditingController textController = TextEditingController();
+    controller.repliedContent = null;
     controller.editingContent = widget.content;
     textController.text = widget.content.messageText;
-    DialogBoxes(
-            dismissible: false,
-            customView: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextWidget(
-                  tr(context).editMessage,
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.body3.copyWith(
-                    color: const Color(0xff050D18),
-                    fontSize: 12,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 50,
-                  child: TextField(
-                      maxLines: 7,
-                      minLines: 1,
-                      textAlignVertical: TextAlignVertical.top,
-                      controller: textController,
-                      textDirection: directionOf(textController.text),
-                      style: AppTextStyles.body2,
-                      decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.transparent,
-                          contentPadding: 10.horizontal,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide:
-                                  const BorderSide(color: Color(0xFFD6D6D6))))),
-                ),
-              ],
-            ),
-            mainTaskText: tr(context).edit,
-            mainTask: () {
-              controller.editTextMessage(
-                  textController.text, widget.content.contentId, widget.index);
-              Navigator.pop(context);
-            },
-            otherTask: () {
-              controller.editingContent = null;
-              Navigator.pop(context);
-            },
-            otherTaskText: tr(context).close)
-        .showMyDialog();
+    controller.update(["sendMessage"]);
+
+    // DialogBoxes(
+    //         dismissible: false,
+    //         customView: Column(
+    //           mainAxisSize: MainAxisSize.min,
+    //           children: [
+    //             TextWidget(
+    //               tr(context).editMessage,
+    //               textAlign: TextAlign.center,
+    //               style: AppTextStyles.body3.copyWith(
+    //                 color: const Color(0xff050D18),
+    //                 fontSize: 12,
+    //               ),
+    //             ),
+    //             const SizedBox(height: 10),
+    //             SizedBox(
+    //               height: 50,
+    //               child: TextField(
+    //                   maxLines: 7,
+    //                   minLines: 1,
+    //                   textAlignVertical: TextAlignVertical.top,
+    //                   controller: textController,
+    //                   textDirection: directionOf(textController.text),
+    //                   style: AppTextStyles.body2,
+    //                   decoration: InputDecoration(
+    //                       filled: true,
+    //                       fillColor: Colors.transparent,
+    //                       contentPadding: 10.horizontal,
+    //                       border: OutlineInputBorder(
+    //                           borderRadius: BorderRadius.circular(15),
+    //                           borderSide:
+    //                               const BorderSide(color: Color(0xFFD6D6D6))))),
+    //             ),
+    //           ],
+    //         ),
+    //         mainTaskText: tr(context).edit,
+    //         mainTask: () {
+    //           controller.editTextMessage(
+    //               textController.text, widget.content.contentId, widget.index);
+    //           Navigator.pop(context);
+    //         },
+    //         otherTask: () {
+    //           controller.editingContent = null;
+    //           Navigator.pop(context);
+    //         },
+    //         otherTaskText: tr(context).close)
+    //     .showMyDialog();
   }
 
   Future<void> _onDeleteUnsent() async {
@@ -529,7 +533,7 @@ class ChatBoxState extends State<ChatBox> {
       controller.pinnedMessage = widget.content;
       widget.content.pinned = 1;
       controller.update(["pin"]);
-      controller.pinMessage(widget.content. contentId, true);
+      controller.pinMessage(widget.content.contentId, true);
     } else {
       controller.pinnedMessage = null;
       widget.content.pinned = 0;

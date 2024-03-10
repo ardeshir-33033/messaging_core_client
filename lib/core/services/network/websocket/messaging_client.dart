@@ -89,17 +89,8 @@ class MessagingClient {
         categoryId: AppGlobalData.categoryId,
         senderId: AppGlobalData.userId,
         mode: changeMessageType);
-    webSocketConnection.sendMessage("change message", model.toJson()
 
-        //     {
-        //   'senderId': AppGlobalData.userId,
-        //   'categoryId': AppGlobalData.categoryId,
-        //   'roomIdentifier': roomIdentifier,
-        //   'messageId': messageId,
-        //   if (data != null) 'data': data,
-        //   'mode': changeMessageType.toString()
-        // }
-        );
+    webSocketConnection.sendMessage("change message", model.toJson());
   }
 
   sendJoinRoom(String roomIdentifier) async {

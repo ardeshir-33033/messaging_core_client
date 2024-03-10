@@ -45,17 +45,18 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
                         fontWeight: FontWeight.w400,
                         color: Colors.white),
                   ),
-                  if (widget.isGroup)
-                    IconWidget(
-                      icon: openedFullMenu
-                          ? Icons.keyboard_arrow_up_outlined
-                          : Icons.keyboard_arrow_down_outlined,
-                      iconColor: Colors.white,
-                      size: 25,
-                      onPressed: () {
-                        tapAnimatedAppBar();
-                      },
-                    ),
+                  widget.isGroup
+                      ? IconWidget(
+                          icon: openedFullMenu
+                              ? Icons.keyboard_arrow_up_outlined
+                              : Icons.keyboard_arrow_down_outlined,
+                          iconColor: Colors.white,
+                          size: 25,
+                          onPressed: () {
+                            tapAnimatedAppBar();
+                          },
+                        )
+                      : const SizedBox()
                 ],
               ),
             ),

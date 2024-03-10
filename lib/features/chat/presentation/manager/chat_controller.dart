@@ -223,7 +223,7 @@ class ChatController extends GetxController {
       ResponseModel response = await editMessagesUseCase(
           EditMessagesParams(newMessage: newMessage, messageId: messageId));
 
-      if (response.result != ResultEnum.success) {
+      if (response.result == ResultEnum.success) {
         messagingClient.sendChangeMessage(
             roomIdentifier: _roomIdentifier!,
             changeMessageType: ChangeMessageEnum.edit,
