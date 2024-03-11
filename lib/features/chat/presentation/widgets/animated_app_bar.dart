@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
@@ -7,9 +9,17 @@ import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/presentation/pages/group/edit_group_page.dart';
 
 class AnimatedAppBar extends StatefulWidget {
-  const AnimatedAppBar({super.key, required this.isGroup});
+  const AnimatedAppBar(
+      {super.key,
+      required this.isGroup,
+      this.title,
+      this.centerVertical = false,
+      this.height});
 
   final bool isGroup;
+  final String? title;
+  final bool centerVertical;
+  final double? height;
 
   @override
   State<AnimatedAppBar> createState() => _AnimatedAppBarState();
@@ -26,12 +36,14 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
       child: Column(
         children: [
           SizedBox(
-            height: 55,
+            height: widget.height ?? 55,
             child: Padding(
               padding: 10.horizontal,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: widget.centerVertical
+                    ? CrossAxisAlignment.center
+                    : CrossAxisAlignment.end,
                 children: [
                   const IconWidget(
                     icon: Icons.more_vert,
@@ -39,7 +51,7 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
                     size: 25,
                   ),
                   TextWidget(
-                    tr(context).chat,
+                    widget.title ?? tr(context).chat,
                     style: AppTextStyles.body4.copyWith(
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
@@ -61,7 +73,7 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
               ),
             ),
           ),
-          const SizedBox(height: 7),
+          if (widget.height == null) const SizedBox(height: 7),
           if (openedFullMenu)
             Padding(
               padding: 10.horizontal,
