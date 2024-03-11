@@ -58,9 +58,9 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
     return GetBuilder<ChatController>(
         id: "sendMessage",
         builder: (_) {
-          if (controller.editingContent != null) {
-            widget.textController.text = controller.editingContent!.messageText;
-          }
+          // if (controller.editingContent != null) {
+          //   widget.textController.text = controller.editingContent!.messageText;
+          // }
           return Column(
             children: [
               if (controller.repliedContent != null) ReplySendMessageWidget(),
@@ -187,14 +187,22 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                               widget.onUpdateScroll();
                             },
                             onSendTextMessage: () {
-                              controller.sendTextMessage(
+                              if (controller.editingContent != null) {
+                                controller.editTextMessage(
                                   widget.textController.text,
-                                  widget.chat.id!,
-                                  null,
-                                  null,
-                                  null);
+                                  controller.editingContent!.contentId,
+                                );
+                              } else {
+                                controller.sendTextMessage(
+                                    widget.textController.text,
+                                    widget.chat.id!,
+                                    null,
+                                    null,
+                                    null);
+                                widget.onUpdateScroll();
+                              }
+
                               widget.textController.text = "";
-                              widget.onUpdateScroll();
                             },
                             onRecordVoice: () {
                               voiceController.recordAudio();

@@ -66,7 +66,7 @@ class WebSocketConnection {
 
     channel?.on("signaling", (data) {
       print(data);
-      locator<CallController>().receiveCallSignal(data);
+      // locator<CallController>().receiveCallSignal(data);
     });
 
     channel?.on("notification", (data) {

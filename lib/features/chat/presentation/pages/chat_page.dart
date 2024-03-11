@@ -224,8 +224,6 @@ class _ChatPageState extends State<ChatPage>
                                                                       : null,
                                                                   child:
                                                                       ChatBox(
-                                                                    index:
-                                                                        index,
                                                                     onTap:
                                                                         _showOverlay,
                                                                     opponentProfile:
@@ -240,6 +238,14 @@ class _ChatPageState extends State<ChatPage>
                                                                     isGroup: widget
                                                                         .chat
                                                                         .isGroup(),
+                                                                    onEditTap:
+                                                                        (String
+                                                                            val) {
+                                                                      _sendTextController
+                                                                              .text =
+                                                                          val;
+                                                                      // _sendTextController.f
+                                                                    },
                                                                     onReplyTap: () => _onReplyTap(controller
                                                                         .messages[
                                                                             index]
@@ -279,44 +285,6 @@ class _ChatPageState extends State<ChatPage>
                                       ),
                                     ],
                                   ),
-                                  // if (showOverlay)
-                                  //   GestureDetector(
-                                  //     onTap: _hideOverlay,
-                                  //     child: Container(
-                                  //       color: Colors.black54,
-                                  //     ),
-                                  //   ),
-                                  // if (showOverlay)
-                                  //   Positioned(
-                                  //       top: (targetPos?.dy)! - 200,
-                                  //       left: (targetPos?.dx)! - 150,
-                                  //       child: Container(
-                                  //         //Your Reaction widget
-                                  //         height: 60,
-                                  //         width: 120,
-                                  //         color: Colors.blue,
-                                  //       )),
-                                  // if (showOverlay)
-                                  //   Positioned(
-                                  //       top: (targetPos?.dy)! + 50 - 200 - padding,
-                                  //       left: (targetPos?.dx)! - padding - 150,
-                                  //       child: target != null
-                                  //           ? SizedBox(
-                                  //               height: 60,
-                                  //               width: 60,
-                                  //               child: target,
-                                  //             )
-                                  //           : const SizedBox()),
-                                  // if (showOverlay)
-                                  //   Positioned(
-                                  //       top: (targetPos?.dy)! + 100 - 200,
-                                  //       left: (targetPos?.dx)! - 150,
-                                  //       child: Container(
-                                  //         //Your action widget
-                                  //         height: 60,
-                                  //         width: 120,
-                                  //         color: Colors.red,
-                                  //       ))
                                 ],
                               ),
                             ),

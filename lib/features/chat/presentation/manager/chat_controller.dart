@@ -216,8 +216,13 @@ class ChatController extends GetxController {
     }
   }
 
-  editTextMessage(String newMessage, int messageId, messageIndex) async {
+  editTextMessage(String newMessage, int messageId) async {
+    int messageIndex =
+        messages.indexWhere((element) => element.contentId == messageId);
     try {
+      editingContent = null;
+      update(["sendMessage"]);
+
       messages[messageIndex].messageText = newMessage;
 
       ResponseModel response = await editMessagesUseCase(
