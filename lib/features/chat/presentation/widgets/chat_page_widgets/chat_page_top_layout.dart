@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
+import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/no_profile_image.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
@@ -11,10 +12,12 @@ class ChatPageTopLayout extends StatelessWidget {
     super.key,
     required this.pageScrollController,
     required this.chat,
+    required this.isGroup,
   });
 
   final ScrollController pageScrollController;
   final ChatParentClass chat;
+  final bool isGroup;
 
   @override
   Widget build(BuildContext context) {
@@ -26,19 +29,25 @@ class ChatPageTopLayout extends StatelessWidget {
         ),
         Column(
           children: [
-            SizedBox(
-              height: 30,
-              child: TextWidget(
-                chat.name!,
-                style: AppTextStyles.overline,
-              ),
-            ),
-            NoProfileImage(
-              id: chat.id,
-              name: chat.username,
-              boxShape: BoxShape.rectangle,
+            // SizedBox(
+            //   height: 30,
+            //   child: TextWidget(
+            //     chat.name!,
+            //     style: AppTextStyles.overline,
+            //   ),
+            // ),
+            IconWidget(
+              icon:
+                  isGroup ? Icons.supervised_user_circle : Icons.account_circle,
               size: 300,
+              iconColor: Colors.grey,
             ),
+            // NoProfileImage(
+            //   id: chat.id,
+            //   name: chat.username,
+            //   boxShape: BoxShape.rectangle,
+            //   size: 300,
+            // ),
           ],
         ),
         InkWell(

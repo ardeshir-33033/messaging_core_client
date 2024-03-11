@@ -122,6 +122,7 @@ class _ChatPageState extends State<ChatPage>
                 children: [
                   ChatPageTopLayout(
                       pageScrollController: pageScrollController,
+                      isGroup: widget.chat.isGroup(),
                       chat: widget.chat),
                   SizedBox(
                     height: context.screenHeight - 200,
