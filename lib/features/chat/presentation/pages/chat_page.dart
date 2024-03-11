@@ -113,7 +113,7 @@ class _ChatPageState extends State<ChatPage>
         }
       },
       child: Scaffold(
-        drawer: const ChatPageDrawer(),
+        drawer: ChatPageDrawer(),
         body: Stack(
           children: [
             SingleChildScrollView(
@@ -335,26 +335,28 @@ class _ChatPageState extends State<ChatPage>
             Positioned(
                 left: 0,
                 top: 150,
-                child: InkWell(
-                  onTap: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(10),
-                            bottomRight: Radius.circular(10)),
-                        boxShadow: [
-                          BoxShadow(color: Colors.black87, blurRadius: 5)
-                        ]),
-                    child: const IconWidget(
-                      icon: Assets.profileUser,
+                child: Builder(builder: (context) {
+                  return InkWell(
+                    onTap: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10)),
+                          boxShadow: [
+                            BoxShadow(color: Colors.black87, blurRadius: 5)
+                          ]),
+                      child: const IconWidget(
+                        icon: Assets.profileUser,
+                      ),
                     ),
-                  ),
-                )),
+                  );
+                })),
           ],
         ),
       ),

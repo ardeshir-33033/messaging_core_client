@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/chat_list_item.dart';
+import 'package:messaging_core/locator.dart';
 
 class ChatPageDrawer extends StatelessWidget {
-  const ChatPageDrawer({
+  ChatPageDrawer({
     super.key,
   });
+  final ChatController controller = locator<ChatController>();
 
   @override
   Widget build(BuildContext context) {
@@ -12,17 +16,12 @@ class ChatPageDrawer extends StatelessWidget {
       child: FractionallySizedBox(
         heightFactor: 0.8,
         child: Container(
-          color: Colors.white,
-          child: const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Drawer Content',
-                style: TextStyle(color: Colors.white),
-              ),
-            ],
-          ),
-        ),
+            color: Colors.white,
+            child: ListView.builder(
+                itemCount: controller.users.length,
+                itemBuilder: (context, index) {
+                  return ChatListItem(chat: controller.users[index]);
+                })),
       ),
     );
   }
