@@ -3,11 +3,13 @@ import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 
 class NoProfileImage extends StatelessWidget {
-  const NoProfileImage({super.key, this.size, this.id, this.name});
+  const NoProfileImage(
+      {super.key, this.size, this.id, this.name, this.boxShape});
 
   final double? size;
   final int? id;
   final String? name;
+  final BoxShape? boxShape;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class NoProfileImage extends StatelessWidget {
       height: size ?? 50,
       width: size ?? 50,
       decoration: BoxDecoration(
-          shape: BoxShape.circle, color: (id ?? 4).colorFromId()),
+          shape: boxShape ?? BoxShape.circle, color: (id ?? 4).colorFromId()),
       child: Center(
         child: Text(
           (name?.length ?? 0) > 0
