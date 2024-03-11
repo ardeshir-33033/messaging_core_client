@@ -162,7 +162,7 @@ class _ContentOptionsOverlayWidgetState
         title: tr(context).edit,
         icon: Assets.edit,
         onTap: widget.onEdit,
-        visible: widget.isMine,
+        visible: widget.isMine && widget.contentType == ContentTypeEnum.text,
       ),
       OptionModel(
         title: widget.pin! == 0 ? tr(context).pin : tr(context).unpin,

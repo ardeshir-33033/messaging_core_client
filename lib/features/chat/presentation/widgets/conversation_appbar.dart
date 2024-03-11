@@ -89,11 +89,11 @@ class ConversationAppBar extends StatelessWidget {
         if (!chat.isGroup())
           InkWell(
             onTap: () {
-              locator<CallController>().reset();
-              locator<CallController>().requestCall(
-                  chat.id!, AppGlobalData.userId, chat.username!, false);
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => const WaitingCallPage()));
+              // locator<CallController>().reset();
+              // locator<CallController>().requestCall(
+              //     chat.id!, AppGlobalData.userId, chat.username!, false);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const WaitingCallPage()));
             },
             child: Container(
               width: 40,

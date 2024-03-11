@@ -39,9 +39,9 @@ class ChatBox extends StatefulWidget {
   final bool isFirstSenderContent;
   final bool isLastSenderContent;
   final Function() onReplyTap;
+  final Function(String val) onEditTap;
   final OverlayController overlayController;
   final ContactProfile? opponentProfile;
-  final int index;
   final Function(Offset globalPosition, Widget? target) onTap;
 
   const ChatBox({
@@ -49,11 +49,11 @@ class ChatBox extends StatefulWidget {
     required this.content,
     required this.isGroup,
     required this.onReplyTap,
+    required this.onEditTap,
     required this.isFirstSenderContent,
     required this.isLastSenderContent,
     required this.overlayController,
     required this.onTap,
-    required this.index,
     this.opponentProfile,
   }) : super(key: key);
 
@@ -466,11 +466,11 @@ class ChatBoxState extends State<ChatBox> {
 
   _onEdit() {
     _hideBox();
-    TextEditingController textController = TextEditingController();
     controller.repliedContent = null;
     controller.editingContent = widget.content;
-    textController.text = widget.content.messageText;
+
     controller.update(["sendMessage"]);
+    widget.onEditTap(widget.content.messageText);
 
     // DialogBoxes(
     //         dismissible: false,

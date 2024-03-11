@@ -51,38 +51,38 @@ class CallPageState extends State<CallPage> {
     return MyWillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        body: GetBuilder<CallController>(builder: (_) {
-          switch (controller.status) {
-            case CallStatus.IN_CALL:
-              stopCallRinging();
-              return InCallPage(
-                controller: controller,
-              );
-            case CallStatus.RINGING:
-              player.setAsset(Assets.ringingPhoneAudio);
-              player.play();
-              return RingingCallPage(
-                controller: controller,
-              );
-            case CallStatus.WAITING:
-              // handleAudioSound(controller);
-              player.setAsset(Assets.callingPhoneAudio);
-              player.play();
-              return WaitingCallPage(
-                controller: controller,
-                stopCallCallback: stopCallRinging,
-              );
-            case CallStatus.REJECTED:
-              return RejectedCallPage(
-                controller: controller,
-              );
-            case CallStatus.NO_CALL:
-              return const BeforeCallPage();
-            case CallStatus.WAITING_TOKEN:
-              return const BeforeCallPage();
-          }
-        }),
-      ),
+          // body: GetBuilder<CallController>(builder: (_) {
+          //   switch (controller.status) {
+          //     case CallStatus.IN_CALL:
+          //       stopCallRinging();
+          //       return InCallPage(
+          //         controller: controller,
+          //       );
+          //     case CallStatus.RINGING:
+          //       player.setAsset(Assets.ringingPhoneAudio);
+          //       player.play();
+          //       return RingingCallPage(
+          //         controller: controller,
+          //       );
+          //     case CallStatus.WAITING:
+          //       // handleAudioSound(controller);
+          //       player.setAsset(Assets.callingPhoneAudio);
+          //       player.play();
+          //       return WaitingCallPage(
+          //         controller: controller,
+          //         stopCallCallback: stopCallRinging,
+          //       );
+          //     case CallStatus.REJECTED:
+          //       return RejectedCallPage(
+          //         controller: controller,
+          //       );
+          //     case CallStatus.NO_CALL:
+          //       return const BeforeCallPage();
+          //     case CallStatus.WAITING_TOKEN:
+          //       return const BeforeCallPage();
+          //   }
+          // }),
+          ),
     );
   }
 
