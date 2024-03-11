@@ -16,7 +16,10 @@ class ChatPageDrawer extends StatelessWidget {
       child: FractionallySizedBox(
         heightFactor: 0.8,
         child: Container(
-            color: Colors.white,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10)),
+            ),
             child: ListView.builder(
                 itemCount: controller.users.length,
                 itemBuilder: (context, index) {

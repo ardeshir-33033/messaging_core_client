@@ -37,9 +37,13 @@ class ChatListItemState extends State<ChatListItem> {
     return InkWell(
       onTap: widget.onTap ??
           () async {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
+            Navigator.pushAndRemoveUntil(context,
+                MaterialPageRoute(builder: (context) {
               return ChatPage(chat: widget.chat);
-            }));
+            }), (route) => route.isFirst);
+            // Navigator.push(context, MaterialPageRoute(builder: (context) {
+            //   return ChatPage(chat: widget.chat);
+            // }));
           },
       child: Container(
         padding:

@@ -29,7 +29,7 @@ class ChatPageTopLayout extends StatelessWidget {
             SizedBox(
               height: 30,
               child: TextWidget(
-                chat.username!,
+                chat.name!,
                 style: AppTextStyles.overline,
               ),
             ),
