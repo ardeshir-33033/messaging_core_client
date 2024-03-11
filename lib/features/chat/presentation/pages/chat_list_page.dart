@@ -17,7 +17,6 @@ import 'package:messaging_core/features/chat/presentation/widgets/chat_list_item
 import 'package:messaging_core/features/chat/presentation/widgets/chat_list_widgets/chat_list_floating_button.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/conversation_skeleton_widget.dart';
 import 'package:messaging_core/locator.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatListPage extends StatefulWidget {
   const ChatListPage({super.key});

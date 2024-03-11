@@ -54,6 +54,7 @@ class Assets {
   static const String close = "$_baseIconPath/close.svg";
   static const String closeAgora = "$_baseIconPath/close_agora.svg";
   static const String flipAgoraIcon = "$_baseIconPath/flip_agora_icon.svg";
+  static const String profileUser = "$_baseIconPath/profile-2user.svg";
 
   /// -----------------------Tone Assets -------------------------
   static const String _baseTonePath = "assets/tones";
