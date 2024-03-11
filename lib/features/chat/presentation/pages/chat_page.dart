@@ -22,6 +22,7 @@ import 'package:messaging_core/features/chat/presentation/manager/emoji_controll
 import 'package:messaging_core/features/chat/presentation/manager/record_voice_controller.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/animated_app_bar.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_box.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/chat_list_widgets/user_contacts_drawer.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_page_widgets/chat_page_drawer.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_page_widgets/chat_page_top_layout.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_page_widgets/pinned_messages_widget.dart';
@@ -301,31 +302,7 @@ class _ChatPageState extends State<ChatPage>
                 ],
               ),
             ),
-            Positioned(
-                left: 0,
-                top: 150,
-                child: Builder(builder: (context) {
-                  return InkWell(
-                    onTap: () {
-                      Scaffold.of(context).openDrawer();
-                    },
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(10),
-                              bottomRight: Radius.circular(10)),
-                          boxShadow: [
-                            BoxShadow(color: Colors.black87, blurRadius: 5)
-                          ]),
-                      child: const IconWidget(
-                        icon: Assets.profileUser,
-                      ),
-                    ),
-                  );
-                })),
+            const UserContactsDrawer(),
           ],
         ),
       ),

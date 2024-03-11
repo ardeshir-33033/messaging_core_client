@@ -4,6 +4,7 @@ import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/no_profile_image.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
+import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/animated_app_bar.dart';
 
@@ -39,7 +40,7 @@ class ChatPageTopLayout extends StatelessWidget {
             IconWidget(
               icon:
                   isGroup ? Icons.supervised_user_circle : Icons.account_circle,
-              size: 300,
+              size: context.screenHeight / 1.5,
               iconColor: Colors.grey,
             ),
             // NoProfileImage(

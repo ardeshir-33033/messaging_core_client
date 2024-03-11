@@ -48,6 +48,7 @@ class Assets {
   static const String videoMenu = "$_baseIconPath/video.svg";
   static const String callOutlined = "$_baseIconPath/call-outlined.svg";
   static const String callRemove = "$_baseIconPath/call-remove.svg";
+  static const String callRemove2 = "$_baseIconPath/call-remove2.svg";
   static const String groupTopicPictureIcon =
       "$_baseIconPath/group_topic_picture_icon.svg";
   static const String choosePhotoIcon = "$_baseIconPath/choose_photo_icon.svg";

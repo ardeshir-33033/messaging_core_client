@@ -73,5 +73,7 @@
   "speaker": "Speaker",
   "decline": "Decline",
   "accept": "Accept",
-  "editGroupTitle": "Edit Group"
+  "editGroupTitle": "Edit Group",
+  "youHaveNoCall": "You have no call",
+  "noCallHistoryDesc": "Try to call with your contacts"
 }

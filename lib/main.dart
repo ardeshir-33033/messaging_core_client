@@ -10,6 +10,7 @@ import 'package:messaging_core/app/theme/theme_service.dart';
 import 'package:messaging_core/app/widgets/scroll_behavior.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/env/environment.dart';
+import 'package:messaging_core/features/chat/presentation/pages/chat_call_page.dart';
 import 'package:messaging_core/features/chat/presentation/pages/chat_list_page.dart';
 import 'package:messaging_core/l10n/l10n.dart';
 import 'package:messaging_core/locator.dart';
@@ -141,7 +142,7 @@ class _ChooseUserPageState extends State<ChooseUserPage> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ChatListPage(),
+                        builder: (context) => ChatCallPage(),
                       ),
                     );
                   }
