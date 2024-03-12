@@ -94,6 +94,8 @@ enum ContentTypeEnum {
         return "contact";
       case other:
         return "other";
+      case location:
+        return "location";
       default:
         return "text";
     }

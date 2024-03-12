@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/enums/other_content_type_enum.dart';
 import 'package:messaging_core/features/chat/domain/entities/contact_payload_model.dart';
+import 'package:messaging_core/features/chat/domain/entities/location_payload_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/text_content_payload_model.dart';
 
 abstract class ContentPayloadModel {
@@ -28,8 +29,10 @@ abstract class ContentPayloadModel {
                   contactNumber: content["contact_number"]);
             }
             return ContactPayloadModel.fromJson(content["data"]);
+          case OtherContentTypeEnum.location:
+            return LocationPayloadModel.fromJson(content["data"]);
           case OtherContentTypeEnum.unsupported:
-            return ContactPayloadModel.fromJson(content["data"]);
+            return LocationPayloadModel.fromJson(content["data"]);
         }
 
         return TextContentPayloadModel.fromJson(json);

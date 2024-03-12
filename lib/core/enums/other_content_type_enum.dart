@@ -3,6 +3,7 @@ import 'package:messaging_core/core/utils/extensions.dart';
 
 enum OtherContentTypeEnum {
   contact,
+  location,
   unsupported;
 
   static OtherContentTypeEnum fromString(String name) {
@@ -10,6 +11,8 @@ enum OtherContentTypeEnum {
     switch (name) {
       case "contact":
         return contact;
+      case "location":
+        return location;
       default:
         return unsupported;
     }
@@ -20,6 +23,8 @@ enum OtherContentTypeEnum {
     switch (this) {
       case contact:
         return "contact";
+      case location:
+        return "location";
       default:
         return "contact";
     }

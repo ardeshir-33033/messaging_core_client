@@ -96,9 +96,14 @@ class _MapPageState extends State<MapPage> {
                   width: 100,
                   height: 50,
                   child: Center(child: Text("Select")),
-                  // color: Colors.red,
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  final navigator = Navigator.of(context);
+
+                  LatLng location = await getCenter();
+                  controller.sendMapLocation(location);
+                  navigator.pop();
+                },
               ),
             ),
           )

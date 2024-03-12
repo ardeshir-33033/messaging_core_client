@@ -73,11 +73,10 @@ class AttachFileBottomSheet extends StatelessWidget {
             AttachDataItem(
                 title: tr(context).location,
                 onPressed: () async {
+                  final navigator = Navigator.of(context);
+                  navigator.pop();
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const MapPage()));
-
-                  // final navigator = Navigator.of(context);
-                  // navigator.pop();
                 },
                 icon: Assets.location),
             AttachDataItem(

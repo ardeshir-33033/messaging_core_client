@@ -25,7 +25,10 @@ class OtherContentWidget extends StatelessWidget {
               locationPayloadModel:
                   contentPayloadModel as LocationPayloadModel);
         default:
-          return Placeholder();
+          return LocationContentWidget(
+              locationPayloadModel:
+              contentPayloadModel as LocationPayloadModel);
+          // return Placeholder();
       }
     });
   }
