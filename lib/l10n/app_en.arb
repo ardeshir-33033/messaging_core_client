@@ -80,5 +80,7 @@
   "notifications": "Notifications",
   "noNotification": "You have no notification",
   "noChatDesc": "Try to chat with your contacts",
-  "newTitle": "New"
+  "newTitle": "New",
+  "newCall": "New Call",
+  "search": "Search"
 }

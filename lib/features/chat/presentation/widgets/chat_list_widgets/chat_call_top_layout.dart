@@ -5,6 +5,7 @@ import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
+import 'package:messaging_core/features/chat/presentation/pages/call/new_call_page.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/animated_app_bar.dart';
 
 class ChatCallTopLayout extends StatelessWidget {
@@ -41,7 +42,12 @@ class ChatCallTopLayout extends StatelessWidget {
               const SizedBox(height: 10),
               NewActionButton(
                 icon: Icons.chat,
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const NewCallPage()));
+                },
               )
             ],
           ))

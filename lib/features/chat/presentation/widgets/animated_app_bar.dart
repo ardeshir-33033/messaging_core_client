@@ -84,53 +84,55 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
               ),
             ),
           if (openedFullMenu) const SizedBox(height: 7),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 400),
-            height: openedFullMenu ? 50 : 0,
-            color: const Color(0xFF5AC4F6),
-            child: showMenuItems
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      AnimatedAppBarItem(
-                        icon: Assets.addMenu,
-                        title: tr(context).add,
-                        onTap: () {},
-                      ),
-                      AnimatedAppBarItem(
-                        icon: Assets.editMenu,
-                        title: tr(context).edit,
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const EditGroupPage()));
-                        },
-                      ),
-                      AnimatedAppBarItem(
-                        icon: Assets.trashReviewVoice,
-                        title: tr(context).delete,
-                        onTap: () {},
-                      ),
-                      AnimatedAppBarItem(
-                        icon: Assets.contact,
-                        title: tr(context).users,
-                        onTap: () {},
-                      ),
-                      AnimatedAppBarItem(
-                        icon: Assets.camera,
-                        title: tr(context).camera,
-                        onTap: () {},
-                      ),
-                      AnimatedAppBarItem(
-                        icon: Assets.videoMenu,
-                        title: tr(context).video,
-                        onTap: () {},
-                      ),
-                    ],
-                  )
-                : const SizedBox(),
-          ),
+          if (widget.isGroup)
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 400),
+              height: openedFullMenu ? 50 : 0,
+              color: const Color(0xFF5AC4F6),
+              child: showMenuItems
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        AnimatedAppBarItem(
+                          icon: Assets.addMenu,
+                          title: tr(context).add,
+                          onTap: () {},
+                        ),
+                        AnimatedAppBarItem(
+                          icon: Assets.editMenu,
+                          title: tr(context).edit,
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const EditGroupPage()));
+                          },
+                        ),
+                        AnimatedAppBarItem(
+                          icon: Assets.trashReviewVoice,
+                          title: tr(context).delete,
+                          onTap: () {},
+                        ),
+                        AnimatedAppBarItem(
+                          icon: Assets.contact,
+                          title: tr(context).users,
+                          onTap: () {},
+                        ),
+                        AnimatedAppBarItem(
+                          icon: Assets.camera,
+                          title: tr(context).camera,
+                          onTap: () {},
+                        ),
+                        AnimatedAppBarItem(
+                          icon: Assets.videoMenu,
+                          title: tr(context).video,
+                          onTap: () {},
+                        ),
+                      ],
+                    )
+                  : const SizedBox(),
+            ),
         ],
       ),
     );

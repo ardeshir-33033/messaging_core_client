@@ -7,6 +7,7 @@ import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
+import 'package:messaging_core/features/chat/presentation/pages/waiting_call_page.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/animated_app_bar.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_list_item.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_list_widgets/users_list_item.dart';
@@ -66,7 +67,13 @@ class _NewCallPageState extends State<NewCallPage> {
                             itemBuilder: (context, index) {
                               return UserListItem(
                                 chat: usersList[index],
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const WaitingCallPage()));
+                                },
                               );
                             }),
                       ),
