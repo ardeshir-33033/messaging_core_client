@@ -12,6 +12,7 @@ import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/pages/edit_image_page.dart';
+import 'package:messaging_core/features/chat/presentation/pages/map_page.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/contacts_bottom_sheet.dart';
 import 'package:messaging_core/locator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -72,15 +73,17 @@ class AttachFileBottomSheet extends StatelessWidget {
             AttachDataItem(
                 title: tr(context).location,
                 onPressed: () async {
-                  String googleUrl =
-                      'https://www.google.com/maps/search/?api=1&query=${-3.823216},${-38.481700}';
-                  if (await canLaunch(googleUrl)) {
-                    await launch(googleUrl);
-                  } else {
-                    throw 'Could not open the map.';
-                  }
-                  final navigator = Navigator.of(context);
-                  navigator.pop();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const MapPage()));
+                  // String googleUrl =
+                  //     'https://www.google.com/maps/search/?api=1&query=${-3.823216},${-38.481700}';
+                  // if (await canLaunch(googleUrl)) {
+                  //   await launch(googleUrl);
+                  // } else {
+                  //   throw 'Could not open the map.';
+                  // }
+                  // final navigator = Navigator.of(context);
+                  // navigator.pop();
                 },
                 icon: Assets.location),
             AttachDataItem(

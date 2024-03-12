@@ -1,9 +1,7 @@
 <manifest xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyBTEnQTnxFNCQ-qKcEGTFBwaVoVNYd9uFw" />
+
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -21,6 +19,8 @@
     <uses-permission  android:name="android.permission.MODIFY_AUDIO_SETTINGS"  />
     <uses-permission  android:name="android.permission.ACCESS_NETWORK_STATE"  />
     <uses-permission  android:name="android.permission.BLUETOOTH"  />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 
     <queries>
         <intent>
@@ -34,6 +34,9 @@
         android:label="messaging_core"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBTEnQTnxFNCQ-qKcEGTFBwaVoVNYd9uFw" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
