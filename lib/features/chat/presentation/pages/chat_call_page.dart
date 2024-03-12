@@ -63,24 +63,12 @@ class _ChatCallPageState extends State<ChatCallPage>
                     Tab(text: tr(context).chats),
                   ],
                 ),
-
-                const SizedBox(
-                  height: 10,
-                ),
-
                 SizedBox(
-                    height: context.screenHeight - 200,
+                    height: context.screenHeight - 150,
                     child: TabBarView(
                       controller: tabController,
-                      children: [
-                        NotificationsTab(),
-                        const Column(
-                          children: [],
-                        ),
-                      ],
+                      children: const [NotificationsTab(), ChatListPage()],
                     )),
-
-                // const ChatListPage()
               ],
             ),
           ),

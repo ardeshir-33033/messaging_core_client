@@ -79,5 +79,6 @@
   "chats": "Chats",
   "notifications": "Notifications",
   "noNotification": "You have no notification",
-  "noChatDesc": "Try to chat with your contacts"
+  "noChatDesc": "Try to chat with your contacts",
+  "newTitle": "New"
 }

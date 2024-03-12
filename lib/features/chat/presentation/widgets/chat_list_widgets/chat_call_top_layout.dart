@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
@@ -37,9 +38,59 @@ class ChatCallTopLayout extends StatelessWidget {
                 tr(context).noCallHistoryDesc,
                 style: AppTextStyles.body4.copyWith(fontSize: 18),
               ),
+              const SizedBox(height: 10),
+              NewActionButton(
+                icon: Icons.chat,
+                onTap: () {},
+              )
             ],
           ))
         ],
+      ),
+    );
+  }
+}
+
+class NewActionButton extends StatelessWidget {
+  const NewActionButton({
+    super.key,
+    required this.onTap,
+    required this.icon,
+  });
+
+  final Function() onTap;
+  final dynamic icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 40,
+      width: 80,
+      decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(10),
+          color: AppColors.primary1),
+      child: InkWell(
+        onTap: onTap,
+        // isExtended: true,
+        child: Padding(
+          padding: 8.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconWidget(
+                icon: icon,
+                iconColor: Colors.white,
+                size: 20,
+              ),
+              const SizedBox(width: 5),
+              TextWidget(
+                tr(context).newTitle,
+                style: AppTextStyles.body3.copyWith(color: Colors.white),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
