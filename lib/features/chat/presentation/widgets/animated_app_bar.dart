@@ -36,7 +36,7 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
       child: Column(
         children: [
           SizedBox(
-            height: widget.height ?? 55,
+            height: widget.height ?? (widget.centerVertical == true ? 40 : 55),
             child: Padding(
               padding: 10.horizontal,
               child: Row(

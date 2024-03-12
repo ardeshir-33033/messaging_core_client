@@ -75,5 +75,7 @@
   "accept": "Accept",
   "editGroupTitle": "Edit Group",
   "youHaveNoCall": "You have no call",
-  "noCallHistoryDesc": "Try to call with your contacts"
+  "noCallHistoryDesc": "Try to call with your contacts",
+  "chats": "Chats",
+  "notifications": "Notifications"
 }

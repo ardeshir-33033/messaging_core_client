@@ -47,11 +47,6 @@ class _ChatListPageState extends State<ChatListPage> {
     return Scaffold(
       floatingActionButton: const ChatListFloatingButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      appBar: CustomAppBar(
-        haveShadow: false,
-        leadingWidth: 40,
-        title: tr(context).chat,
-      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 15,
