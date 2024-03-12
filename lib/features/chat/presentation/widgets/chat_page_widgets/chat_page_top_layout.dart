@@ -96,8 +96,35 @@ class ChatPageTopLayout extends StatelessWidget {
                             color: Colors.red,
                             asset: Assets.callRemove,
                             iconColor: Colors.white,
-                            size: 50,
+                            size: 40,
                             onTap: () {},
+                          ),
+                          const SizedBox(width: 10),
+                          const IconWidget(
+                            icon: Assets.profileAdd,
+                            size: 25,
+                          ),
+                          const SizedBox(width: 10),
+                          const IconWidget(
+                            icon: Icons.keyboard_voice,
+                            iconColor: Colors.white,
+                            size: 25,
+                          ),
+                          const SizedBox(width: 10),
+                          const IconWidget(
+                            icon: Assets.disableVideo,
+                            size: 25,
+                          ),
+                          const SizedBox(width: 10),
+                          const IconWidget(
+                            icon: Icons.more_vert,
+                            iconColor: Colors.white,
+                            size: 25,
+                          ),
+                          const Spacer(),
+                          const IconWidget(
+                            icon: Assets.refresh,
+                            size: 25,
                           ),
                         ],
                       )
