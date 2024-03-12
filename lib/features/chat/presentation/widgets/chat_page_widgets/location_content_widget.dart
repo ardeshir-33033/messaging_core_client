@@ -19,7 +19,7 @@ class LocationContentWidget extends StatelessWidget {
           style: AppTextStyles.subtitle4,
         ),
         Text(
-          "${locationPayloadModel.lat} ,  ${locationPayloadModel.lng}",
+          "${locationPayloadModel.lat.toStringAsFixed(5)} ,  ${locationPayloadModel.lng.toStringAsFixed(5)}",
           style: AppTextStyles.overline2,
         ),
         const SizedBox(height: 10),
@@ -44,7 +44,7 @@ class LocationContentWidget extends StatelessWidget {
               ),
             ),
             child: Text(
-              tr(context).viewContact,
+              tr(context).viewLocation,
               style: AppTextStyles.subtitle4.copyWith(color: Colors.black87),
             ),
           ),

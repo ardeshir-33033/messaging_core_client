@@ -58,6 +58,7 @@
   "gif": "Gif",
   "isTyping": "Typing",
   "viewContact": "View Contact",
+  "viewLocation": "View Location",
   "permissionToAccessContactDenied": "No permission to access contacts",
   "callingFrom": "Calling from",
   "youHaveAnotherCallNow": "You have another call now:",
