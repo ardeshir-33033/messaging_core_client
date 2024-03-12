@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
+import 'package:messaging_core/features/chat/presentation/manager/map_controller.dart';
+import 'package:messaging_core/locator.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -16,6 +18,7 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
+  final MapController controller = locator<MapController>();
 
   late GoogleMapController mapController;
 

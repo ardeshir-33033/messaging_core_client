@@ -75,13 +75,7 @@ class AttachFileBottomSheet extends StatelessWidget {
                 onPressed: () async {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const MapPage()));
-                  // String googleUrl =
-                  //     'https://www.google.com/maps/search/?api=1&query=${-3.823216},${-38.481700}';
-                  // if (await canLaunch(googleUrl)) {
-                  //   await launch(googleUrl);
-                  // } else {
-                  //   throw 'Could not open the map.';
-                  // }
+
                   // final navigator = Navigator.of(context);
                   // navigator.pop();
                 },

@@ -255,6 +255,14 @@ class ChatController extends GetxController {
     sendTextMessage(text, receiverId, contentType, null, content);
   }
 
+  attachLocation(
+      {required int receiverId,
+        required String text,
+        required ContentTypeEnum contentType,
+        required ContentPayloadModel content}) {
+    sendTextMessage(text, receiverId, contentType, null, content);
+  }
+
   joinRoom() {
     if (currentChat!.isGroup()) {
       List<int> ids = [currentChat!.id!, AppGlobalData.categoryId];

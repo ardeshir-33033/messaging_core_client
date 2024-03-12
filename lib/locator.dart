@@ -29,6 +29,7 @@ import 'package:messaging_core/features/chat/presentation/manager/connection_sta
 import 'package:messaging_core/features/chat/presentation/manager/contacts_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/emoji_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/group_controller.dart';
+import 'package:messaging_core/features/chat/presentation/manager/map_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/online_users_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/record_voice_controller.dart';
 
@@ -110,4 +111,5 @@ void controllerInjection() {
   locator.registerSingleton<EmojiController>(Get.put(EmojiController()));
   locator.registerSingleton<CallController>(
       Get.put(CallController(locator(), locator())));
+  locator.registerSingleton<MapController>(Get.put(MapController()));
 }
