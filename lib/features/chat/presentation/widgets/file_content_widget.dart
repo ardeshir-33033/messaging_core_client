@@ -83,14 +83,14 @@ class _FileContentWidgetState extends State<FileContentWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        InkWell(
-          onTap: () {
-            openFile();
-          },
-          child: Container(
+    return InkWell(
+      onTap: () {
+        openFile();
+      },
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
             width: 32,
             height: 32,
             clipBehavior: Clip.antiAlias,
@@ -142,34 +142,34 @@ class _FileContentWidgetState extends State<FileContentWidget> {
               ],
             ),
           ),
-        ),
-        const SizedBox(
-          width: 8,
-        ),
-        Flexible(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextWidget(
-                widget.contentModel.messageText == ""
-                    ? widget.contentModel.filePath!
-                        .substring(widget.contentModel.filePath!.length - 7)
-                    : widget.contentModel.messageText,
-                minFontSize: 10,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.overline
-                    .copyWith(color: const Color(0xff272B38), fontSize: 12),
-              ),
-              // TextWidget(
-              //   widget.payload.size,
-              //   style: AppTextStyles.overline
-              //       .copyWith(color: const Color(0xff687296), fontSize: 10),
-              // )
-            ],
+          const SizedBox(
+            width: 8,
           ),
-        )
-      ],
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextWidget(
+                  widget.contentModel.messageText == ""
+                      ? widget.contentModel.filePath!
+                          .substring(widget.contentModel.filePath!.length - 7)
+                      : widget.contentModel.messageText,
+                  minFontSize: 10,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.overline
+                      .copyWith(color: const Color(0xff272B38), fontSize: 12),
+                ),
+                // TextWidget(
+                //   widget.payload.size,
+                //   style: AppTextStyles.overline
+                //       .copyWith(color: const Color(0xff687296), fontSize: 10),
+                // )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
