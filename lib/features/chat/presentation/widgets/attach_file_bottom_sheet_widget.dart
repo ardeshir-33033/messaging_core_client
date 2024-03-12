@@ -14,6 +14,7 @@ import 'package:messaging_core/features/chat/presentation/manager/chat_controlle
 import 'package:messaging_core/features/chat/presentation/pages/edit_image_page.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/contacts_bottom_sheet.dart';
 import 'package:messaging_core/locator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AttachFileBottomSheet extends StatelessWidget {
   const AttachFileBottomSheet({super.key, required this.chat});
@@ -70,7 +71,14 @@ class AttachFileBottomSheet extends StatelessWidget {
                 icon: Assets.camera),
             AttachDataItem(
                 title: tr(context).location,
-                onPressed: () {
+                onPressed: () async {
+                  String googleUrl =
+                      'https://www.google.com/maps/search/?api=1&query=${-3.823216},${-38.481700}';
+                  if (await canLaunch(googleUrl)) {
+                    await launch(googleUrl);
+                  } else {
+                    throw 'Could not open the map.';
+                  }
                   final navigator = Navigator.of(context);
                   navigator.pop();
                 },
