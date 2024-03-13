@@ -7,6 +7,7 @@ import 'package:messaging_core/app/widgets/overlay_widget.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/enums/message_status.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
+import 'package:messaging_core/core/utils/id_to_emojis.dart';
 import 'package:messaging_core/core/utils/utils.dart';
 
 class ContentOptionsOverlayWidget extends StatefulWidget {
@@ -206,6 +207,40 @@ class _ContentOptionsOverlayWidgetState
                 color: AppColors.primary3.shade100.withOpacity(0.3),
               ),
             ),
+            Positioned(
+                top: _overlayOffset.dy - (_overlayHeight / 2) + 20,
+                right: _overlayOffset.dx,
+                child: SizeTransition(
+                  sizeFactor: _sizeAnimation,
+                  axis: Axis.vertical,
+                  axisAlignment: 1,
+                  child: SizedBox(
+                    width: 200,
+                    height: 50,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Material(
+                          elevation: 3,
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: IdToEmoji().emojiList.length,
+                              itemBuilder: (context, int index) {
+                                return SizedBox(
+                                    width: 30,
+                                    child: Center(
+                                        child: Text(
+                                      IdToEmoji().emojiList[index]!,
+                                      style: const TextStyle(fontSize: 18),
+                                    )));
+                              }),
+                        ),
+                      ),
+                    ),
+                  ),
+                )),
             Positioned(
               top: _overlayOffset.dy,
               right: _overlayOffset.dx,
