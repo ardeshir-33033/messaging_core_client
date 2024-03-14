@@ -19,6 +19,7 @@ import 'package:messaging_core/core/enums/message_status.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/core/services/media_handler/media_handler.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
+import 'package:messaging_core/core/utils/id_to_emojis.dart';
 import 'package:messaging_core/core/utils/text_utils.dart';
 import 'package:messaging_core/core/utils/utils.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
@@ -27,6 +28,7 @@ import 'package:messaging_core/features/chat/domain/entities/content_model.dart'
 import 'package:messaging_core/features/chat/domain/entities/text_content_payload_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_box_content.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/chat_page_widgets/time_and_reaction_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/content_options_overlay_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/message_status_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/sheets/forward_content_sheet.dart';
@@ -340,33 +342,8 @@ class ChatBoxState extends State<ChatBox> {
                                     opponentProfile: widget.opponentProfile,
                                   ),
                                   const SizedBox(height: 5),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        widget.content.createdAt
-                                            .toString()
-                                            .hourAmFromDate(),
-                                        style: const TextStyle(
-                                          fontSize: 6,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFF828FBB),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 5),
-                                      isMine &&
-                                              widget.content.contentType !=
-                                                  ContentTypeEnum.localDeleted
-                                          ? MessageStatusWidget(
-                                              content: widget.content,
-                                              // lastReceived: currentChannelProvider
-                                              //     .lastReceived,
-                                              // lastSeen:
-                                              //     currentChannelProvider.lastSeen,
-                                            )
-                                          : Container(),
-                                    ],
-                                  ),
+                                  TimeAndReactionWidget(
+                                      content: widget.content, isMine: isMine),
                                 ],
                               ),
                             ),
