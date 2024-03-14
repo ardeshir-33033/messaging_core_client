@@ -65,44 +65,37 @@ class ChatPageTopLayout extends StatelessWidget {
                         ),
                         child: Stack(
                           children: [
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Positioned(
-                                bottom: 10,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 15.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey[800],
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        child: const IconWidget(
-                                          icon: Icons.keyboard_voice,
-                                          iconColor: Colors.white,
-                                          size: 25,
-                                        ),
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey[800],
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        child: const IconWidget(
-                                          icon: Assets.disableVideo,
-                                          size: 25,
-                                        ),
-                                      ),
-                                    ],
+                            Positioned(
+                              bottom: 5,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 15.0),
+                                child: Container(
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[800],
+                                    borderRadius: BorderRadius.circular(15),
                                   ),
+                                  child: const IconWidget(
+                                    icon: Icons.keyboard_voice,
+                                    iconColor: Colors.white,
+                                    size: 25,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 10,
+                              right: 15,
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[800],
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: const IconWidget(
+                                  icon: Assets.disableVideo,
+                                  size: 25,
                                 ),
                               ),
                             ),

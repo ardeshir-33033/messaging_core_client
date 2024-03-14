@@ -36,7 +36,7 @@ class _TimeAndReactionWidgetState extends State<TimeAndReactionWidget> {
 
   fillReactions() {
     // if ((widget.content.reactionModel?.length ?? 0) > 2) {
-    reactions = widget.content.reactionModel!;
+    reactions = widget.content.reactionModel ?? [];
     showingReactions = {};
     for (var element in reactions) {
       showingReactions.update(element.emoji, (value) => value + 1,

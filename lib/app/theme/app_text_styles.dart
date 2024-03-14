@@ -32,7 +32,7 @@ class AppTextStyles {
     fontFamily: bold,
     fontWeight: FontWeight.w600,
     color: AppColors.primaryBlack,
-    letterSpacing: -1.5,
+    letterSpacing: 0.5,
   );
   static const headline4 = TextStyle(
     fontSize: 16,
