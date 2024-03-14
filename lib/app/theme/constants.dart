@@ -63,6 +63,9 @@ class Assets {
   static const String mirroring = "$_baseIconPath/mirroring-screen.svg";
   static const String message = "$_baseIconPath/message.svg";
   static const String monitorRecorder = "$_baseIconPath/monitor-recorder.svg";
+  static const String callGroupIcon = "$_baseIconPath/call-group-icon.svg";
+  static const String groupAdd = "$_baseIconPath/group-add.svg";
+  static const String leaveGroup = "$_baseIconPath/leave-group.svg";
 
   /// -----------------------Tone Assets -------------------------
   static const String _baseTonePath = "assets/tones";
