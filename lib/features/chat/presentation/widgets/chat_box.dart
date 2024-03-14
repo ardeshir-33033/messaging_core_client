@@ -524,18 +524,39 @@ class ChatBoxState extends State<ChatBox> {
 
   _onAddReaction(int value) async {
     _hideBox();
-    ReactionModel model = ReactionModel(
-        user: CategoryUser(
-            id: AppGlobalData.userId,
-            categoryId: AppGlobalData.categoryId,
-            username: AppGlobalData.userName),
-        emoji: value);
-    if (widget.content.reactionModel == null) {
-      widget.content.reactionModel = [model];
+    if (doesUserExistWithId(
+        widget.content.reactionModel ?? [], AppGlobalData.userId)) {
+      int? index = widget.content.reactionModel
+          ?.indexWhere((element) => element.user.id == AppGlobalData.userId);
+      if (widget.content.reactionModel![index!].emoji == value) {
+        widget.content.reactionModel!.removeAt(index);
+      } else {
+        widget.content.reactionModel![index].emoji = value;
+      }
     } else {
-      widget.content.reactionModel?.add(model);
+      ReactionModel model = ReactionModel(
+          user: CategoryUser(
+              id: AppGlobalData.userId,
+              categoryId: AppGlobalData.categoryId,
+              username: AppGlobalData.userName),
+          emoji: value);
+      if (widget.content.reactionModel == null) {
+        widget.content.reactionModel = [model];
+      } else {
+        widget.content.reactionModel?.add(model);
+      }
     }
+
     setState(() {});
+  }
+
+  bool doesUserExistWithId(List<ReactionModel> reactionList, int id) {
+    for (var reaction in reactionList) {
+      if (reaction.user.id == id) {
+        return true;
+      }
+    }
+    return false;
   }
 
   Future<void> _onStar() async {
