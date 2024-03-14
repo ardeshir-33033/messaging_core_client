@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/core/utils/id_to_emojis.dart';
@@ -54,13 +55,16 @@ class _TimeAndReactionWidgetState extends State<TimeAndReactionWidget> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.isMine)
-          Row(
-            children: [
-              reactionWidget(),
-              const SizedBox(
-                width: 15,
-              ),
-            ],
+          InkWell(
+            onTap: removeYourReaction,
+            child: Row(
+              children: [
+                reactionWidget(),
+                const SizedBox(
+                  width: 15,
+                ),
+              ],
+            ),
           ),
         Text(
           widget.content.createdAt.toString().hourAmFromDate(),
@@ -78,13 +82,16 @@ class _TimeAndReactionWidgetState extends State<TimeAndReactionWidget> {
               )
             : Container(),
         if (!widget.isMine)
-          Row(
-            children: [
-              const SizedBox(
-                width: 15,
-              ),
-              reactionWidget(),
-            ],
+          InkWell(
+            onTap: removeYourReaction,
+            child: Row(
+              children: [
+                const SizedBox(
+                  width: 15,
+                ),
+                reactionWidget(),
+              ],
+            ),
           ),
       ],
     );
@@ -161,5 +168,24 @@ class _TimeAndReactionWidgetState extends State<TimeAndReactionWidget> {
             );
           }),
     );
+  }
+
+  removeYourReaction() {
+    if (doesUserExistWithId(
+        widget.content.reactionModel ?? [], AppGlobalData.userId)) {
+      int? index = widget.content.reactionModel
+          ?.indexWhere((element) => element.user.id == AppGlobalData.userId);
+      widget.content.reactionModel!.removeAt(index!);
+      setState(() {});
+    }
+  }
+
+  bool doesUserExistWithId(List<ReactionModel> reactionList, int id) {
+    for (var reaction in reactionList) {
+      if (reaction.user.id == id) {
+        return true;
+      }
+    }
+    return false;
   }
 }
