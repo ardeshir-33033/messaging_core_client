@@ -36,7 +36,6 @@ class _ChatListPageState extends State<ChatListPage> {
   @override
   void initState() {
     connect();
-    controller.getAllChats();
     getSiamakToken();
 
     super.initState();
