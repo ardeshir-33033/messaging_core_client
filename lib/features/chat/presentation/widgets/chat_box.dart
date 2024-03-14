@@ -22,6 +22,8 @@ import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/core/utils/id_to_emojis.dart';
 import 'package:messaging_core/core/utils/text_utils.dart';
 import 'package:messaging_core/core/utils/utils.dart';
+import 'package:messaging_core/features/chat/data/models/reaction_model.dart';
+import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/contact_profile_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
@@ -119,6 +121,7 @@ class ChatBoxState extends State<ChatBox> {
       onEdit: _onEdit,
       onStar: _onStar,
       onPin: _onPin,
+      onAddEmoji: _onAddReaction,
 
       // onSaveImage: _onSaveImage,
       isMine: isMine,
@@ -517,6 +520,22 @@ class ChatBoxState extends State<ChatBox> {
       controller.update(["pin"]);
       controller.pinMessage(widget.content.contentId, false);
     }
+  }
+
+  _onAddReaction(int value) async {
+    _hideBox();
+    ReactionModel model = ReactionModel(
+        user: CategoryUser(
+            id: AppGlobalData.userId,
+            categoryId: AppGlobalData.categoryId,
+            username: AppGlobalData.userName),
+        emoji: value);
+    if (widget.content.reactionModel == null) {
+      widget.content.reactionModel = [model];
+    } else {
+      widget.content.reactionModel?.add(model);
+    }
+    setState(() {});
   }
 
   Future<void> _onStar() async {

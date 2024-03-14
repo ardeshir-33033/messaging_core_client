@@ -24,6 +24,7 @@ class ContentOptionsOverlayWidget extends StatefulWidget {
   final VoidCallback? onShare;
   final VoidCallback? onPin;
   final VoidCallback? onEdit;
+  final void Function(int) onAddEmoji;
   final MessageStatus messageStatus;
   final ContentTypeEnum contentType;
   final String contentId;
@@ -49,6 +50,7 @@ class ContentOptionsOverlayWidget extends StatefulWidget {
     this.onSaveImage,
     this.onForward,
     this.onResend,
+    required this.onAddEmoji,
     required this.isMine,
     this.onReport,
     this.onStar,
@@ -228,13 +230,21 @@ class _ContentOptionsOverlayWidgetState
                               scrollDirection: Axis.horizontal,
                               itemCount: IdToEmoji().emojiList.length,
                               itemBuilder: (context, int index) {
-                                return SizedBox(
-                                    width: 30,
-                                    child: Center(
-                                        child: Text(
-                                      IdToEmoji().emojiList[index]!,
-                                      style: const TextStyle(fontSize: 18),
-                                    )));
+                                return InkWell(
+                                  onTap: () {
+                                    widget.onAddEmoji(IdToEmoji()
+                                        .emojiList
+                                        .keys
+                                        .elementAt(index));
+                                  },
+                                  child: SizedBox(
+                                      width: 30,
+                                      child: Center(
+                                          child: Text(
+                                        IdToEmoji().emojiList[index]!,
+                                        style: const TextStyle(fontSize: 18),
+                                      ))),
+                                );
                               }),
                         ),
                       ),

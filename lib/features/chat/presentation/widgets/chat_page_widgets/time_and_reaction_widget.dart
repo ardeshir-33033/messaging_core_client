@@ -3,7 +3,6 @@ import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/core/utils/id_to_emojis.dart';
 import 'package:messaging_core/features/chat/data/models/reaction_model.dart';
-import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/message_status_widget.dart';
 
@@ -24,25 +23,33 @@ class TimeAndReactionWidget extends StatefulWidget {
 class _TimeAndReactionWidgetState extends State<TimeAndReactionWidget> {
   final TextStyle emojiStyle = const TextStyle(fontSize: 12);
 
-  final List<ReactionModel> reactions = [
-    ReactionModel(user: CategoryUser(id: 1, name: "ardi"), emoji: 1),
+  List<ReactionModel> reactions = [
+    //   ReactionModel(user: CategoryUser(id: 1, name: "ardi"), emoji: 1),
   ];
 
   Map<int, int> showingReactions = {};
 
   @override
   void initState() {
-    if (reactions.length > 2) {
-      for (var element in reactions) {
-        showingReactions.update(element.emoji, (value) => value + 1,
-            ifAbsent: () => 1);
-      }
-    }
     super.initState();
+  }
+
+  fillReactions() {
+    // if ((widget.content.reactionModel?.length ?? 0) > 2) {
+    reactions = widget.content.reactionModel!;
+    showingReactions = {};
+    for (var element in reactions) {
+      showingReactions.update(element.emoji, (value) => value + 1,
+          ifAbsent: () => 1);
+    }
+    // }else{
+    //
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
+    fillReactions();
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -98,7 +105,7 @@ class _TimeAndReactionWidgetState extends State<TimeAndReactionWidget> {
 
   oneReaction() {
     return Text(
-      IdToEmoji().emojiList[1]!,
+      IdToEmoji().emojiList[reactions.first.emoji]!,
       style: emojiStyle,
     );
   }
@@ -107,13 +114,13 @@ class _TimeAndReactionWidgetState extends State<TimeAndReactionWidget> {
     return Stack(
       children: [
         Text(
-          IdToEmoji().emojiList[1]!,
+          IdToEmoji().emojiList[reactions.first.emoji]!,
           style: emojiStyle,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 5.0),
+          padding: const EdgeInsets.only(left: 6.0),
           child: Text(
-            IdToEmoji().emojiList[2]!,
+            IdToEmoji().emojiList[reactions[1].emoji]!,
             style: emojiStyle,
           ),
         ),
