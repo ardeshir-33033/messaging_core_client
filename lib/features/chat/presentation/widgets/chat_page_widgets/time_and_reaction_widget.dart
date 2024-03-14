@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/core/utils/id_to_emojis.dart';
+import 'package:messaging_core/features/chat/data/models/reaction_model.dart';
+import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/message_status_widget.dart';
 
-class TimeAndReactionWidget extends StatelessWidget {
+class TimeAndReactionWidget extends StatefulWidget {
   const TimeAndReactionWidget({
     super.key,
     required this.content,
@@ -16,39 +18,45 @@ class TimeAndReactionWidget extends StatelessWidget {
   final bool isMine;
 
   @override
+  State<TimeAndReactionWidget> createState() => _TimeAndReactionWidgetState();
+}
+
+class _TimeAndReactionWidgetState extends State<TimeAndReactionWidget> {
+  final TextStyle emojiStyle = const TextStyle(fontSize: 12);
+
+  final List<ReactionModel> reactions = [
+    ReactionModel(user: CategoryUser(id: 1, name: "ardi"), emoji: 1),
+  ];
+
+  Map<int, int> showingReactions = {};
+
+  @override
+  void initState() {
+    if (reactions.length > 2) {
+      for (var element in reactions) {
+        showingReactions.update(element.emoji, (value) => value + 1,
+            ifAbsent: () => 1);
+      }
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Row(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
-              padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
-              child: Stack(
-                children: [
-                  Text(
-                    IdToEmoji().emojiList[1]!,
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5.0),
-                    child: Text(
-                      IdToEmoji().emojiList[2]!,
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  ),
-                ],
+        if (widget.isMine)
+          Row(
+            children: [
+              reactionWidget(),
+              const SizedBox(
+                width: 15,
               ),
-            ),
-            const SizedBox(
-              width: 15,
-            ),
-          ],
-        ),
+            ],
+          ),
         Text(
-          content.createdAt.toString().hourAmFromDate(),
+          widget.content.createdAt.toString().hourAmFromDate(),
           style: const TextStyle(
             fontSize: 6,
             fontWeight: FontWeight.w600,
@@ -56,12 +64,95 @@ class TimeAndReactionWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 5),
-        isMine && content.contentType != ContentTypeEnum.localDeleted
+        widget.isMine &&
+                widget.content.contentType != ContentTypeEnum.localDeleted
             ? MessageStatusWidget(
-                content: content,
+                content: widget.content,
               )
             : Container(),
+        if (!widget.isMine)
+          Row(
+            children: [
+              const SizedBox(
+                width: 15,
+              ),
+              reactionWidget(),
+            ],
+          ),
       ],
+    );
+  }
+
+  Widget reactionWidget() {
+    return reactions.isNotEmpty
+        ? reactions.length > 2
+            ? multipleReactions()
+            : Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)),
+                padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
+                child: reactions.length == 1 ? oneReaction() : doubleReaction())
+        : const SizedBox();
+  }
+
+  oneReaction() {
+    return Text(
+      IdToEmoji().emojiList[1]!,
+      style: emojiStyle,
+    );
+  }
+
+  doubleReaction() {
+    return Stack(
+      children: [
+        Text(
+          IdToEmoji().emojiList[1]!,
+          style: emojiStyle,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 5.0),
+          child: Text(
+            IdToEmoji().emojiList[2]!,
+            style: emojiStyle,
+          ),
+        ),
+      ],
+    );
+  }
+
+  multipleReactions() {
+    return SizedBox(
+      height: 20,
+      child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          itemCount: showingReactions.length,
+          shrinkWrap: true,
+          separatorBuilder: (context, index) {
+            return const SizedBox(width: 3);
+          },
+          itemBuilder: (context, index) {
+            int emoji = showingReactions.keys.elementAt(index);
+            int count = showingReactions.values.elementAt(index);
+            return Container(
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0.5),
+              child: Row(
+                children: [
+                  Text(
+                    IdToEmoji().emojiList[emoji]!,
+                    style: emojiStyle,
+                  ),
+                  const SizedBox(width: 2),
+                  Text(
+                    count.toString(),
+                    style: const TextStyle(fontSize: 10),
+                  ),
+                ],
+              ),
+            );
+          }),
     );
   }
 }

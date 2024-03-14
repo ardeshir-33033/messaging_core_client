@@ -7,6 +7,7 @@ import 'package:messaging_core/core/enums/message_status.dart';
 import 'package:messaging_core/core/enums/receiver_type.dart';
 import 'package:messaging_core/core/storage/database.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
+import 'package:messaging_core/features/chat/data/models/reaction_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_payload_model.dart';
 import 'package:messaging_core/main.dart';
@@ -29,6 +30,7 @@ class ContentModel {
   ContentModel? replied; // todo possibility of forge from client
   bool isForwarded;
   CategoryUser? sender;
+  List<ReactionModel>? reactionModel;
 
   // set repliedTo(ContentModel? value) {
   //   if (value == null) {
@@ -58,6 +60,7 @@ class ContentModel {
     this.replied,
     required this.categoryId,
     required this.receiverId,
+    this.reactionModel,
     this.filePath,
     this.sender,
     this.status = MessageStatus
@@ -131,6 +134,9 @@ class ContentModel {
         contentType: contentType,
         contentPayload: contentPayload,
         status: MessageStatus.sent,
+        reactionModel: json['readed_at'] != null
+            ? ReactionModel.listFromJson(json["reactions"])
+            : null,
         pinned: json["pinned"],
         replied: reply,
         isForwarded: json['isForwarded'] ?? false,
@@ -166,6 +172,9 @@ class ContentModel {
         status: MessageStatus.sent,
         replied: reply,
         pinned: json["pinned"] ?? 0,
+        reactionModel: json['readed_at'] != null
+            ? ReactionModel.listFromJson(json["reactions"])
+            : null,
         isForwarded: json['isForwarded'] ?? false,
         receiverType: ReceiverType.fromString(json['receiverType']),
         messageText: json['text'],
@@ -197,6 +206,9 @@ class ContentModel {
         readAt: json['readed_at'] != null
             ? DateTime.parse(json['readed_at']).toLocal()
             : null,
+        reactionModel: json['readed_at'] != null
+            ? ReactionModel.listFromJson(json["reactions"])
+            : null,
         contentType: contentType,
         contentPayload: contentPayload,
         status: MessageStatus.sent,
@@ -226,6 +238,7 @@ class ContentModel {
       'status': status.name,
       'isForwarded': isForwarded,
       'readed_at': readAt != null ? readAt!.toIso8601String() : null,
+      'reactions': reactionModel?.map((v) => v.toJson()).toList(),
       'message_text': contentType == ContentTypeEnum.other
           ? contentPayload!.toJson()
           : messageText.toString(),
