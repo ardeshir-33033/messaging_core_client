@@ -83,5 +83,6 @@
   "noChatDesc": "Try to chat with your contacts",
   "newTitle": "New",
   "newCall": "New Call",
-  "search": "Search"
+  "search": "Search",
+  "call": "Call"
 }
