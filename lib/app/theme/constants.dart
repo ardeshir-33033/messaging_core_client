@@ -66,6 +66,8 @@ class Assets {
   static const String callGroupIcon = "$_baseIconPath/call-group-icon.svg";
   static const String groupAdd = "$_baseIconPath/group-add.svg";
   static const String leaveGroup = "$_baseIconPath/leave-group.svg";
+  static const String newGroup = "$_baseIconPath/new_group.svg";
+  static const String newCommunity = "$_baseIconPath/people.svg";
 
   /// -----------------------Tone Assets -------------------------
   static const String _baseTonePath = "assets/tones";

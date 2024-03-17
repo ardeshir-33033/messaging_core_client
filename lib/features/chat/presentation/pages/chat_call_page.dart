@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/pages/chat_list_page.dart';
+import 'package:messaging_core/features/chat/presentation/pages/new_message_page.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/animated_app_bar.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_list_widgets/chat_call_top_layout.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_list_widgets/notifications_tab.dart';
@@ -47,32 +49,46 @@ class _ChatCallPageState extends State<ChatCallPage>
                   isGroup: false,
                   centerVertical: true,
                 ),
-                TabBar(
-                  // padding: const EdgeInsets.fromLTRB(0, 0, 100, 8),
-                  isScrollable: true,
-                  indicatorColor: Colors.transparent,
-                  dividerColor: Colors.transparent,
-                  unselectedLabelStyle: AppTextStyles.body4.copyWith(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 25,
-                    color: const Color(0xFFBABABA),
-                  ),
-                  labelStyle: AppTextStyles.body4.copyWith(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 25,
-                  ),
-                  controller: tabController,
-                  tabs: [
-                    Tab(text: tr(context).notifications),
-                    Tab(text: tr(context).chats),
-                  ],
-                ),
-                SizedBox(
-                    height: context.screenHeight - 150,
-                    child: TabBarView(
-                      controller: tabController,
-                      children: const [NotificationsTab(), ChatListPage()],
-                    )),
+                GetBuilder<ChatController>(
+                    id: "newMessage",
+                    builder: (_) {
+                      if (controller.showNewMessagePage) {
+                        return SizedBox(
+                            height: context.screenHeight - 150,
+                            child: const NewMessagePage());
+                      }
+                      return Column(children: [
+                        TabBar(
+                          // padding: const EdgeInsets.fromLTRB(0, 0, 100, 8),
+                          isScrollable: true,
+                          indicatorColor: Colors.transparent,
+                          dividerColor: Colors.transparent,
+                          unselectedLabelStyle: AppTextStyles.body4.copyWith(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 25,
+                            color: const Color(0xFFBABABA),
+                          ),
+                          labelStyle: AppTextStyles.body4.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 25,
+                          ),
+                          controller: tabController,
+                          tabs: [
+                            Tab(text: tr(context).notifications),
+                            Tab(text: tr(context).chats),
+                          ],
+                        ),
+                        SizedBox(
+                            height: context.screenHeight - 150,
+                            child: TabBarView(
+                              controller: tabController,
+                              children: const [
+                                NotificationsTab(),
+                                ChatListPage()
+                              ],
+                            )),
+                      ]);
+                    }),
               ],
             ),
           ),

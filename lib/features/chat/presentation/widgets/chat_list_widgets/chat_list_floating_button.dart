@@ -9,11 +9,13 @@ import 'package:messaging_core/core/services/network/websocket/messaging_client.
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/domain/repositories/storage/chat_storage_repository.dart';
+import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/pages/group/create_new_group_page.dart';
 import 'package:messaging_core/locator.dart';
 
 class ChatListFloatingButton extends StatelessWidget {
-  const ChatListFloatingButton({super.key});
+  ChatListFloatingButton({super.key});
+  final ChatController controller = locator<ChatController>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +28,8 @@ class ChatListFloatingButton extends StatelessWidget {
           color: AppColors.primary1),
       child: FloatingActionButton(
         onPressed: () async {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const CreateNewGroupPage()));
+          controller.showNewMessagePage = true;
+          controller.update(["newMessage"]);
         },
         elevation: 0,
         backgroundColor: Colors.transparent,

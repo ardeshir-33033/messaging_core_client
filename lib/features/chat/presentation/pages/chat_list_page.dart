@@ -44,7 +44,7 @@ class _ChatListPageState extends State<ChatListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: const ChatListFloatingButton(),
+      floatingActionButton: ChatListFloatingButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Padding(
         padding: const EdgeInsets.symmetric(

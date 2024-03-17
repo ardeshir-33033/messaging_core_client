@@ -82,6 +82,9 @@
   "noNotification": "You have no notification",
   "noChatDesc": "Try to chat with your contacts",
   "newTitle": "New",
+  "newMessage": "New Message",
+  "newGroup": "New Group",
+  "newCommunity": "New Community",
   "newCall": "New Call",
   "search": "Search",
   "call": "Call"
