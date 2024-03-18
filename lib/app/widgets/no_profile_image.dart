@@ -17,7 +17,7 @@ class NoProfileImage extends StatelessWidget {
       height: size ?? 50,
       width: size ?? 50,
       decoration: BoxDecoration(
-          shape: boxShape ?? BoxShape.circle, color: (id ?? 4).colorFromId()),
+          shape: boxShape ?? BoxShape.rectangle, color: (id ?? 4).colorFromId()),
       child: Center(
         child: Text(
           (name?.length ?? 0) > 0
