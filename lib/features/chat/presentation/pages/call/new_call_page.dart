@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
+import 'package:messaging_core/app/widgets/app_title_widget.dart';
 import 'package:messaging_core/app/widgets/search_input_widget.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
@@ -51,11 +52,8 @@ class _NewCallPageState extends State<NewCallPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 20),
-                      TextWidget(
-                        tr(context).newCall,
-                        style: AppTextStyles.subtitle2.copyWith(
-                          fontSize: 28,
-                        ),
+                      AppTitleWidget(
+                        title: tr(context).call,
                       ),
                       const SizedBox(height: 10),
                       SearchInputWidget(

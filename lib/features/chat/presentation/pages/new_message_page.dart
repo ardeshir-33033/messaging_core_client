@@ -8,6 +8,9 @@ import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
+import 'package:messaging_core/features/chat/presentation/pages/chat_page.dart';
+import 'package:messaging_core/features/chat/presentation/pages/group/add_group_name_page.dart';
+import 'package:messaging_core/features/chat/presentation/pages/group/create_new_group_page.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_list_widgets/users_list_item.dart';
 import 'package:messaging_core/locator.dart';
 
@@ -37,9 +40,12 @@ class _NewMessagePageState extends State<NewMessagePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppTitleWidget(title: tr(context).newMessage),
-          buildNewRow(tr(context).newGroup, Assets.newGroup),
+          buildNewRow(tr(context).newGroup, Assets.newGroup, () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AddGroupNamePage()));
+          }),
           const SizedBox(height: 10),
-          buildNewRow(tr(context).newCommunity, Assets.newCommunity),
+          buildNewRow(tr(context).newCommunity, Assets.newCommunity, () {}),
           const SizedBox(height: 16),
           SearchInputWidget(
               onSearch: searchUsers, hintText: tr(context).search),
@@ -49,7 +55,13 @@ class _NewMessagePageState extends State<NewMessagePage> {
                 itemBuilder: (context, index) {
                   return UserListItem(
                     chat: users[index],
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ChatPage(chat: users[index])));
+                    },
                   );
                 }),
           ),
@@ -63,19 +75,22 @@ class _NewMessagePageState extends State<NewMessagePage> {
     setState(() {});
   }
 
-  Row buildNewRow(String title, String icon) {
-    return Row(
-      children: [
-        IconWidget(
-          icon: icon,
-          size: 20,
-        ),
-        const SizedBox(width: 5),
-        TextWidget(
-          title,
-          style: AppTextStyles.overline1,
-        ),
-      ],
+  Widget buildNewRow(String title, String icon, Function() onTap) {
+    return InkWell(
+      onTap: onTap,
+      child: Row(
+        children: [
+          IconWidget(
+            icon: icon,
+            size: 20,
+          ),
+          const SizedBox(width: 5),
+          TextWidget(
+            title,
+            style: AppTextStyles.overline1,
+          ),
+        ],
+      ),
     );
   }
 }
