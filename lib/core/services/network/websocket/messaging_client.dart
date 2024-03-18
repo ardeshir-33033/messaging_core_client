@@ -25,12 +25,14 @@ class MessagingClient {
   //   });
   // }
 
-  sendUserContent(ContentModel contentModel, String roomIdentifier) async {
+  sendUserContent(
+      ContentModel contentModel, String roomIdentifier, List<int>? ids) async {
     webSocketConnection.sendMessage("chat message", {
       'roomIdentifier': roomIdentifier,
       'text': contentModel.messageText,
       'senderId': contentModel.senderId,
       'receiverId': contentModel.receiverId,
+      // if (ids != null) 'receiverUsers': ids,
       'receiverType': contentModel.receiverType.toString(),
       'messageId': contentModel.contentId,
       'messageType': contentModel.contentType.toString(),

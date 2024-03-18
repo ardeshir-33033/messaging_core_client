@@ -23,7 +23,8 @@ class NoProfileImage extends StatelessWidget {
           (name?.length ?? 0) > 0
               ? name?.substring(0, 1).toUpperCase() ?? "A"
               : "A",
-          style: AppTextStyles.caption2.copyWith(color: Colors.white),
+          style: AppTextStyles.caption2.copyWith(
+              color: Colors.white, fontSize: size != null ? size! / 1.5 : 20),
         ),
       ),
     );
