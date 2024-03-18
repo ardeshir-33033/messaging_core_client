@@ -90,5 +90,8 @@
   "call": "Call",
   "continueTitle":"Continue",
   "selectedMembers": "Selected Members",
-  "contacts": "Contacts"
+  "contacts": "Contacts",
+  "callingTo": "Calling To",
+  "videoCall": "Video Call",
+  "voiceCall": "Voice Call"
 }

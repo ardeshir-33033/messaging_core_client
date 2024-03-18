@@ -68,6 +68,7 @@ class Assets {
   static const String leaveGroup = "$_baseIconPath/leave-group.svg";
   static const String newGroup = "$_baseIconPath/new_group.svg";
   static const String newCommunity = "$_baseIconPath/people.svg";
+  static const String muteMicroPhone = "$_baseIconPath/mute_microphone.svg";
 
   /// -----------------------Tone Assets -------------------------
   static const String _baseTonePath = "assets/tones";

@@ -11,6 +11,7 @@ import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/pages/call/new_call_page.dart';
+import 'package:messaging_core/features/chat/presentation/pages/chat_page.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/animated_app_bar.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_list_widgets/users_item_widget.dart';
 import 'package:messaging_core/locator.dart';
@@ -68,6 +69,12 @@ class _ChatCallTopLayoutState extends State<ChatCallTopLayout> {
                               itemBuilder: (context, int index) {
                                 return UsersItemWidget(
                                   user: users[index],
+                                  onPressed: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return ChatPage(chat: users[index]);
+                                    }));
+                                  },
                                 );
                               }))
                     ],
