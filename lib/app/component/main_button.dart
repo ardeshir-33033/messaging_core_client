@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/loading_widget.dart';
@@ -46,7 +47,7 @@ class MainButton extends StatelessWidget {
             if (states.contains(MaterialState.disabled)) {
               return const Color(0xffF3F4F8);
             }
-            return backgroundColor ?? const Color(0xff2F80ED);
+            return backgroundColor ?? AppColors.primary1;
           },
         ),
         foregroundColor: MaterialStateProperty.resolveWith((state) {
