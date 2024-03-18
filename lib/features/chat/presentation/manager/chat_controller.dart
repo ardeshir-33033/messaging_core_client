@@ -63,6 +63,7 @@ class ChatController extends GetxController {
   List<ContentModel> messages = [];
   List<CategoryUser> users = [];
   bool isTyping = false;
+  bool showNewMessagePage = false;
   ContentModel? editingContent;
   ContentModel? repliedContent;
   List<ContentModel>? pinnedMessages;
@@ -197,7 +198,12 @@ class ChatController extends GetxController {
         }
         messages[index].status = MessageStatus.sent;
 
-        messagingClient.sendUserContent(messages[index], _roomIdentifier!);
+        messagingClient.sendUserContent(
+            messages[index],
+            _roomIdentifier!,
+            currentChat!.isGroup()
+                ? currentChat!.groupUsers!.map((e) => e.id!).toList()
+                : null);
 
         update(["messages"]);
       }
@@ -257,9 +263,9 @@ class ChatController extends GetxController {
 
   attachLocation(
       {required int receiverId,
-        required String text,
-        required ContentTypeEnum contentType,
-        required ContentPayloadModel content}) {
+      required String text,
+      required ContentTypeEnum contentType,
+      required ContentPayloadModel content}) {
     sendTextMessage(text, receiverId, contentType, null, content);
   }
 

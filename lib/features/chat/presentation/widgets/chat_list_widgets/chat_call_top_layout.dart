@@ -1,59 +1,87 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/theme/constants.dart';
+import 'package:messaging_core/app/widgets/app_title_widget.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
+import 'package:messaging_core/app/widgets/search_input_widget.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
+import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
+import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/pages/call/new_call_page.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/animated_app_bar.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/chat_list_widgets/users_item_widget.dart';
+import 'package:messaging_core/locator.dart';
 
-class ChatCallTopLayout extends StatelessWidget {
+class ChatCallTopLayout extends StatefulWidget {
   const ChatCallTopLayout({super.key});
 
   @override
+  State<ChatCallTopLayout> createState() => _ChatCallTopLayoutState();
+}
+
+class _ChatCallTopLayoutState extends State<ChatCallTopLayout> {
+  final ChatController controller = locator<ChatController>();
+
+  List<CategoryUser> users = [];
+
+  @override
+  void initState() {
+    users = controller.users;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: context.screenHeight / 1.4,
-      child: Column(
-        children: [
-          const AnimatedAppBar(
-            isGroup: false,
-            title: "Category Name",
-          ),
-          Expanded(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const IconWidget(
-                icon: Assets.callRemove2,
-                size: 100,
-              ),
-              const SizedBox(height: 10),
-              TextWidget(
-                tr(context).youHaveNoCall,
-                style: AppTextStyles.subtitle,
-              ),
-              const SizedBox(height: 10),
-              TextWidget(
-                tr(context).noCallHistoryDesc,
-                style: AppTextStyles.body4.copyWith(fontSize: 18),
-              ),
-              const SizedBox(height: 10),
-              NewActionButton(
-                icon: Icons.chat,
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const NewCallPage()));
-                },
-              )
-            ],
-          ))
-        ],
-      ),
-    );
+    return GetBuilder<ChatController>(
+        id: "allChats",
+        builder: (_) {
+          return SizedBox(
+            height: context.screenHeight / 1.4,
+            child: Column(
+              children: [
+                AnimatedAppBar(
+                  isGroup: false,
+                  title: tr(context).call,
+                  categoryTitle: "Sport",
+                ),
+                Expanded(
+                    child: Padding(
+                  padding: 10.horizontal,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppTitleWidget(title: tr(context).newCall),
+                      SearchInputWidget(
+                          onSearch: searchUsers, hintText: tr(context).search),
+                      Expanded(
+                          child: ListView.separated(
+                              itemCount: users.length,
+                              separatorBuilder: (context, int index) {
+                                return const SizedBox(
+                                  height: 10,
+                                );
+                              },
+                              itemBuilder: (context, int index) {
+                                return UsersItemWidget(
+                                  user: users[index],
+                                );
+                              }))
+                    ],
+                  ),
+                ))
+              ],
+            ),
+          );
+        });
+  }
+
+  searchUsers(String query) {
+    users = controller.getUsers(searchQuery: query);
+    setState(() {});
   }
 }
 

@@ -153,8 +153,8 @@ class ContentModel {
   static ContentModel fromSocketJson(Map<String, dynamic> json,
       {bool mainContent = true}) {
     var contentType = ContentTypeEnum.fromString(json['messageType'] ?? "text");
-    // var contentPayload =
-    //     ContentPayloadModel.create(contentType, json['text']);
+    var contentPayload =
+        ContentPayloadModel.create(contentType, json['text']);
     ContentModel? reply = (mainContent && json['reply'] != null)
         ? ContentModel.fromJson(json['reply'], mainContent: false)
         : null;
@@ -168,7 +168,7 @@ class ContentModel {
         //     ? DateTime.parse(json['readed_at']).toLocal()
         //     : null,
         contentType: contentType,
-        // contentPayload: contentPayload,
+        contentPayload: contentPayload,
         status: MessageStatus.sent,
         replied: reply,
         pinned: json["pinned"] ?? 0,
