@@ -74,4 +74,8 @@ class Assets {
   static const String notificationTone = "$_baseTonePath/notif_tone.wav";
   static const String ringingPhoneAudio = "$_baseTonePath/Simple-Ringtone.mp3";
   static const String callingPhoneAudio = "$_baseTonePath/Phone-Ringing.mp3";
+
+  /// -----------------------Image Assets -------------------------
+  static const String _baseImagePath = "assets/images";
+  static const String groupBackground = "$_baseImagePath/group_back.png";
 }

@@ -29,12 +29,12 @@ class ConversationAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // if (chat.isGroup()) {
-        //   Navigator.push(
-        //       context,
-        //       MaterialPageRoute(
-        //           builder: (context) => GroupDetailsPage(chat: chat)));
-        // }
+        if (chat.isGroup()) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => GroupDetailsPage(chat: chat)));
+        }
       },
       child: Row(
         mainAxisAlignment: chat.isGroup()
