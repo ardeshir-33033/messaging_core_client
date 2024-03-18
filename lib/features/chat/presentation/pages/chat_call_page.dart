@@ -57,7 +57,9 @@ class _ChatCallPageState extends State<ChatCallPage>
                             height: context.screenHeight - 150,
                             child: const NewMessagePage());
                       }
-                      return Column(children: [
+                      return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                         TabBar(
                           // padding: const EdgeInsets.fromLTRB(0, 0, 100, 8),
                           isScrollable: true,

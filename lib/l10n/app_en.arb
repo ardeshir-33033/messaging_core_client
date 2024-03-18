@@ -87,5 +87,8 @@
   "newCommunity": "New Community",
   "newCall": "New Call",
   "search": "Search",
-  "call": "Call"
+  "call": "Call",
+  "continueTitle":"Continue",
+  "selectedMembers": "Selected Members",
+  "contacts": "Contacts"
 }

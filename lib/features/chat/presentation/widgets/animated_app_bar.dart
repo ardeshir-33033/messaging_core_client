@@ -13,11 +13,13 @@ class AnimatedAppBar extends StatefulWidget {
       {super.key,
       required this.isGroup,
       this.title,
+      this.categoryTitle,
       this.centerVertical = false,
       this.height});
 
   final bool isGroup;
   final String? title;
+  final String? categoryTitle;
   final bool centerVertical;
   final double? height;
 
@@ -45,10 +47,25 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
                     ? CrossAxisAlignment.center
                     : CrossAxisAlignment.end,
                 children: [
-                  const IconWidget(
-                    icon: Icons.more_vert,
-                    iconColor: Colors.white,
-                    size: 25,
+                  Row(
+                    children: [
+                      const IconWidget(
+                        icon: Icons.more_vert,
+                        iconColor: Colors.white,
+                        size: 25,
+                      ),
+                      if (widget.categoryTitle != null)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: TextWidget(
+                            widget.categoryTitle!,
+                            style: AppTextStyles.body4.copyWith(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white),
+                          ),
+                        )
+                    ],
                   ),
                   TextWidget(
                     widget.title ?? tr(context).chat,
@@ -68,7 +85,9 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
                             tapAnimatedAppBar();
                           },
                         )
-                      : const SizedBox()
+                      : SizedBox(
+                          width: (widget.categoryTitle != null) ? 20 : 0,
+                        )
                 ],
               ),
             ),
