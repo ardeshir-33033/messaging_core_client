@@ -170,7 +170,7 @@ class ConversationAppBar extends StatelessWidget {
       height: size ?? 50,
       width: size ?? 50,
       decoration:
-          BoxDecoration(shape: BoxShape.circle, color: chat.id!.colorFromId()),
+          BoxDecoration(shape: BoxShape.rectangle, color: chat.id!.colorFromId()),
       child: Center(
         child: Text(
           (chat.name?.length ?? 0) > 0
