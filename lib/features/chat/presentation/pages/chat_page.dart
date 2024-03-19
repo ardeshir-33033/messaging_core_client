@@ -17,6 +17,7 @@ import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/contact_profile_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
+import 'package:messaging_core/features/chat/presentation/manager/call_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/emoji_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/record_voice_controller.dart';
@@ -63,6 +64,8 @@ class _ChatPageState extends State<ChatPage>
   final RecordVoiceController voiceController =
       Get.put(RecordVoiceController());
 
+  final CallController callController = locator<CallController>();
+
   bool showOverlay = false;
   Offset? targetPos;
   Widget? target;
@@ -88,6 +91,8 @@ class _ChatPageState extends State<ChatPage>
   void initState() {
     voiceController.initialRecording();
     controller.setCurrentChat(widget.chat);
+    callController.callType =
+        widget.chat.isGroup() ? CallType.group : CallType.single;
     controller.joinRoom();
 
     // if (widget.chat.lastMessage != null) {

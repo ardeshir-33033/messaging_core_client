@@ -79,4 +79,7 @@ class Assets {
   /// -----------------------Image Assets -------------------------
   static const String _baseImagePath = "assets/images";
   static const String groupBackground = "$_baseImagePath/group_back.png";
+  static const String myCameraTest = "$_baseImagePath/my_camera_test.png";
+  static const String opponentCameraTest =
+      "$_baseImagePath/opponent_camera_test.png";
 }

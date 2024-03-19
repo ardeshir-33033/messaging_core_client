@@ -107,6 +107,7 @@ class NoCallWidget extends StatelessWidget {
                       Expanded(
                         child: InkWell(
                           onTap: () {
+                            controller.setCallMode(CallMode.video);
                             controller.setCallStatus(CallStatus.inCall);
                           },
                           child: Container(
@@ -129,6 +130,7 @@ class NoCallWidget extends StatelessWidget {
                       Expanded(
                         child: InkWell(
                           onTap: () {
+                            controller.setCallMode(CallMode.voice);
                             controller.setCallStatus(CallStatus.inCall);
                           },
                           child: Container(

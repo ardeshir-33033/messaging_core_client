@@ -21,10 +21,29 @@ class CallController extends GetxController {
 
   CallController(this.messagingClient, this.chatDataSource);
   CallStatus callStatus = CallStatus.noCall;
+  CallMode callMode = CallMode.video;
+  CallType callType = CallType.single;
 
+  bool myVideoClosed = false;
+  bool opponentVideoClosed = false;
 
-  setCallStatus(CallStatus status){
+  setCallStatus(CallStatus status) {
     callStatus = status;
+    update(["status"]);
+  }
+
+  setOpponentVideo() {
+    opponentVideoClosed = !opponentVideoClosed;
+    update(["status"]);
+  }
+
+  setCallMode(CallMode mode) {
+    if (mode == CallMode.voice) {
+      myVideoClosed = true;
+    } else {
+      myVideoClosed = true;
+    }
+    callMode = mode;
     update(["status"]);
   }
 }
@@ -36,4 +55,14 @@ enum CallStatus {
   RINGING,
   WAITING,
   REJECTED,
+}
+
+enum CallType {
+  group,
+  single,
+}
+
+enum CallMode {
+  video,
+  voice,
 }
