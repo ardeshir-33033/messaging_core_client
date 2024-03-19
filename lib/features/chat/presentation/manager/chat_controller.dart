@@ -202,7 +202,7 @@ class ChatController extends GetxController {
             messages[index],
             _roomIdentifier!,
             currentChat!.isGroup()
-                ? currentChat!.groupUsers!.map((e) => e.id!).toList()
+                ? currentChat!.groupUsers!.map((e) => e.id).toList()
                 : null);
 
         update(["messages"]);

@@ -37,16 +37,13 @@ class ConversationAppBar extends StatelessWidget {
         }
       },
       child: Row(
-        mainAxisAlignment: chat.isGroup()
-            ? MainAxisAlignment.center
-            : MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         // mainAxisSize: MainAxisSize.max,
         children: [
-          if (!chat.isGroup())
-            const SizedBox(
-              width: 40,
-              height: 40,
-            ),
+          const SizedBox(
+            width: 70,
+            height: 40,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -97,30 +94,20 @@ class ConversationAppBar extends StatelessWidget {
               ),
             ],
           ),
-          if (!chat.isGroup())
-            InkWell(
-              onTap: () {
-                // locator<CallController>().reset();
-                // locator<CallController>().requestCall(
-                //     chat.id!, AppGlobalData.userId, chat.username!, false);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const WaitingCallPage()));
-              },
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: const BoxDecoration(
-                    color: Color(0xFFCCCCCC), shape: BoxShape.circle),
-                child: const IconWidget(
-                  icon: Assets.callOutlined,
-                  iconColor: Colors.black87,
-                  width: 30,
-                  boxFit: BoxFit.scaleDown,
-                ),
-              ),
-            )
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const WaitingCallPage()));
+            },
+            child: const ImageWidget(
+              imageUrl: Assets.greenCall,
+              boxFit: BoxFit.scaleDown,
+              height: 40,
+              width: 70,
+            ),
+          )
         ],
       ),
     );
@@ -169,8 +156,8 @@ class ConversationAppBar extends StatelessWidget {
     return Container(
       height: size ?? 50,
       width: size ?? 50,
-      decoration:
-          BoxDecoration(shape: BoxShape.rectangle, color: chat.id!.colorFromId()),
+      decoration: BoxDecoration(
+          shape: BoxShape.rectangle, color: chat.id!.colorFromId()),
       child: Center(
         child: Text(
           (chat.name?.length ?? 0) > 0

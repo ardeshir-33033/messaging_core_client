@@ -69,6 +69,7 @@ class Assets {
   static const String newGroup = "$_baseIconPath/new_group.svg";
   static const String newCommunity = "$_baseIconPath/people.svg";
   static const String muteMicroPhone = "$_baseIconPath/mute_microphone.svg";
+  // static const String greenCallSvg = "$_baseIconPath/green_call2.svg";
 
   /// -----------------------Tone Assets -------------------------
   static const String _baseTonePath = "assets/tones";
@@ -82,4 +83,5 @@ class Assets {
   static const String myCameraTest = "$_baseImagePath/my_camera_test.png";
   static const String opponentCameraTest =
       "$_baseImagePath/opponent_camera_test.png";
+  static const String greenCall = "$_baseImagePath/green_call.png";
 }
