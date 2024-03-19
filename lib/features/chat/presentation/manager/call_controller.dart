@@ -40,8 +40,10 @@ class CallController extends GetxController {
   setCallMode(CallMode mode) {
     if (mode == CallMode.voice) {
       myVideoClosed = true;
+      opponentVideoClosed = true;
     } else {
       myVideoClosed = false;
+      opponentVideoClosed = false;
     }
     callMode = mode;
     update(["status"]);

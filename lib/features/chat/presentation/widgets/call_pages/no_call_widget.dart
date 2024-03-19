@@ -9,12 +9,14 @@ import 'package:messaging_core/app/widgets/no_profile_image.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/presentation/manager/call_controller.dart';
+import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/locator.dart';
 
 class NoCallWidget extends StatelessWidget {
   NoCallWidget({super.key});
 
   final CallController controller = locator<CallController>();
+  final ChatController chatController = locator<ChatController>();
 
   @override
   Widget build(BuildContext context) {
@@ -81,14 +83,15 @@ class NoCallWidget extends StatelessWidget {
                         children: [
                           Center(
                             child: NoProfileImage(
-                              name: AppGlobalData.userName,
+                              name: chatController.currentChat!.username,
+                              id: chatController.currentChat!.id,
                             ),
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            AppGlobalData.userName,
+                            chatController.currentChat!.username ?? "",
                             style: AppTextStyles.body3
                                 .copyWith(color: Colors.white),
                           ),
