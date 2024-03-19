@@ -41,9 +41,20 @@ class CallController extends GetxController {
     if (mode == CallMode.voice) {
       myVideoClosed = true;
     } else {
-      myVideoClosed = true;
+      myVideoClosed = false;
     }
     callMode = mode;
+    update(["status"]);
+  }
+
+  toggleCallMode() {
+    if (callMode == CallMode.voice) {
+      callMode = CallMode.video;
+      myVideoClosed = false;
+    } else {
+      callMode = CallMode.voice;
+      myVideoClosed = true;
+    }
     update(["status"]);
   }
 }

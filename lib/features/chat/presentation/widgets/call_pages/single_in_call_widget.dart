@@ -86,8 +86,15 @@ class SingleCallWidget extends StatelessWidget {
             child: Container(
               height: 200,
               width: 160,
+
               decoration: const BoxDecoration(
                 color: Color(0xFF2D2D2D),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black,
+                    blurRadius: 10
+                  )
+                ]
               ),
               child: controller.myVideoClosed
                   ? Center(
