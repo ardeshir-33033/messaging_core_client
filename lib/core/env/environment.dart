@@ -8,7 +8,7 @@ class Environment {
     } else if (kIsStage) {
       await dotenv.load(fileName: "stage.env");
     } else {
-      await dotenv.load(fileName: "develop.env");
+      await dotenv.load(fileName: "lib/develop.env");
     }
   }
 
