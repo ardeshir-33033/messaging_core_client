@@ -104,7 +104,7 @@ flutter:
         - asset: assets/fonts/Cairo/Cairo-Light.ttf
 
   assets:
-    - develop.env
+    - lib/develop.env
     - assets/fonts/
     - assets/images/
     - assets/icons/
