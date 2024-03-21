@@ -8,14 +8,17 @@ class Environment {
     } else if (kIsStage) {
       await dotenv.load(fileName: "stage.env");
     } else {
-      await dotenv.load(fileName: "lib/develop.env");
+      // await dotenv.load(fileName: "lib/develop.env");
     }
   }
 
   static String get apiBaseUrl {
-    return dotenv.get("API_BASE_URL");
+    return "https://zoomiran.com/api/v1";
+    // return dotenv.get("API_BASE_URL");
   }
+
   static String get websocketUrl {
-    return dotenv.get("WEB_SOCKET_BASE_URL");
+    return "https://andoonya.com";
+    // return dotenv.get("WEB_SOCKET_BASE_URL");
   }
 }
