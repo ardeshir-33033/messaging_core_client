@@ -5,8 +5,8 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:messaging_core/app/widgets/snack_bar_widget.dart';
 import 'package:messaging_core/core/utils/date_time_utils.dart';
+import 'package:messaging_core/l10n/app_localizations.dart';
 import 'package:messaging_core/main.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:path/path.dart';
 
