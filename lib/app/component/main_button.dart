@@ -58,7 +58,7 @@ class MainButton extends StatelessWidget {
         }),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
-            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            // borderRadius: borderRadius ?? BorderRadius.circular(10),
             side: borderSide ?? BorderSide.none,
           ),
         ),

@@ -90,9 +90,8 @@ class _CreateNewGroupPageState extends State<CreateNewGroupPage> {
                             return Container(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 0, horizontal: 5),
-                              decoration: BoxDecoration(
-                                  color: const Color(0xFFE5E5E5),
-                                  borderRadius: BorderRadius.circular(20)),
+                              decoration: const BoxDecoration(
+                                  color: Color(0xFFE5E5E5),),
                               child: InkWell(
                                 onTap: () {
                                   selectUser(selectedUsers[index]);

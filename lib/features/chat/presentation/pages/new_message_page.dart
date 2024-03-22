@@ -43,7 +43,8 @@ class _NewMessagePageState extends State<NewMessagePage> {
         children: [
           AppTitleWidget(title: tr(context).newMessage),
           buildNewRow(tr(context).newGroup, Assets.newGroup, () {
-            navigation.pushReplacement(AddGroupNamePage());
+            controller.showNewMessagePage = false;
+            navigation.push(AddGroupNamePage());
           }),
           const SizedBox(height: 10),
           buildNewRow(tr(context).newCommunity, Assets.newCommunity, () {}),

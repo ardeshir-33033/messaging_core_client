@@ -44,4 +44,9 @@ class Navigation extends GetxController {
     pages.removeLast();
     push(page);
   }
+
+  removePage(){
+    pages.removeLast();
+    update();
+  }
 }

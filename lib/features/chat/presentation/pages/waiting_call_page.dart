@@ -6,7 +6,9 @@ import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/no_profile_image.dart';
 import 'package:messaging_core/app/widgets/round_button.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
+import 'package:messaging_core/locator.dart';
 
 class WaitingCallPage extends StatefulWidget {
   const WaitingCallPage({super.key});
@@ -18,6 +20,7 @@ class WaitingCallPage extends StatefulWidget {
 class _WaitingCallPageState extends State<WaitingCallPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  final Navigation navigation = locator<Navigation>();
 
   @override
   void initState() {
@@ -62,7 +65,9 @@ class _WaitingCallPageState extends State<WaitingCallPage>
                   asset: Assets.callRemove,
                   iconColor: Colors.white,
                   size: 60,
-                  onTap: () {},
+                  onTap: () {
+                    navigation.pop();
+                  },
                 ),
                 RoundButton(
                   color: Colors.green,

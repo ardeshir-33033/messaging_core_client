@@ -1,6 +1,7 @@
 import 'package:api_handler/api_handler.dart';
 import 'package:api_handler/feature/api_handler/data/models/response_model.dart';
 import 'package:get/get.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
@@ -491,7 +492,7 @@ class ChatController extends GetxController {
       sendUserStoppedTyping();
     }
     emojiController.stopShowingEmoji();
-    getAllChats(showLoading: false);
+    // getAllChats(showLoading: false);
     sendLeaveRoomEvent();
     resetState();
   }
