@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart' as getx;
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:messaging_core/app/component/base_appBar.dart';
 import 'package:messaging_core/app/theme/theme_service.dart';
 import 'package:messaging_core/app/widgets/scroll_behavior.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/env/environment.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/features/chat/presentation/pages/chat_call_page.dart';
 import 'package:messaging_core/features/chat/presentation/pages/chat_list_page.dart';
 import 'package:messaging_core/l10n/app_localizations.dart';
@@ -76,10 +78,31 @@ class MyApp extends StatelessWidget {
               ],
             ),
           ),
-          home: const ChooseUserPage(),
+          home: const ApplicationHomePage(),
         );
       },
     );
+  }
+}
+
+class ApplicationHomePage extends StatefulWidget {
+  const ApplicationHomePage({super.key});
+
+  @override
+  State<ApplicationHomePage> createState() => _ApplicationHomePageState();
+}
+
+class _ApplicationHomePageState extends State<ApplicationHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return getx.GetBuilder<Navigation>(builder: (navigation) {
+      return WillPopScope(
+        onWillPop: navigation.pop,
+        child: Scaffold(
+          body: navigation.pages.last,
+        ),
+      );
+    });
   }
 }
 
@@ -101,6 +124,8 @@ class _ChooseUserPageState extends State<ChooseUserPage> {
   ];
 
   ChooseUserModel? selectedUser;
+
+  final Navigation navigation = locator<Navigation>();
 
   @override
   Widget build(BuildContext context) {
@@ -139,12 +164,7 @@ class _ChooseUserPageState extends State<ChooseUserPage> {
                     AppGlobalData.userId = selectedUser!.id;
                     AppGlobalData.userName = selectedUser!.name;
 
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChatCallPage(),
-                      ),
-                    );
+                    navigation.pushReplacement(const ChatCallPage());
                   }
                 : null,
             style: ElevatedButton.styleFrom(

@@ -8,6 +8,7 @@ import 'package:messaging_core/core/enums/content_type_enum.dart';
 import 'package:messaging_core/core/services/media_handler/file_handler.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/core/services/media_handler/image_handler.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
@@ -18,9 +19,10 @@ import 'package:messaging_core/locator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AttachFileBottomSheet extends StatelessWidget {
-  const AttachFileBottomSheet({super.key, required this.chat});
+  AttachFileBottomSheet({super.key, required this.chat});
 
   final ChatParentClass chat;
+  final Navigation navigation = locator<Navigation>();
 
   @override
   Widget build(BuildContext context) {
@@ -75,8 +77,7 @@ class AttachFileBottomSheet extends StatelessWidget {
                 onPressed: () async {
                   final navigator = Navigator.of(context);
                   navigator.pop();
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const MapPage()));
+                  navigation.push(const MapPage());
                 },
                 icon: Assets.location),
             AttachDataItem(
@@ -146,13 +147,10 @@ class AttachFileBottomSheet extends StatelessWidget {
         .then((file) {
       if (file == null) return;
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => EditImagePage(
-            fileModel: file,
-            chat: chat,
-          ),
+      navigation.push(
+        EditImagePage(
+          fileModel: file,
+          chat: chat,
         ),
       );
     });

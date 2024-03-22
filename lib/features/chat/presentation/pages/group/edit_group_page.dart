@@ -14,6 +14,7 @@ import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/app_states/SelectableModel.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/core/services/media_handler/image_handler.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/data/models/create_group_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
@@ -41,6 +42,8 @@ class _EditGroupPageState extends State<EditGroupPage> {
   bool loading = false;
   final ChatController chatController = locator<ChatController>();
   final GroupController groupController = locator<GroupController>();
+  final Navigation navigation = locator<Navigation>();
+
   late List<SelectableModel<CategoryUser>> users = [];
   List<CategoryUser> selectedUsers = [];
   late ChatParentClass chat;
@@ -59,7 +62,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
       appBar: CustomAppBar(
         title: tr(context).editGroupTitle,
         onPressBack: () {
-          Navigator.pop(context);
+          navigation.pop();
         },
       ),
       body: Padding(
@@ -264,8 +267,6 @@ class _EditGroupPageState extends State<EditGroupPage> {
   }
 
   navigateToNewPage(CreateGroupModel group) {
-    final navigator = Navigator.of(context);
-
     ChatParentClass chat = ChatParentClass(
         id: group.group.id,
         name: group.group.name,
@@ -279,9 +280,7 @@ class _EditGroupPageState extends State<EditGroupPage> {
         lastRead: group.group.lastRead,
         groupUsers: group.groupUsers);
 
-    navigator.pop();
-
-    navigator.pushReplacement(
-        MaterialPageRoute(builder: (context) => ChatPage(chat: chat)));
+    navigation.pop(updateUi: false);
+    navigation.pushReplacement(ChatPage(chat: chat));
   }
 }

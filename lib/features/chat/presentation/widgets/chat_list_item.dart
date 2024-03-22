@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/enums/content_type_enum.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
@@ -11,16 +13,15 @@ import 'package:messaging_core/features/chat/presentation/manager/online_users_c
 import 'package:messaging_core/features/chat/presentation/pages/chat_page.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/user_profile_widget.dart';
 import 'package:messaging_core/locator.dart';
+import 'package:messaging_core/main.dart';
 
 class ChatListItem extends StatefulWidget {
   final ChatParentClass chat;
   final Function()? onTap;
+  final bool? openDrawer;
 
-  const ChatListItem({
-    super.key,
-    required this.chat,
-    this.onTap,
-  });
+  const ChatListItem(
+      {super.key, required this.chat, this.onTap, this.openDrawer});
 
   @override
   ChatListItemState createState() => ChatListItemState();
@@ -29,7 +30,8 @@ class ChatListItem extends StatefulWidget {
 class ChatListItemState extends State<ChatListItem> {
   final OnlineUsersController onlineUsersController =
       Get.find<OnlineUsersController>();
-  // locator<OnlineUsersController>();
+
+  final Navigation navigation = locator<Navigation>();
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +40,11 @@ class ChatListItemState extends State<ChatListItem> {
     return InkWell(
       onTap: widget.onTap ??
           () async {
-            Navigator.pushAndRemoveUntil(context,
-                MaterialPageRoute(builder: (context) {
-              return ChatPage(chat: widget.chat);
-            }), (route) => route.isFirst);
-            // Navigator.push(context, MaterialPageRoute(builder: (context) {
-            //   return ChatPage(chat: widget.chat);
-            // }));
+            if (widget.openDrawer ?? false) {
+              Navigator.pop(context);
+            }
+            // navigation.push(ChatPage(chat: widget.chat));
+            navigation.pushAndRemoveUntilFirst(ChatPage(chat: widget.chat));
           },
       child: Container(
         padding:

@@ -5,6 +5,7 @@ import 'package:messaging_core/app/widgets/app_title_widget.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/search_input_widget.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
@@ -23,6 +24,7 @@ class NewMessagePage extends StatefulWidget {
 
 class _NewMessagePageState extends State<NewMessagePage> {
   final ChatController controller = locator<ChatController>();
+  final Navigation navigation = locator<Navigation>();
 
   List<CategoryUser> users = [];
 
@@ -41,8 +43,7 @@ class _NewMessagePageState extends State<NewMessagePage> {
         children: [
           AppTitleWidget(title: tr(context).newMessage),
           buildNewRow(tr(context).newGroup, Assets.newGroup, () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AddGroupNamePage()));
+            navigation.pushReplacement(AddGroupNamePage());
           }),
           const SizedBox(height: 10),
           buildNewRow(tr(context).newCommunity, Assets.newCommunity, () {}),
@@ -56,11 +57,7 @@ class _NewMessagePageState extends State<NewMessagePage> {
                   return UserListItem(
                     chat: users[index],
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  ChatPage(chat: users[index])));
+                      navigation.push(ChatPage(chat: users[index]));
                     },
                   );
                 }),

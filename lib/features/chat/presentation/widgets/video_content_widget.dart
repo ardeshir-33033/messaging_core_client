@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
+import 'package:messaging_core/locator.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoContentWidget extends StatefulWidget {
@@ -30,11 +32,10 @@ class _VideoContentWidgetState extends State<VideoContentWidget> {
     return _controller.value.isInitialized
         ? InkWell(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return VideoPlayerScreen(
-                  filePath: widget.contentModel.filePath!,
-                );
-              }));
+              final Navigation navigation = locator<Navigation>();
+
+              navigation.push(
+                  VideoPlayerScreen(filePath: widget.contentModel.filePath!));
             },
             child: Stack(
               alignment: Alignment.center,

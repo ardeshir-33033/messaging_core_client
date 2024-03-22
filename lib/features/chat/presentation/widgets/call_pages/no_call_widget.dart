@@ -6,6 +6,7 @@ import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/no_profile_image.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/presentation/manager/call_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
@@ -16,6 +17,7 @@ class NoCallWidget extends StatelessWidget {
 
   final CallController controller = locator<CallController>();
   final ChatController chatController = locator<ChatController>();
+  final Navigation navigation = locator<Navigation>();
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +92,9 @@ class NoCallWidget extends StatelessWidget {
                             height: 10,
                           ),
                           Text(
-                            chatController.currentChat!.username ?? chatController.currentChat!.name ?? "",
+                            chatController.currentChat!.username ??
+                                chatController.currentChat!.name ??
+                                "",
                             style: AppTextStyles.body3
                                 .copyWith(color: Colors.white),
                           ),
@@ -157,7 +161,7 @@ class NoCallWidget extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.pop(context);
+                    navigation.pop();
                   },
                   child: Container(
                     width: context.screenWidth / 1.5,

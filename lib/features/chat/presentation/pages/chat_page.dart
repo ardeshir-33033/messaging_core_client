@@ -89,6 +89,7 @@ class _ChatPageState extends State<ChatPage>
 
   @override
   void initState() {
+    print("objectttttt");
     voiceController.initialRecording();
     controller.setCurrentChat(widget.chat);
     callController.callType =

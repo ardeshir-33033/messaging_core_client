@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/utils.dart';
+import 'package:messaging_core/locator.dart';
 import 'package:photo_view/photo_view.dart';
 
 class FullScreenImagePage extends StatefulWidget {
@@ -73,7 +75,8 @@ class _FullScreenImagePageState extends State<FullScreenImagePage> {
                   children: [
                     IconWidget(
                       onPressed: () {
-                        Navigator.pop(context);
+                        final Navigation navigation = locator<Navigation>();
+                        navigation.pop();
                       },
                       size: 16,
                       padding: 16,

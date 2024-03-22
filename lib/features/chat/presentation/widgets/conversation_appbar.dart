@@ -6,6 +6,7 @@ import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/image_widget.dart';
 import 'package:messaging_core/core/app_states/app_global_data.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/presentation/manager/call_controller.dart';
@@ -16,7 +17,7 @@ import 'package:messaging_core/features/chat/presentation/widgets/user_profile_w
 import 'package:messaging_core/locator.dart';
 
 class ConversationAppBar extends StatelessWidget {
-  const ConversationAppBar({
+  ConversationAppBar({
     Key? key,
     required this.chat,
     this.size,
@@ -25,15 +26,14 @@ class ConversationAppBar extends StatelessWidget {
   final ChatParentClass chat;
   final double? size;
 
+  final Navigation navigation = locator<Navigation>();
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         if (chat.isGroup()) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => GroupDetailsPage(chat: chat)));
+          navigation.push(GroupDetailsPage(chat: chat));
         }
       },
       child: Row(
@@ -96,10 +96,7 @@ class ConversationAppBar extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const WaitingCallPage()));
+              navigation.push(const WaitingCallPage());
             },
             child: const ImageWidget(
               imageUrl: Assets.greenCall,

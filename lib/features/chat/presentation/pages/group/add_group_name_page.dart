@@ -4,14 +4,17 @@ import 'package:messaging_core/app/component/TextFieldWidget.dart';
 import 'package:messaging_core/app/component/main_button.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/presentation/pages/group/create_new_group_page.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/animated_app_bar.dart';
+import 'package:messaging_core/locator.dart';
 
 class AddGroupNamePage extends StatelessWidget {
   AddGroupNamePage({super.key});
 
   final TextEditingController textEditingController = TextEditingController();
+  final Navigation navigation = locator<Navigation>();
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +56,9 @@ class AddGroupNamePage extends StatelessWidget {
                       Fluttertoast.showToast(msg: "Please fill the group Name");
                       return;
                     } else {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CreateNewGroupPage(
-                                    groupName: textEditingController.text,
-                                  )));
+                      navigation.push(CreateNewGroupPage(
+                        groupName: textEditingController.text,
+                      ));
                     }
                     // else {
                     //   loading = true;

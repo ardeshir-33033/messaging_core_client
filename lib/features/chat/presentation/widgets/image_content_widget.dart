@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/presentation/pages/full_screen_image_page.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/text_content_widget.dart';
+import 'package:messaging_core/locator.dart';
 
 class ImageContentWidget extends StatefulWidget {
   final ContentModel contentModel;
@@ -48,6 +50,8 @@ class _ImageContentWidgetState extends State<ImageContentWidget> {
     return true;
   }
 
+  final Navigation navigation = locator<Navigation>();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -69,12 +73,12 @@ class _ImageContentWidgetState extends State<ImageContentWidget> {
                   builder: (context) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => FullScreenImagePage(
+                        navigation.push(
+                          FullScreenImagePage(
                             tag: widget.contentModel.contentId.toString(),
                             imageUrl: widget.originalUrl,
                           ),
-                        ));
+                        );
                       },
                       child: Hero(
                         tag: widget.contentModel.contentId,

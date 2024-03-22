@@ -20,6 +20,7 @@ import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/app_states/SelectableModel.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/core/services/media_handler/image_handler.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/data/models/create_group_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
@@ -209,8 +210,10 @@ class _CreateNewGroupPageState extends State<CreateNewGroupPage> {
   }
 
   navigateToNewPage(CreateGroupModel group) {
-    final navigator = Navigator.of(context);
-    navigator.pop();
+    final Navigation navigation = locator<Navigation>();
+    navigation.pop();
+    // final navigator = Navigator.of(context);
+    // navigator.pop();
     controller.showNewMessagePage = false;
     controller.update(["newMessage"]);
 
@@ -227,7 +230,6 @@ class _CreateNewGroupPageState extends State<CreateNewGroupPage> {
         lastRead: group.group.lastRead,
         groupUsers: group.groupUsers);
 
-    navigator.pushReplacement(
-        MaterialPageRoute(builder: (context) => ChatPage(chat: chat)));
+    navigation.pushReplacement(ChatPage(chat: chat));
   }
 }

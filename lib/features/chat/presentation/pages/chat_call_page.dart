@@ -21,7 +21,9 @@ class ChatCallPage extends StatefulWidget {
 }
 
 class _ChatCallPageState extends State<ChatCallPage>
-    with SingleTickerProviderStateMixin {
+    with
+        SingleTickerProviderStateMixin,
+        AutomaticKeepAliveClientMixin<ChatCallPage> {
   final ScrollController pageScrollController = ScrollController();
   final ChatController controller = locator<ChatController>();
 
@@ -34,6 +36,9 @@ class _ChatCallPageState extends State<ChatCallPage>
 
     tabController = TabController(length: 2, vsync: this);
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {

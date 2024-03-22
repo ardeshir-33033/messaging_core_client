@@ -18,12 +18,17 @@ class ChatPageDrawer extends StatelessWidget {
         child: Container(
             decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10)),
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(10),
+                  bottomRight: Radius.circular(10)),
             ),
             child: ListView.builder(
                 itemCount: controller.users.length,
                 itemBuilder: (context, index) {
-                  return ChatListItem(chat: controller.users[index]);
+                  return ChatListItem(
+                    chat: controller.users[index],
+                    openDrawer: true,
+                  );
                 })),
       ),
     );

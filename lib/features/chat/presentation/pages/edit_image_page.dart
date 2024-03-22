@@ -8,9 +8,11 @@ import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/core/services/media_handler/image_handler.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/edit_image_send_message.dart';
+import 'package:messaging_core/locator.dart';
 
 class EditImagePage extends StatefulWidget {
   final FileModel fileModel;
@@ -32,6 +34,8 @@ class EditImagePageState extends State<EditImagePage>
     with SingleTickerProviderStateMixin {
   late ChatParentClass channel;
   GlobalKey key = GlobalKey();
+
+  final Navigation navigation = locator<Navigation>();
 
   final TextEditingController _sendTextController = TextEditingController();
   late AnimationController _replyToAnimationController;
@@ -79,7 +83,7 @@ class EditImagePageState extends State<EditImagePage>
                         ),
                         IconWidget(
                           onPressed: () {
-                            Navigator.pop(context);
+                            navigation.pop();
                           },
                           size: 18,
                           padding: 8,
@@ -189,7 +193,7 @@ class EditImagePageState extends State<EditImagePage>
     _sendTextController.text = '';
     // getIt.call<CurrentChannelProvider>().repliedContent = null;
 
-    Navigator.pop(context);
+    navigation.pop();
   }
 
   void _initAnimations() {

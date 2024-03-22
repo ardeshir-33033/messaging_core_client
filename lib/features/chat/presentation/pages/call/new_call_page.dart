@@ -5,6 +5,7 @@ import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/widgets/app_title_widget.dart';
 import 'package:messaging_core/app/widgets/search_input_widget.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
@@ -23,6 +24,7 @@ class NewCallPage extends StatefulWidget {
 
 class _NewCallPageState extends State<NewCallPage> {
   final ChatController controller = locator<ChatController>();
+  final Navigation navigation = locator<Navigation>();
 
   List<CategoryUser> usersList = [];
   @override
@@ -66,11 +68,7 @@ class _NewCallPageState extends State<NewCallPage> {
                               return UserListItem(
                                 chat: usersList[index],
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const WaitingCallPage()));
+                                  navigation.push(const WaitingCallPage());
                                 },
                               );
                             }),

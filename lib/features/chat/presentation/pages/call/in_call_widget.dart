@@ -163,12 +163,7 @@
 //                       Navigator.pop(context);
 //                       // } else if (widget.controller.isForeground() == false) {
 //
-//                       //   Navigator.pushReplacement(
-//                       //     MyApp.navigatorKey.currentContext!,
-//                       //     MaterialPageRoute(
-//                       //         builder: (context) => const HomePage()),
-//                       //   );
-//                       // } else {}
+//
 //
 //                       widget.controller.disconnect(true);
 //                     },

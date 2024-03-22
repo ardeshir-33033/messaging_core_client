@@ -2,6 +2,7 @@ import 'package:api_handler/feature/api_handler/presentation/presentation_usecas
 import 'package:get/get.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get_it/get_it.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/services/network/websocket/messaging_client.dart';
 import 'package:messaging_core/core/services/network/websocket/web_socket_connection.dart';
 import 'package:messaging_core/core/storage/database.dart';
@@ -87,6 +88,8 @@ void useCaseInjection() {
 }
 
 void controllerInjection() {
+  locator.registerSingleton<Navigation>(Get.put(Navigation()));
+
   locator.registerSingleton<ChatController>(Get.put(ChatController(
       locator(),
       locator(),

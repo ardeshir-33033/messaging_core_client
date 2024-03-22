@@ -6,6 +6,7 @@ import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/core/services/media_handler/media_handler.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/chats_parent_model.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
@@ -29,6 +30,8 @@ class ForwardContentSheet extends StatefulWidget {
 
 class _ForwardContentSheetState extends State<ForwardContentSheet> {
   final ChatController controller = locator<ChatController>();
+  final Navigation navigation = locator<Navigation>();
+
   bool isLoading = false;
 
   @override
@@ -51,7 +54,7 @@ class _ForwardContentSheetState extends State<ForwardContentSheet> {
               alignment: Alignment.centerLeft,
               child: InkWell(
                 onTap: () {
-                  Navigator.pop(context);
+                  navigation.pop();
                 },
                 child: TextWidget(
                   tr(context).cancel,

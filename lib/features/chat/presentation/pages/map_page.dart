@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/map_controller.dart';
 import 'package:messaging_core/locator.dart';
 
@@ -98,11 +99,11 @@ class _MapPageState extends State<MapPage> {
                   child: Center(child: Text("Select")),
                 ),
                 onPressed: () async {
-                  final navigator = Navigator.of(context);
+                  final Navigation navigation = locator<Navigation>();
 
                   LatLng location = await getCenter();
                   controller.sendMapLocation(location);
-                  navigator.pop();
+                  navigation.pop();
                 },
               ),
             ),

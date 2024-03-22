@@ -5,8 +5,10 @@ import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/presentation/pages/group/edit_group_page.dart';
+import 'package:messaging_core/locator.dart';
 
 class AnimatedAppBar extends StatefulWidget {
   const AnimatedAppBar(
@@ -49,10 +51,16 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
                 children: [
                   Row(
                     children: [
-                      const IconWidget(
-                        icon: Icons.more_vert,
-                        iconColor: Colors.white,
-                        size: 25,
+                      InkWell(
+                        onTap: () {
+                          final Navigation navigation = locator<Navigation>();
+                          navigation.pop();
+                        },
+                        child: const IconWidget(
+                          icon: Icons.arrow_back_ios,
+                          iconColor: Colors.white,
+                          size: 25,
+                        ),
                       ),
                       if (widget.categoryTitle != null)
                         Padding(
@@ -121,11 +129,9 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
                           icon: Assets.editMenu,
                           title: tr(context).edit,
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const EditGroupPage()));
+                            final Navigation navigation = locator<Navigation>();
+
+                            navigation.push(const EditGroupPage());
                           },
                         ),
                         AnimatedAppBarItem(
