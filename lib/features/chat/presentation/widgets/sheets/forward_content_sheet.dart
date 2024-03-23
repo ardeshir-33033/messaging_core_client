@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
+import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/services/media_handler/file_model.dart';
 import 'package:messaging_core/core/services/media_handler/media_handler.dart';
 import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
@@ -143,7 +145,7 @@ class _ForwardContentSheetState extends State<ForwardContentSheet> {
     await Future.delayed(const Duration(milliseconds: 600));
     isLoading = false;
     navigator.pop();
-    MyApp.navigatorKey.currentState!.pushReplacement(
+    (AppGlobalData.navigatorKey!.currentState!).pushReplacement(
       MaterialPageRoute(
         builder: (context) => ChatPage(chat: chat),
       ),

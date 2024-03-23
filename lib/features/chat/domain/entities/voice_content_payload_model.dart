@@ -39,9 +39,11 @@ class VoiceContentPayloadModel extends ContentPayloadModel {
 
   @override
   String shortDisplayName() {
-    BuildContext? context = MyApp.navigatorKey.currentContext;
-    return context != null
-        ? getContentType().translate(context)
-        : "voice message";
+    // BuildContext? context = MyApp.navigatorKey.currentContext;
+    return
+        // context != null
+        //   ?
+        getContentType().translate();
+    // : "Voice Message";
   }
 }

@@ -101,7 +101,7 @@ enum ContentTypeEnum {
     }
   }
 
-  String translate(BuildContext context) {
+  String translate() {
     switch (this) {
       case ContentTypeEnum.voice:
         return "Voice Message";

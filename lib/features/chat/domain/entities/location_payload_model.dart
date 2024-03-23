@@ -17,8 +17,7 @@ class LocationPayloadModel extends ContentPayloadModel {
 
   @override
   String shortDisplayName() {
-    BuildContext context = MyApp.navigatorKey.currentContext!;
-    return context.l.location;
+    return "Location";
   }
 
   static LocationPayloadModel fromJson(Map<String, dynamic> json) {

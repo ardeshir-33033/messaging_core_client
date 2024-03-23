@@ -37,8 +37,9 @@ class ContactPayloadModel extends ContentPayloadModel {
 
   @override
   String shortDisplayName() {
-    BuildContext context = MyApp.navigatorKey.currentContext!;
-    return context.l.contact;
+    // BuildContext context =
+    //     AppGlobalData.navigatorKey?.currentContext! ?? Get.context!;
+    return "Contact";
   }
 }
 

@@ -13,8 +13,7 @@ class ContactRepositoryImpl extends ContactsRepository {
     try {
       bool hasPermission = (await Permission.contacts.request()).isGranted;
       if (hasPermission == false) {
-        return left(PermissionException(MyApp
-            .navigatorKey.currentContext!.l.permissionToAccessContactDenied));
+        return left(PermissionException("Permission To Access Contact Denied"));
       }
       List<Contact> contactMap = await _getPhoneContacts();
 

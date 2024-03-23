@@ -153,8 +153,7 @@ class ContentModel {
   static ContentModel fromSocketJson(Map<String, dynamic> json,
       {bool mainContent = true}) {
     var contentType = ContentTypeEnum.fromString(json['messageType'] ?? "text");
-    var contentPayload =
-        ContentPayloadModel.create(contentType, json['text']);
+    var contentPayload = ContentPayloadModel.create(contentType, json['text']);
     ContentModel? reply = (mainContent && json['reply'] != null)
         ? ContentModel.fromJson(json['reply'], mainContent: false)
         : null;
@@ -271,22 +270,22 @@ class ContentModel {
   }
 
   shortDisplayMessage() {
-    BuildContext context = MyApp.navigatorKey.currentContext!;
+    // BuildContext context = MyApp.navigatorKey.currentContext!;
     switch (contentType) {
       case ContentTypeEnum.voice:
-        return context.l.voiceMessage;
+        return "Voice Message";
       case ContentTypeEnum.text:
-        return messageText;
+        return "Message Text";
       case ContentTypeEnum.image:
-        return context.l.image;
+        return "Image";
       case ContentTypeEnum.video:
-        return context.l.video;
+        return "Video";
       case ContentTypeEnum.gif:
-        return context.l.gif;
+        return "Gif";
       case ContentTypeEnum.other:
-        return context.l.contact;
+        return "Contact";
       default:
-        return messageText;
+        return "Message Text";
     }
   }
 }

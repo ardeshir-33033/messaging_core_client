@@ -19,5 +19,5 @@ class PermissionException extends SystemException {
 
 class DefaultException extends SystemException {
   DefaultException()
-      : super(MyApp.navigatorKey.currentContext!.l.somethingWentWrong);
+      : super("Something Went Wrong");
 }

@@ -109,7 +109,7 @@ Future<void> saveImageInGallery(
       name: tag);
   if (result["isSuccess"] ?? false) {
     Fluttertoast.showToast(
-      msg: context.l.imageSavedToGallery,
+      msg: "Image Saved To Gallery",
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
       backgroundColor: Colors.grey[600],
@@ -121,7 +121,6 @@ Future<void> saveImageInGallery(
 
 int generateUniqueId() {
   Random random = Random();
-  int uniqueId =
-      random.nextInt(300);
+  int uniqueId = random.nextInt(300);
   return uniqueId;
 }

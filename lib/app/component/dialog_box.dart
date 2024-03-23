@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:messaging_core/app/component/AppTextButton.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/text_widget.dart';
+import 'package:messaging_core/core/app_states/app_global_data.dart';
 import '../../main.dart';
 
 class DialogBoxes {
@@ -78,7 +80,7 @@ class DialogBoxes {
 
   Future<void> showMyDialog() async {
     return showDialog<void>(
-      context: MyApp.navigatorKey.currentContext!,
+      context: AppGlobalData.navigatorKey?.currentContext! ?? Get.context!,
       barrierDismissible: dismissible, // user must not tap buttons!
       builder: (final BuildContext context) {
         return AlertDialog(

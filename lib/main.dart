@@ -78,7 +78,8 @@ class MyApp extends StatelessWidget {
               ],
             ),
           ),
-          home: const ApplicationHomePage(),
+          home: ApplicationHomePage(
+          ),
         );
       },
     );
@@ -86,7 +87,9 @@ class MyApp extends StatelessWidget {
 }
 
 class ApplicationHomePage extends StatefulWidget {
-  const ApplicationHomePage({super.key});
+  const ApplicationHomePage({
+    super.key,
+  });
 
   @override
   State<ApplicationHomePage> createState() => _ApplicationHomePageState();
