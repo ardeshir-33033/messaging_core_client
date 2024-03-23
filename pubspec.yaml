@@ -86,22 +86,22 @@ flutter:
   fonts:
     - family: Cairo-extra
       fonts:
-        - asset: assets/fonts/Cairo/Cairo-ExtraBold.ttf
+        - asset: packages/messaging_core/assets/fonts/Cairo/Cairo-ExtraBold.ttf
     - family: Cairo-bold
       fonts:
-        - asset: assets/fonts/Cairo/Cairo-Bold.ttf
+        - asset: packages/messaging_core/assets/fonts/Cairo/Cairo-Bold.ttf
     - family: Cairo-semibold
       fonts:
-        - asset: assets/fonts/Cairo/Cairo-SemiBold.ttf
+        - asset: packages/messaging_core/assets/fonts/Cairo/Cairo-SemiBold.ttf
     - family: Cairo-medium
       fonts:
-        - asset: assets/fonts/Cairo/Cairo-Medium.ttf
+        - asset: packages/messaging_core/assets/fonts/Cairo/Cairo-Medium.ttf
     - family: Cairo-Regular
       fonts:
-        - asset: assets/fonts/Cairo/Cairo-Regular.ttf
+        - asset: packages/messaging_core/assets/fonts/Cairo/Cairo-Regular.ttf
     - family: Cairo-light
       fonts:
-        - asset: assets/fonts/Cairo/Cairo-Light.ttf
+        - asset: packages/messaging_core/assets/fonts/Cairo/Cairo-Light.ttf
 
   assets:
     - lib/develop.env
@@ -109,7 +109,11 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/tones/
-    - packages/messaging_core/assets/profile-2user2.svg
+    - packages/messaging_core/assets/profile-2user.svg
+    - packages/messaging_core/assets/fonts/
+    - packages/messaging_core/assets/images/
+    - packages/messaging_core/assets/icons/
+    - packages/messaging_core/assets/tones/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

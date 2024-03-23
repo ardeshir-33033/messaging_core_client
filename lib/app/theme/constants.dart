@@ -12,7 +12,7 @@ class Assets {
   static const String light = "$fontFamily-light";
 
   /// -----------------------Icons Assets -------------------------
-  static const String _baseIconPath = "assets/icons";
+  static const String _baseIconPath = "packages/messaging_core/assets/icons";
   static const String copy = "$_baseIconPath/copy.svg";
   static const String edit = "$_baseIconPath/edit-2.svg";
   static const String forward = "$_baseIconPath/forward.svg";
@@ -57,7 +57,7 @@ class Assets {
   static const String closeAgora = "$_baseIconPath/close_agora.svg";
   static const String flipAgoraIcon = "$_baseIconPath/flip_agora_icon.svg";
   static const String profileUser = "$_baseIconPath/profile-2user.svg";
-  static const String profileUser2 = "packages/messaging_core/assets/profile-2user2.svg";
+  static const String profileUser2 = "packages/messaging_core/assets/icons/profile-2user.svg";
   static const String disableVideo = "$_baseIconPath/disable_video.svg";
   static const String refresh = "$_baseIconPath/refresh.svg";
   static const String profileAdd = "$_baseIconPath/profile-add.svg";
@@ -73,13 +73,13 @@ class Assets {
   // static const String greenCallSvg = "$_baseIconPath/green_call2.svg";
 
   /// -----------------------Tone Assets -------------------------
-  static const String _baseTonePath = "assets/tones";
+  static const String _baseTonePath = "packages/messaging_core/assets/tones";
   static const String notificationTone = "$_baseTonePath/notif_tone.wav";
   static const String ringingPhoneAudio = "$_baseTonePath/Simple-Ringtone.mp3";
   static const String callingPhoneAudio = "$_baseTonePath/Phone-Ringing.mp3";
 
   /// -----------------------Image Assets -------------------------
-  static const String _baseImagePath = "assets/images";
+  static const String _baseImagePath = "packages/messaging_core/assets/images";
   static const String groupBackground = "$_baseImagePath/group_back.png";
   static const String myCameraTest = "$_baseImagePath/my_camera_test.png";
   static const String opponentCameraTest =
