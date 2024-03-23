@@ -50,20 +50,19 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                         avatar: (avatarSize, progress) => Stack(
                           alignment: Alignment.bottomLeft,
                           children: [
-                            Image.network(Assets.groupBackground,),
-                            // ImageWidget(
-                            //   imageUrl: Assets.groupBackground,
-                            //   boxShape: progress > 0.15
-                            //       ? BoxShape.circle
-                            //       : BoxShape.rectangle,
-                            //   placeHolder: IconWidget(
-                            //     icon: widget.chat.isGroup()
-                            //         ? Icons.supervised_user_circle
-                            //         : Icons.account_circle,
-                            //     size: avatarSize,
-                            //     iconColor: Colors.grey,
-                            //   ),
-                            // ),
+                            ImageWidget(
+                              imageUrl: Assets.groupBackground,
+                              boxShape: progress > 0.15
+                                  ? BoxShape.circle
+                                  : BoxShape.rectangle,
+                              placeHolder: IconWidget(
+                                icon: widget.chat.isGroup()
+                                    ? Icons.supervised_user_circle
+                                    : Icons.account_circle,
+                                size: avatarSize,
+                                iconColor: Colors.grey,
+                              ),
+                            ),
                             progress < 0.15
                                 ? Padding(
                                     padding: const EdgeInsets.only(
