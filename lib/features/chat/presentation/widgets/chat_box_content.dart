@@ -54,7 +54,6 @@ class ChatBoxContent extends StatelessWidget {
           contentModel: contentModel,
           contentId: contentModel.contentId.toString(),
           isUploading: contentModel.status == MessageStatus.pending,
-          // senderName: isMine ? tr(context).you : senderName,
         );
 
       case ContentTypeEnum.other:
