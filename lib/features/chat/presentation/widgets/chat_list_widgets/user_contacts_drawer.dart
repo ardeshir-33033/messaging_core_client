@@ -27,7 +27,7 @@ class UserContactsDrawer extends StatelessWidget {
                       bottomRight: Radius.circular(10)),
                   boxShadow: [BoxShadow(color: Colors.black87, blurRadius: 5)]),
               child: const IconWidget(
-                icon: Assets.profileUser,
+                icon: Assets.profileUser2,
               ),
             ),
           );
