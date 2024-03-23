@@ -76,7 +76,7 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
                     ],
                   ),
                   TextWidget(
-                    widget.title ?? "chat",
+                    widget.title ?? tr(context).chat,
                     style: AppTextStyles.body4.copyWith(
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
@@ -122,12 +122,12 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
                       children: [
                         AnimatedAppBarItem(
                           icon: Assets.addMenu,
-                          title: "add",
+                          title: tr(context).add,
                           onTap: () {},
                         ),
                         AnimatedAppBarItem(
                           icon: Assets.editMenu,
-                          title: "edit",
+                          title: tr(context).edit,
                           onTap: () {
                             final Navigation navigation = locator<Navigation>();
 
@@ -136,22 +136,22 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
                         ),
                         AnimatedAppBarItem(
                           icon: Assets.trashReviewVoice,
-                          title: "delete",
+                          title: tr(context).delete,
                           onTap: () {},
                         ),
                         AnimatedAppBarItem(
                           icon: Assets.contact,
-                          title: "users",
+                          title: tr(context).users,
                           onTap: () {},
                         ),
                         AnimatedAppBarItem(
                           icon: Assets.camera,
-                          title: "camera",
+                          title: tr(context).camera,
                           onTap: () {},
                         ),
                         AnimatedAppBarItem(
                           icon: Assets.videoMenu,
-                          title: "video",
+                          title: tr(context).video,
                           onTap: () {},
                         ),
                       ],

@@ -22,12 +22,12 @@ class NotificationsTab extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           TextWidget(
-            "noNotification",
+            tr(context).noNotification,
             style: AppTextStyles.subtitle,
           ),
           const SizedBox(height: 10),
           TextWidget(
-            "noChatDesc",
+            tr(context).noChatDesc,
             style: AppTextStyles.body4.copyWith(fontSize: 18),
           ),
         ],

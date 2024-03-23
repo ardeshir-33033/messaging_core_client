@@ -62,7 +62,7 @@ class ChatListItemState extends State<ChatListItem> {
                   subTitle: isStarredChat
                       ? null
                       : subtitle == ""
-                          ? "noMessage"
+                          ? tr(context).noMessage
                           : subtitle,
                   subtitleStyle: AppTextStyles.description2.copyWith(
                     color: AppColors.primaryBlack,
