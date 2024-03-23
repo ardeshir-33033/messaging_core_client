@@ -1,9 +1,14 @@
+import 'package:api_handler/feature/api_handler/presentation/presentation_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:messaging_core/core/services/navigation/navigation_utils.dart';
 import 'package:messaging_core/main.dart';
 
 class Navigation extends GetxController {
+  APIHandler api;
+
+  Navigation(this.api);
+
   List<Widget> pages = [
     const ChooseUserPage(),
   ];
@@ -45,8 +50,12 @@ class Navigation extends GetxController {
     push(page);
   }
 
-  removePage(){
+  removePage() {
     pages.removeLast();
     update();
+  }
+
+  setToken(String token) {
+    api.setToken(token);
   }
 }

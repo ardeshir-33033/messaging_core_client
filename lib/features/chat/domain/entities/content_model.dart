@@ -275,7 +275,7 @@ class ContentModel {
       case ContentTypeEnum.voice:
         return "Voice Message";
       case ContentTypeEnum.text:
-        return "Message Text";
+        return messageText;
       case ContentTypeEnum.image:
         return "Image";
       case ContentTypeEnum.video:
@@ -285,7 +285,7 @@ class ContentModel {
       case ContentTypeEnum.other:
         return "Contact";
       default:
-        return "Message Text";
+        return messageText;
     }
   }
 }

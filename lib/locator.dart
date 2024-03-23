@@ -88,7 +88,7 @@ void useCaseInjection() {
 }
 
 void controllerInjection() {
-  locator.registerSingleton<Navigation>(Get.put(Navigation()));
+  locator.registerSingleton<Navigation>(Get.put(Navigation(locator())));
 
   locator.registerSingleton<ChatController>(Get.put(ChatController(
       locator(),

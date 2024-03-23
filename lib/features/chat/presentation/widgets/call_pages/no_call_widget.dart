@@ -56,8 +56,8 @@ class NoCallWidget extends StatelessWidget {
                           child: Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.2),
-                                shape: BoxShape.circle),
+                              color: Colors.white.withOpacity(0.2),
+                            ),
                             child: const IconWidget(
                               icon: Assets.muteMicroPhone,
                               iconColor: Colors.white,
@@ -71,8 +71,8 @@ class NoCallWidget extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
-                              shape: BoxShape.circle),
+                            color: Colors.white.withOpacity(0.2),
+                          ),
                           child: const IconWidget(
                             icon: Assets.disableVideo,
                           ),
@@ -166,9 +166,8 @@ class NoCallWidget extends StatelessWidget {
                   child: Container(
                     width: context.screenWidth / 1.5,
                     height: 50,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF2D2D2D),
-                      borderRadius: BorderRadius.circular(15),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF2D2D2D),
                     ),
                     child: Center(
                         child: Text(

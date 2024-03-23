@@ -16,7 +16,7 @@ class AnimatedAppBar extends StatefulWidget {
       required this.isGroup,
       this.title,
       this.categoryTitle,
-      this.centerVertical = false,
+      this.centerVertical = true,
       this.height});
 
   final bool isGroup;

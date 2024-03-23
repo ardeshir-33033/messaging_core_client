@@ -78,8 +78,7 @@ class MyApp extends StatelessWidget {
               ],
             ),
           ),
-          home: ApplicationHomePage(
-          ),
+          home: ApplicationHomePage(),
         );
       },
     );
@@ -87,15 +86,35 @@ class MyApp extends StatelessWidget {
 }
 
 class ApplicationHomePage extends StatefulWidget {
-  const ApplicationHomePage({
-    super.key,
-  });
+  const ApplicationHomePage(
+      {super.key, this.categoryId, this.userName, this.token, this.userId});
+
+  final int? categoryId;
+  final int? userId;
+  final String? userName;
+  final String? token;
 
   @override
   State<ApplicationHomePage> createState() => _ApplicationHomePageState();
 }
 
 class _ApplicationHomePageState extends State<ApplicationHomePage> {
+  @override
+  void initState() {
+    if (widget.categoryId != null) {
+      final Navigation navigation = locator<Navigation>();
+
+      AppGlobalData.categoryId = widget.categoryId!;
+      AppGlobalData.userId = widget.userId!;
+      AppGlobalData.userName = widget.userName!;
+
+      navigation.setToken(widget.token!);
+
+      navigation.pages = [const ChatCallPage()];
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return getx.GetBuilder<Navigation>(builder: (navigation) {

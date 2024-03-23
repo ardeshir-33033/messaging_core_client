@@ -64,10 +64,10 @@ class InCallWidget extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
-                        color: controller.myVideoClosed
-                            ? Colors.white
-                            : Colors.transparent,
-                        shape: BoxShape.circle),
+                      color: controller.myVideoClosed
+                          ? Colors.white
+                          : Colors.transparent,
+                    ),
                     child: IconWidget(
                       icon: Assets.disableVideo,
                       iconColor: controller.myVideoClosed

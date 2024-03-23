@@ -98,8 +98,8 @@ class TopOpponentCall extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
-                      shape: BoxShape.circle),
+                    color: Colors.white.withOpacity(0.2),
+                  ),
                   child: const IconWidget(
                     icon: Icons.keyboard_voice,
                     iconColor: Colors.white,
@@ -114,9 +114,9 @@ class TopOpponentCall extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(
-                            controller.opponentVideoClosed ? 0.8 : 0.2),
-                        shape: BoxShape.circle),
+                      color: Colors.white.withOpacity(
+                          controller.opponentVideoClosed ? 0.8 : 0.2),
+                    ),
                     child: const IconWidget(
                       icon: Assets.disableVideo,
                       size: 15,

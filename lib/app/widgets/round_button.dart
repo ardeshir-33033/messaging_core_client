@@ -26,7 +26,7 @@ class RoundButton extends StatelessWidget {
         height: size ?? 80.0,
         decoration: BoxDecoration(
           color: color ?? Colors.green,
-          shape: BoxShape.circle,
+          // shape: BoxShape.circle,
         ),
         child: IconWidget(
           icon: asset,

@@ -238,17 +238,17 @@ class ChatBoxState extends State<ChatBox> {
                                         color: const Color(0xff2F80ED),
                                       )
                                     : null,
-                                borderRadius: widget.isLastSenderContent
-                                    ? BorderRadius.only(
-                                        topRight: const Radius.circular(16),
-                                        bottomLeft: isMine
-                                            ? const Radius.circular(16)
-                                            : const Radius.circular(4),
-                                        bottomRight: isMine
-                                            ? const Radius.circular(4)
-                                            : const Radius.circular(16),
-                                        topLeft: const Radius.circular(16))
-                                    : BorderRadius.circular(16),
+                                // borderRadius: widget.isLastSenderContent
+                                //     ? BorderRadius.only(
+                                //         topRight: const Radius.circular(16),
+                                //         bottomLeft: isMine
+                                //             ? const Radius.circular(16)
+                                //             : const Radius.circular(4),
+                                //         bottomRight: isMine
+                                //             ? const Radius.circular(4)
+                                //             : const Radius.circular(16),
+                                //         topLeft: const Radius.circular(16))
+                                //     : BorderRadius.circular(16),
                                 color: isMine
                                     ? AppColors.primary1.withOpacity(0.5)
                                     : const Color(0xFFCECECE),
