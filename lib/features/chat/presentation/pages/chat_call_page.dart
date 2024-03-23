@@ -84,8 +84,8 @@ class _ChatCallPageState extends State<ChatCallPage>
                               ),
                               controller: tabController,
                               tabs: [
-                                Tab(text: tr(context).notifications),
-                                Tab(text: tr(context).chats),
+                                Tab(text: "Notif"),
+                                Tab(text: "Chats"),
                               ],
                             ),
                             SizedBox(

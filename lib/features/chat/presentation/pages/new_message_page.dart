@@ -41,16 +41,16 @@ class _NewMessagePageState extends State<NewMessagePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppTitleWidget(title: tr(context).newMessage),
-          buildNewRow(tr(context).newGroup, Assets.newGroup, () {
+          AppTitleWidget(title: "newMessage"),
+          buildNewRow("newGroup", Assets.newGroup, () {
             controller.showNewMessagePage = false;
             navigation.push(AddGroupNamePage());
           }),
           const SizedBox(height: 10),
-          buildNewRow(tr(context).newCommunity, Assets.newCommunity, () {}),
+          buildNewRow("newCommunity", Assets.newCommunity, () {}),
           const SizedBox(height: 16),
           SearchInputWidget(
-              onSearch: searchUsers, hintText: tr(context).search),
+              onSearch: searchUsers, hintText: "search"),
           Expanded(
             child: ListView.builder(
                 itemCount: users.length,

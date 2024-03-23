@@ -46,7 +46,7 @@ class _ChatCallTopLayoutState extends State<ChatCallTopLayout> {
               children: [
                 AnimatedAppBar(
                   isGroup: false,
-                  title: tr(context).call,
+                  title: "Call",
                   categoryTitle: "Sport",
                 ),
                 Expanded(
@@ -56,9 +56,9 @@ class _ChatCallTopLayoutState extends State<ChatCallTopLayout> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AppTitleWidget(title: tr(context).newCall),
+                      AppTitleWidget(title: "newCall"),
                       SearchInputWidget(
-                          onSearch: searchUsers, hintText: tr(context).search),
+                          onSearch: searchUsers, hintText: ".search"),
                       Expanded(
                           child: ListView.separated(
                               itemCount: users.length,
@@ -128,7 +128,7 @@ class NewActionButton extends StatelessWidget {
               ),
               const SizedBox(width: 5),
               TextWidget(
-                tr(context).newTitle,
+                "newTitle",
                 style: AppTextStyles.body3.copyWith(color: Colors.white),
               ),
             ],
