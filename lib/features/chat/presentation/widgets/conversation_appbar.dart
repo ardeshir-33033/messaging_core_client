@@ -99,32 +99,12 @@ class ConversationAppBar extends StatelessWidget {
             onTap: () {
               navigation.push(const WaitingCallPage());
             },
-            child: FutureBuilder(
-              future: loadImage(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasError) {
-                    return Text('Error loading asset');
-                  } else {
-                    return Image.memory(
-                      snapshot.data as Uint8List,
-                      fit: BoxFit.scaleDown,
-                      height: 40,
-                      width: 70,
-                    );
-                  }
-                } else {
-                  return CircularProgressIndicator();
-                }
-              },
+            child: const ImageWidget(
+              imageUrl: Assets.greenCall,
+              boxFit: BoxFit.scaleDown,
+              height: 40,
+              width: 70,
             ),
-
-            // const ImageWidget(
-            //   imageUrl: Assets.greenCall,
-            //   boxFit: BoxFit.scaleDown,
-            //   height: 40,
-            //   width: 70,
-            // ),
           )
         ],
       ),

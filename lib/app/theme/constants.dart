@@ -82,17 +82,17 @@ class Assets {
   /// -----------------------Image Assets -------------------------
   static const String _baseImagePath = "packages/messaging_core/assets/images";
 
-  static const String groupBackground = "$_baseImagePath/group_back.png";
-  static const String myCameraTest = "$_baseImagePath/my_camera_test.png";
-  static const String opponentCameraTest =
-      "$_baseImagePath/opponent_camera_test.png";
-  static const String greenCall = "$_baseImagePath/green_call.png";
-  // static const String groupBackground =
-  //     "https://drive.google.com/file/d/1iOwRSvXnt2fFdykLwwh14ZWaYLvdSi3l/view?usp=sharing";
-  // static const String myCameraTest =
-  //     "https://drive.google.com/file/d/1d4mW2YbKGyT6Akg1kswS9rKH4gNnZr7c/view?usp=sharing";
+  // static const String groupBackground = "$_baseImagePath/group_back.png";
+  // static const String myCameraTest = "$_baseImagePath/my_camera_test.png";
   // static const String opponentCameraTest =
-  //     "https://drive.google.com/file/d/1aKlc8t-uFDYcGb4ppHZS1GitUHlhEoKh/view?usp=sharing";
-  // static const String greenCall =
-  //     "https://drive.google.com/file/d/1RFZMCtlNAM7ibNBcNu5-XnKpAdVtDcve/view?usp=sharing";
+  //     "$_baseImagePath/opponent_camera_test.png";
+  // static const String greenCall = "$_baseImagePath/green_call.png";
+  static const String groupBackground =
+      "https://drive.google.com/file/d/1iOwRSvXnt2fFdykLwwh14ZWaYLvdSi3l/view?usp=sharing";
+  static const String myCameraTest =
+      "https://drive.google.com/file/d/1d4mW2YbKGyT6Akg1kswS9rKH4gNnZr7c/view?usp=sharing";
+  static const String opponentCameraTest =
+      "https://drive.google.com/file/d/1aKlc8t-uFDYcGb4ppHZS1GitUHlhEoKh/view?usp=sharing";
+  static const String greenCall =
+      "https://drive.google.com/file/d/1RFZMCtlNAM7ibNBcNu5-XnKpAdVtDcve/view?usp=sharing";
 }
