@@ -109,7 +109,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/tones/
-    - packages/messaging_core/assets/profile-2user.svg
+    - packages/messaging_core/assets/icons/profile-2user.svg
     - packages/messaging_core/assets/fonts/
     - packages/messaging_core/assets/images/
     - packages/messaging_core/assets/icons/
