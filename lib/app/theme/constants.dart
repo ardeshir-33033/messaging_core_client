@@ -82,17 +82,17 @@ class Assets {
   /// -----------------------Image Assets -------------------------
   static const String _baseImagePath = "packages/messaging_core/assets/images";
 
-  // static const String groupBackground = "$_baseImagePath/group_back.png";
-  // static const String myCameraTest = "$_baseImagePath/my_camera_test.png";
-  // static const String opponentCameraTest =
-  //     "$_baseImagePath/opponent_camera_test.png";
-  // static const String greenCall = "$_baseImagePath/green_call.png";
-  static const String groupBackground =
-      "https://drive.google.com/file/d/1iOwRSvXnt2fFdykLwwh14ZWaYLvdSi3l/view?usp=sharing";
-  static const String myCameraTest =
-      "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.centurypublishing.com%2Fcustomer-help-center%2Fquality-control%2Flow-resolution-or-low-res%2F&psig=AOvVaw1NkdnJBDaPyrXHYksqhrBp&ust=1711293977751000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCODZqebYioUDFQAAAAAdAAAAABAJ";
+  static const String groupBackground = "$_baseImagePath/group_back.png";
+  static const String myCameraTest = "$_baseImagePath/my_camera_test.png";
   static const String opponentCameraTest =
-      "https://drive.google.com/file/d/1aKlc8t-uFDYcGb4ppHZS1GitUHlhEoKh/view?usp=sharing";
-  static const String greenCall =
-      "https://drive.google.com/file/d/1RFZMCtlNAM7ibNBcNu5-XnKpAdVtDcve/view?usp=sharing";
+      "$_baseImagePath/opponent_camera_test.png";
+  static const String greenCall = "$_baseImagePath/green_call.png";
+  // static const String groupBackground =
+  //     "https://drive.google.com/file/d/1iOwRSvXnt2fFdykLwwh14ZWaYLvdSi3l/view?usp=sharing";
+  // static const String myCameraTest =
+  //     "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.centurypublishing.com%2Fcustomer-help-center%2Fquality-control%2Flow-resolution-or-low-res%2F&psig=AOvVaw1NkdnJBDaPyrXHYksqhrBp&ust=1711293977751000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCODZqebYioUDFQAAAAAdAAAAABAJ";
+  // static const String opponentCameraTest =
+  //     "https://drive.google.com/file/d/1aKlc8t-uFDYcGb4ppHZS1GitUHlhEoKh/view?usp=sharing";
+  // static const String greenCall =
+  //     "https://drive.google.com/file/d/1RFZMCtlNAM7ibNBcNu5-XnKpAdVtDcve/view?usp=sharing";
 }

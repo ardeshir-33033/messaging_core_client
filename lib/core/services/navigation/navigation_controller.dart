@@ -35,7 +35,7 @@ class Navigation extends GetxController {
     Widget firstPage = pages.first;
     pages = [firstPage];
     update();
-    Future.delayed(const Duration(milliseconds: 1), () {
+    Future.delayed(const Duration(milliseconds: 100), () {
       push(page);
     });
   }
