@@ -48,7 +48,7 @@ class SingleCallWidget extends StatelessWidget {
                         name: AppGlobalData.userName,
                       ),
                     )
-                  : const ImageWidget(imageUrl: Assets.myCameraTest),
+                  : Image.network(Assets.myCameraTest),
             ),
           ),
         ],
