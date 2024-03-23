@@ -57,7 +57,7 @@ class Assets {
   static const String closeAgora = "$_baseIconPath/close_agora.svg";
   static const String flipAgoraIcon = "$_baseIconPath/flip_agora_icon.svg";
   static const String profileUser = "$_baseIconPath/profile-2user.svg";
-  static const String profileUser2 = "lib/assets/profile-2user2.svg";
+  static const String profileUser2 = "assets/profile-2user2.svg";
   static const String disableVideo = "$_baseIconPath/disable_video.svg";
   static const String refresh = "$_baseIconPath/refresh.svg";
   static const String profileAdd = "$_baseIconPath/profile-add.svg";
