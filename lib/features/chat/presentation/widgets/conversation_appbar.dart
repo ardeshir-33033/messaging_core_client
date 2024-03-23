@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
@@ -98,16 +99,41 @@ class ConversationAppBar extends StatelessWidget {
             onTap: () {
               navigation.push(const WaitingCallPage());
             },
-            child: const ImageWidget(
-              imageUrl: Assets.greenCall,
-              boxFit: BoxFit.scaleDown,
-              height: 40,
-              width: 70,
+            child: FutureBuilder(
+              future: loadImage(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasError) {
+                    return Text('Error loading asset');
+                  } else {
+                    return Image.memory(
+                      snapshot.data as Uint8List,
+                      fit: BoxFit.scaleDown,
+                      height: 40,
+                      width: 70,
+                    );
+                  }
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
             ),
+
+            // const ImageWidget(
+            //   imageUrl: Assets.greenCall,
+            //   boxFit: BoxFit.scaleDown,
+            //   height: 40,
+            //   width: 70,
+            // ),
           )
         ],
       ),
     );
+  }
+
+  Future<Uint8List> loadImage() async {
+    ByteData data = await rootBundle.load('assets/image.png');
+    return data.buffer.asUint8List();
   }
 
   Color get _backgroundColor {

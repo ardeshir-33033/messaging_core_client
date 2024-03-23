@@ -3,7 +3,7 @@ class Assets {
 
   /// ----------------------- Fonts -------------------------
 
-  static const String fontFamily = "Cairo";
+  static const String fontFamily = "packages/messaging_core/Cairo";
   static const String extraBold = "$fontFamily-extra";
   static const String bold = "$fontFamily-bold";
   static const String semiBold = "$fontFamily-semibold";
@@ -57,7 +57,8 @@ class Assets {
   static const String closeAgora = "$_baseIconPath/close_agora.svg";
   static const String flipAgoraIcon = "$_baseIconPath/flip_agora_icon.svg";
   static const String profileUser = "$_baseIconPath/profile-2user.svg";
-  static const String profileUser2 = "packages/messaging_core/assets/icons/profile-2user.svg";
+  static const String profileUser2 =
+      "packages/messaging_core/assets/icons/profile-2user.svg";
   static const String disableVideo = "$_baseIconPath/disable_video.svg";
   static const String refresh = "$_baseIconPath/refresh.svg";
   static const String profileAdd = "$_baseIconPath/profile-add.svg";
@@ -80,9 +81,18 @@ class Assets {
 
   /// -----------------------Image Assets -------------------------
   static const String _baseImagePath = "packages/messaging_core/assets/images";
+
   static const String groupBackground = "$_baseImagePath/group_back.png";
   static const String myCameraTest = "$_baseImagePath/my_camera_test.png";
   static const String opponentCameraTest =
       "$_baseImagePath/opponent_camera_test.png";
   static const String greenCall = "$_baseImagePath/green_call.png";
+  // static const String groupBackground =
+  //     "https://drive.google.com/file/d/1iOwRSvXnt2fFdykLwwh14ZWaYLvdSi3l/view?usp=sharing";
+  // static const String myCameraTest =
+  //     "https://drive.google.com/file/d/1d4mW2YbKGyT6Akg1kswS9rKH4gNnZr7c/view?usp=sharing";
+  // static const String opponentCameraTest =
+  //     "https://drive.google.com/file/d/1aKlc8t-uFDYcGb4ppHZS1GitUHlhEoKh/view?usp=sharing";
+  // static const String greenCall =
+  //     "https://drive.google.com/file/d/1RFZMCtlNAM7ibNBcNu5-XnKpAdVtDcve/view?usp=sharing";
 }
