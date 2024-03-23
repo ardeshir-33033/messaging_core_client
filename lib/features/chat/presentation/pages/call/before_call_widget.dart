@@ -10,10 +10,10 @@ class BeforeCallPage extends StatelessWidget {
     return SafeArea(
       child: Container(
           alignment: Alignment.center,
-          child: Icon(
+          child: const Icon(
             Icons.call,
             size: 60,
-            color: ColorsEx(context)!.primaryColor.th,
+            color: Color(0xff2F80ED),
           )),
     );
   }

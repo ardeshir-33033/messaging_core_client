@@ -26,7 +26,7 @@ class LoadingWidget extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           CircularProgressIndicator(
-            color: color ?? ColorsEx(context)?.primaryColor.th,
+            color: color ?? Color(0xff2F80ED),
             strokeWidth: strokeWidth ?? 4,
           ),
           if (child != null) child!,

@@ -37,13 +37,13 @@ class SkeletonWidget extends StatelessWidget {
         borderRadius: shape == BoxShape.circle
             ? null
             : const BorderRadius.all(Radius.circular(10)),
-        color: baseColor ?? ColorsEx(context)!.shimmerBaseColor.th,
+        color: baseColor ?? const Color(0xffF5F5F5),
       ),
       child: SkeletonAnimation(
         shimmerColor:
-            highLightColor ?? ColorsEx(context)!.shimmerHighlightColor.th,
+            highLightColor ?? const Color(0xffecebeb),
         shimmerDuration: 1500,
-        gradientColor: baseColor ?? ColorsEx(context)!.shimmerBaseColor.th,
+        gradientColor: baseColor ?? const Color(0xffF5F5F5),
         borderRadius: shape == BoxShape.circle
             ? const BorderRadius.all(Radius.circular(100))
             : const BorderRadius.all(Radius.circular(10)),

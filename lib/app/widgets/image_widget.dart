@@ -208,11 +208,11 @@ class ImageWidget extends StatelessWidget {
 
   Widget _errorWidget(BuildContext context) {
     return placeHolder ??
-        Padding(
-          padding: const EdgeInsets.all(8.0),
+        const Padding(
+          padding: EdgeInsets.all(8.0),
           child: Icon(
             Icons.error,
-            color: ColorsEx(context)!.primaryColor.th,
+            color: Color(0xff2F80ED),
           ),
         );
   }
