@@ -96,7 +96,6 @@ class ChatController extends GetxController {
       }
       chats = [];
       users = [];
-
       ResponseModel response = await getAllChatsUseCase(null);
       if (response.result == ResultEnum.success) {
         if (!locator<ConnectionStatusProvider>().isConnected) {

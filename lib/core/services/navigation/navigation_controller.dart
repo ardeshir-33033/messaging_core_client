@@ -9,6 +9,8 @@ class Navigation extends GetxController {
 
   Navigation(this.api);
 
+  bool callFirstInit = true;
+
   List<Widget> pages = [
     const ChooseUserPage(),
   ];
@@ -37,11 +39,13 @@ class Navigation extends GetxController {
   }
 
   pushAndRemoveUntilFirst(Widget page) {
+    callFirstInit = false;
     Widget firstPage = pages.first;
     pages = [firstPage];
     update();
     Future.delayed(const Duration(milliseconds: 100), () {
       push(page);
+      callFirstInit = true;
     });
   }
 
