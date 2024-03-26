@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:messaging_core/app/theme/app_text_styles.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/presentation/manager/call_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
@@ -26,13 +27,16 @@ class _ChatCallPageState extends State<ChatCallPage>
         AutomaticKeepAliveClientMixin<ChatCallPage> {
   final ScrollController pageScrollController = ScrollController();
   final ChatController controller = locator<ChatController>();
+  final Navigation navigation = locator<Navigation>();
 
   late TabController tabController;
 
   @override
   void initState() {
     super.initState();
-    controller.getAllChats();
+    if (navigation.callFirstInit) {
+      controller.getAllChats();
+    }
 
     tabController = TabController(length: 2, vsync: this);
   }
@@ -52,9 +56,12 @@ class _ChatCallPageState extends State<ChatCallPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const ChatCallTopLayout(),
-                const AnimatedAppBar(
-                  isGroup: false,
-                  centerVertical: true,
+                InkWell(
+                  onTap: scrollToBottom,
+                  child: const AnimatedAppBar(
+                    isGroup: false,
+                    centerVertical: true,
+                  ),
                 ),
                 GetBuilder<ChatController>(
                     id: "newMessage",
@@ -106,5 +113,12 @@ class _ChatCallPageState extends State<ChatCallPage>
         ],
       ),
     );
+  }
+
+  scrollToBottom() {
+    pageScrollController.animateTo(
+        pageScrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeIn);
   }
 }
