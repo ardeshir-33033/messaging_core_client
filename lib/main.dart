@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart' as getx;
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:messaging_core/app/component/base_appBar.dart';
 import 'package:messaging_core/app/theme/theme_service.dart';
@@ -87,12 +88,18 @@ class MyApp extends StatelessWidget {
 
 class ApplicationHomePage extends StatefulWidget {
   const ApplicationHomePage(
-      {super.key, this.categoryId, this.userName, this.token, this.userId});
+      {super.key,
+      this.categoryId,
+      this.userName,
+      this.token,
+      this.userId,
+      this.onCloseChat});
 
   final int? categoryId;
   final int? userId;
   final String? userName;
   final String? token;
+  final Function(String?)? onCloseChat;
 
   @override
   State<ApplicationHomePage> createState() => _ApplicationHomePageState();
@@ -104,6 +111,9 @@ class _ApplicationHomePageState extends State<ApplicationHomePage> {
     if (widget.categoryId != null) {
       final Navigation navigation = locator<Navigation>();
 
+      navigation.closeApp.addListener(() {
+        invokeCloseChat();
+      });
       AppGlobalData.categoryId = widget.categoryId!;
       AppGlobalData.userId = widget.userId!;
       AppGlobalData.userName = widget.userName!;
@@ -125,6 +135,10 @@ class _ApplicationHomePageState extends State<ApplicationHomePage> {
         ),
       );
     });
+  }
+
+  invokeCloseChat() {
+    widget.onCloseChat!.call(null);
   }
 }
 

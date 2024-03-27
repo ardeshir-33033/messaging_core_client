@@ -10,6 +10,7 @@ class Navigation extends GetxController {
   Navigation(this.api);
 
   bool callFirstInit = true;
+  ValueNotifier<bool> closeApp = ValueNotifier<bool>(false);
 
   List<Widget> pages = [
     const ChooseUserPage(),
@@ -61,5 +62,10 @@ class Navigation extends GetxController {
 
   setToken(String token) {
     api.setToken(token);
+  }
+
+  closeApplication() {
+    closeApp.value = true;
+    closeApp.notifyListeners();
   }
 }

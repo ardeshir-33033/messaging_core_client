@@ -16,6 +16,7 @@ import 'package:messaging_core/features/chat/presentation/pages/group/group_deta
 import 'package:messaging_core/features/chat/presentation/pages/waiting_call_page.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/user_profile_widget.dart';
 import 'package:messaging_core/locator.dart';
+import 'package:messaging_core/main.dart';
 
 class ConversationAppBar extends StatelessWidget {
   ConversationAppBar({
@@ -97,7 +98,8 @@ class ConversationAppBar extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              navigation.push(const WaitingCallPage());
+              navigation.closeApplication();
+              // navigation.push(const WaitingCallPage());
             },
             child: const ImageWidget(
               imageUrl: Assets.greenCall,
