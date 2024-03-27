@@ -75,7 +75,6 @@ class _ChatCallPageState extends State<ChatCallPage>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             TabBar(
-                              // padding: const EdgeInsets.fromLTRB(0, 0, 100, 8),
                               isScrollable: true,
                               indicatorColor: Colors.transparent,
                               dividerColor: Colors.transparent,

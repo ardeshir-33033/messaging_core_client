@@ -49,7 +49,7 @@ class MessageStatusWidget extends StatelessWidget {
         ? const SizedBox()
         : Icon(
             icon,
-            size: 10,
+            size: 12,
             color: color,
             key: Key(
               "${content.contentId}-${content.status.name}",

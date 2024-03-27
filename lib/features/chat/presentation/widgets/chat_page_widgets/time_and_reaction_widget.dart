@@ -12,10 +12,12 @@ class TimeAndReactionWidget extends StatefulWidget {
     super.key,
     required this.content,
     required this.isMine,
+    this.showShadow = false,
   });
 
   final ContentModel content;
   final bool isMine;
+  final bool showShadow;
 
   @override
   State<TimeAndReactionWidget> createState() => _TimeAndReactionWidgetState();
@@ -66,12 +68,25 @@ class _TimeAndReactionWidgetState extends State<TimeAndReactionWidget> {
               ],
             ),
           ),
-        Text(
-          widget.content.createdAt.toString().hourAmFromDate(),
-          style: const TextStyle(
-            fontSize: 6,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF828FBB),
+        Container(
+          margin: widget.showShadow
+              ? const EdgeInsets.symmetric(horizontal: 5, vertical: 4)
+              : null,
+          padding: widget.showShadow
+              ? const EdgeInsets.symmetric(horizontal: 5, vertical: 2)
+              : null,
+          decoration: widget.showShadow
+              ? BoxDecoration(
+                  color: Colors.black.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(10))
+              : null,
+          child: Text(
+            widget.content.createdAt.toString().hourAmFromDate(),
+            style: TextStyle(
+              fontSize: 9,
+              fontWeight: FontWeight.w400,
+              color: widget.showShadow ? Colors.white : const Color(0xFF828FBB),
+            ),
           ),
         ),
         const SizedBox(width: 5),

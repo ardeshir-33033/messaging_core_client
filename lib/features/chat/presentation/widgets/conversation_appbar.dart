@@ -98,8 +98,7 @@ class ConversationAppBar extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              navigation.closeApplication();
-              // navigation.push(const WaitingCallPage());
+              navigation.push(const WaitingCallPage());
             },
             child: const ImageWidget(
               imageUrl: Assets.greenCall,

@@ -249,9 +249,12 @@ class ChatBoxState extends State<ChatBox> {
                                 //             : const Radius.circular(16),
                                 //         topLeft: const Radius.circular(16))
                                 //     : BorderRadius.circular(16),
-                                color: isMine
-                                    ? AppColors.primary1.withOpacity(0.5)
-                                    : const Color(0xFFCECECE),
+                                color: widget.content.contentType ==
+                                        ContentTypeEnum.image
+                                    ? null
+                                    : isMine
+                                        ? AppColors.primary1.withOpacity(0.5)
+                                        : const Color(0xFFCECECE),
                               ),
                               child: Column(
                                 crossAxisAlignment: isMine
@@ -345,8 +348,11 @@ class ChatBoxState extends State<ChatBox> {
                                     opponentProfile: widget.opponentProfile,
                                   ),
                                   const SizedBox(height: 5),
-                                  TimeAndReactionWidget(
-                                      content: widget.content, isMine: isMine),
+                                  if (widget.content.contentType !=
+                                      ContentTypeEnum.image)
+                                    TimeAndReactionWidget(
+                                        content: widget.content,
+                                        isMine: isMine),
                                 ],
                               ),
                             ),

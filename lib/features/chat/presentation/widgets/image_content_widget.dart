@@ -3,12 +3,15 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:messaging_core/app/theme/app_colors.dart';
+import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/domain/entities/content_model.dart';
 import 'package:messaging_core/features/chat/presentation/pages/full_screen_image_page.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/text_content_widget.dart';
 import 'package:messaging_core/locator.dart';
+
+import 'chat_page_widgets/time_and_reaction_widget.dart';
 
 class ImageContentWidget extends StatefulWidget {
   final ContentModel contentModel;
@@ -54,8 +57,8 @@ class _ImageContentWidgetState extends State<ImageContentWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
+      alignment: Alignment.bottomLeft,
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(widget.borderRadius),
@@ -139,6 +142,11 @@ class _ImageContentWidgetState extends State<ImageContentWidget> {
             ),
           ),
         ),
+        TimeAndReactionWidget(
+          content: widget.contentModel,
+          isMine: mine(widget.contentModel),
+          showShadow: true,
+        ),
         // if (widget.showCaption &&
         //     !widget.contentModel.messageText.isNullOrEmpty())
         //   Column(
@@ -168,5 +176,9 @@ class _ImageContentWidgetState extends State<ImageContentWidget> {
 
   double? get imageHeight {
     return widget.imageHeight != 0 ? widget.imageHeight?.toDouble() : null;
+  }
+
+  bool mine(ContentModel content) {
+    return AppGlobalData.userId == content.senderId;
   }
 }
