@@ -156,7 +156,7 @@ class _ChatPageState extends State<ChatPage>
                               children: [
                                 Column(
                                   children: [
-                                    const SizedBox(height: 20),
+                                    const SizedBox(height: 10),
                                     ConversationAppBar(
                                       chat: widget.chat,
                                       size: 40,
