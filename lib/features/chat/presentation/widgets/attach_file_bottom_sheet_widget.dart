@@ -128,9 +128,8 @@ class AttachFileBottomSheet extends StatelessWidget {
           child: Container(
             width: double.infinity,
             padding: 10.vertical,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: const Color(0xFFEFEFEF),
+            decoration: const BoxDecoration(
+              color: Color(0xFFEFEFEF),
             ),
             child: Center(child: Text(tr(context).cancel)),
           ),
@@ -175,7 +174,6 @@ class AttachDataItem extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: const Color(0xFFEFEFEF),
-          borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
