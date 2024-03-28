@@ -38,76 +38,98 @@ class ConversationAppBar extends StatelessWidget {
           navigation.push(GroupDetailsPage(chat: chat));
         }
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        // mainAxisSize: MainAxisSize.max,
-        children: [
-          const SizedBox(
-            width: 70,
-            height: 40,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // chat.avatar.isNullOrEmpty()
-              //     ?
-              _noProfileImage(context, chat),
-              // : _profileImage(context),
-              const SizedBox(width: 7),
-              Column(
-                children: [
-                  Text(
-                    chat.name!,
-                    style: AppTextStyles.body4.copyWith(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  GetBuilder<ChatController>(
-                      id: "isTyping",
-                      builder: (controller) {
-                        return
-                            // if (chat.isGroup())
-                            chat.isGroup()
-                                ? Text(
-                                    "${(chat.groupUsers?.length ?? 0).toString()} Users",
-                                    style: AppTextStyles.description.copyWith(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  )
-                                : controller.isTyping
-                                    ? Text(
-                                        tr(context).isTyping,
-                                        style:
-                                            AppTextStyles.description.copyWith(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
-                                    : const SizedBox();
-                      })
+      child: SizedBox(
+        width: double.infinity,
+        child: Column(
+          children: [
+            Container(
+              padding: 10.vertical,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Color(0xFFE7E7E7),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 2,
+                    spreadRadius: 1,
+                    offset: Offset(0, 4),
+                  )
                 ],
               ),
-              const IconWidget(
-                icon: Icons.keyboard_arrow_down,
-                iconColor: Colors.black54,
-                size: 20,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(
+                    width: 70,
+                    height: 40,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // chat.avatar.isNullOrEmpty()
+                      //     ?
+                      _noProfileImage(context, chat),
+                      // : _profileImage(context),
+                      const SizedBox(width: 7),
+                      Column(
+                        children: [
+                          Text(
+                            chat.name!,
+                            style: AppTextStyles.body4.copyWith(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          GetBuilder<ChatController>(
+                              id: "isTyping",
+                              builder: (controller) {
+                                return
+                                    // if (chat.isGroup())
+                                    chat.isGroup()
+                                        ? Text(
+                                            "${(chat.groupUsers?.length ?? 0).toString()} Users",
+                                            style: AppTextStyles.description
+                                                .copyWith(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          )
+                                        : controller.isTyping
+                                            ? Text(
+                                                tr(context).isTyping,
+                                                style: AppTextStyles.description
+                                                    .copyWith(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              )
+                                            : const SizedBox();
+                              })
+                        ],
+                      ),
+                      const IconWidget(
+                        icon: Icons.keyboard_arrow_down,
+                        iconColor: Colors.black54,
+                        size: 20,
+                      ),
+                    ],
+                  ),
+                  InkWell(
+                    onTap: () {
+                      navigation.push(const WaitingCallPage());
+                    },
+                    child: const ImageWidget(
+                      imageUrl: Assets.greenCall,
+                      boxFit: BoxFit.scaleDown,
+                      height: 40,
+                      width: 70,
+                    ),
+                  )
+                ],
               ),
-            ],
-          ),
-          InkWell(
-            onTap: () {
-              navigation.push(const WaitingCallPage());
-            },
-            child: const ImageWidget(
-              imageUrl: Assets.greenCall,
-              boxFit: BoxFit.scaleDown,
-              height: 40,
-              width: 70,
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

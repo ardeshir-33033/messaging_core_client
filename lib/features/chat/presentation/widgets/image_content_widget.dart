@@ -58,7 +58,9 @@ class _ImageContentWidgetState extends State<ImageContentWidget> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: Alignment.bottomLeft,
+      alignment: mine(widget.contentModel)
+          ? Alignment.bottomRight
+          : Alignment.bottomLeft,
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(widget.borderRadius),
@@ -142,10 +144,13 @@ class _ImageContentWidgetState extends State<ImageContentWidget> {
             ),
           ),
         ),
-        TimeAndReactionWidget(
-          content: widget.contentModel,
-          isMine: mine(widget.contentModel),
-          showShadow: true,
+        Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: TimeAndReactionWidget(
+            content: widget.contentModel,
+            isMine: mine(widget.contentModel),
+            showShadow: true,
+          ),
         ),
         // if (widget.showCaption &&
         //     !widget.contentModel.messageText.isNullOrEmpty())
