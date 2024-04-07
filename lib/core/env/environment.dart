@@ -13,12 +13,12 @@ class Environment {
   }
 
   static String get apiBaseUrl {
-    return "https://zoomiran.com/api/v1";
+    return "https://raeis.de/api/v1";
     // return dotenv.get("API_BASE_URL");
   }
 
   static String get websocketUrl {
-    return "https://andoonya.com";
+    return "https://socket.raeis.de";
     // return dotenv.get("WEB_SOCKET_BASE_URL");
   }
 }

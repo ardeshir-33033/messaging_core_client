@@ -32,19 +32,6 @@ class ContentModel {
   CategoryUser? sender;
   List<ReactionModel>? reactionModel;
 
-  // set repliedTo(ContentModel? value) {
-  //   if (value == null) {
-  //     replied = null;
-  //     return;
-  //   }
-  //   ContentModel? model = ContentModel.fromJson(
-  //       value.toJson(mainContent: false),
-  //       mainContent: false);
-  //   replied = model;
-  // }
-
-  // ContentModel? get repliedTo => replied;
-
   ContentModel({
     required this.contentId,
     required this.senderId,
