@@ -47,69 +47,62 @@ class _ChatCallPageState extends State<ChatCallPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: ChatPageDrawer(),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            controller: pageScrollController,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const ChatCallTopLayout(),
-                InkWell(
-                  onTap: scrollToBottom,
-                  child: const AnimatedAppBar(
-                    isGroup: false,
-                    centerVertical: true,
-                  ),
-                ),
-                GetBuilder<ChatController>(
-                    id: "newMessage",
-                    builder: (_) {
-                      if (controller.showNewMessagePage) {
-                        return SizedBox(
-                            height: context.screenHeight - 150,
-                            child: const NewMessagePage());
-                      }
-                      return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TabBar(
-                              isScrollable: true,
-                              indicatorColor: Colors.transparent,
-                              dividerColor: Colors.transparent,
-                              unselectedLabelStyle:
-                                  AppTextStyles.body4.copyWith(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 25,
-                                color: const Color(0xFFBABABA),
-                              ),
-                              labelStyle: AppTextStyles.body4.copyWith(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 25,
-                              ),
-                              controller: tabController,
-                              tabs: [
-                                Tab(text: tr(context).notifications),
-                                Tab(text: tr(context).chats),
-                              ],
-                            ),
-                            SizedBox(
-                                height: context.screenHeight - 150,
-                                child: TabBarView(
-                                  controller: tabController,
-                                  children: const [
-                                    NotificationsTab(),
-                                    ChatListPage()
-                                  ],
-                                )),
-                          ]);
-                    }),
-              ],
+      body: SingleChildScrollView(
+        controller: pageScrollController,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const ChatCallTopLayout(),
+            InkWell(
+              onTap: scrollToBottom,
+              child: const AnimatedAppBar(
+                isGroup: false,
+                centerVertical: true,
+              ),
             ),
-          ),
-          const UserContactsDrawer(),
-        ],
+            GetBuilder<ChatController>(
+                id: "newMessage",
+                builder: (_) {
+                  if (controller.showNewMessagePage) {
+                    return SizedBox(
+                        height: context.screenHeight - 150,
+                        child: const NewMessagePage());
+                  }
+                  return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TabBar(
+                          isScrollable: true,
+                          indicatorColor: Colors.transparent,
+                          dividerColor: Colors.transparent,
+                          unselectedLabelStyle: AppTextStyles.body4.copyWith(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 25,
+                            color: const Color(0xFFBABABA),
+                          ),
+                          labelStyle: AppTextStyles.body4.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 25,
+                          ),
+                          controller: tabController,
+                          tabs: [
+                            Tab(text: tr(context).notifications),
+                            Tab(text: tr(context).chats),
+                          ],
+                        ),
+                        SizedBox(
+                            height: context.screenHeight - 150,
+                            child: TabBarView(
+                              controller: tabController,
+                              children: const [
+                                NotificationsTab(),
+                                ChatListPage()
+                              ],
+                            )),
+                      ]);
+                }),
+          ],
+        ),
       ),
     );
   }
