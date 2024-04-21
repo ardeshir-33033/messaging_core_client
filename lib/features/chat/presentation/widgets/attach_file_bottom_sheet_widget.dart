@@ -15,7 +15,6 @@ import 'package:messaging_core/features/chat/presentation/pages/edit_image_page.
 import 'package:messaging_core/features/chat/presentation/pages/map_page.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/contacts_bottom_sheet.dart';
 import 'package:messaging_core/locator.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class AttachFileBottomSheet extends StatelessWidget {
   const AttachFileBottomSheet({super.key, required this.chat});

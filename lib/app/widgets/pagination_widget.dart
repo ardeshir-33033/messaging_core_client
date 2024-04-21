@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:messaging_core/app/widgets/custom_refresher.dart';
-import 'package:messaging_core/core/utils/utils.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class PaginationWidget<T extends Object> extends StatefulWidget {
