@@ -27,9 +27,11 @@ class CallController extends GetxController {
   bool myVideoClosed = false;
   bool opponentVideoClosed = false;
 
+  bool myVoiceClosed = false;
+
   setCallStatus(CallStatus status) {
     callStatus = status;
-    update(["status"]);
+    update(["status", "app_bar"]);
   }
 
   setOpponentVideo() {
@@ -57,6 +59,11 @@ class CallController extends GetxController {
       callMode = CallMode.voice;
       myVideoClosed = true;
     }
+    update(["status"]);
+  }
+
+  toggleVoice() {
+    myVoiceClosed = !myVoiceClosed;
     update(["status"]);
   }
 }

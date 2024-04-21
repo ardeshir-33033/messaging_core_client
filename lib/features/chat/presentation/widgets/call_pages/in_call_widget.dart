@@ -46,15 +46,34 @@ class InCallWidget extends StatelessWidget {
                   },
                 ),
                 const SizedBox(width: 10),
-                const IconWidget(
-                  icon: Assets.profileAdd,
-                  size: 25,
-                ),
+                Builder(builder: (context) {
+                  return IconWidget(
+                    icon: Assets.profileUser,
+                    iconColor: Colors.white,
+                    onPressed: () => Scaffold.of(context).openDrawer(),
+                    size: 25,
+                  );
+                }),
                 const SizedBox(width: 10),
-                const IconWidget(
-                  icon: Icons.keyboard_voice,
-                  iconColor: Colors.white,
-                  size: 25,
+                InkWell(
+                  onTap: () {
+                    controller.toggleVoice();
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: controller.myVoiceClosed
+                          ? Colors.white
+                          : Colors.transparent,
+                    ),
+                    child: IconWidget(
+                      icon: Icons.keyboard_voice,
+                      iconColor: controller.myVoiceClosed
+                          ? Colors.black
+                          : Colors.white,
+                      size: 25,
+                    ),
+                  ),
                 ),
                 const SizedBox(width: 10),
                 InkWell(
@@ -81,6 +100,7 @@ class InCallWidget extends StatelessWidget {
                 OverlayWidget(
                   overlayController: overlayController,
                   overlayAnchor: OverlayAnchor(
+                    // offset: Offset(100, 100),
                     offset: Offset((context.screenWidth - 100) / 2,
                         -((context.screenHeight / 1.4) / 2)),
                     followerAnchor: Alignment.topCenter,
