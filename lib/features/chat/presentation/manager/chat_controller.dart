@@ -416,9 +416,11 @@ class ChatController extends GetxController {
 
   unPinAllMessages() {
     pinnedMessages!.forEach((element) {
-      ContentModel foundItem = messages
-          .firstWhere((content) => content.contentId == element.contentId);
-      foundItem.pinned = 0;
+      ContentModel? foundItem = messages.firstWhereOrNull(
+          (content) => content.contentId == element.contentId);
+      if (foundItem != null) {
+        foundItem.pinned = 0;
+      }
 
       pinMessageUseCase(PinMessageParams(element.contentId, false));
     });
