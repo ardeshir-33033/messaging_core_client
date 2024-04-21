@@ -14,6 +14,7 @@ import 'package:messaging_core/features/chat/presentation/manager/call_controlle
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/pages/group/group_detail_page.dart';
 import 'package:messaging_core/features/chat/presentation/pages/waiting_call_page.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/call_pages/call_heart_beat_button.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/user_profile_widget.dart';
 import 'package:messaging_core/locator.dart';
 import 'package:messaging_core/main.dart';
@@ -114,16 +115,13 @@ class ConversationAppBar extends StatelessWidget {
                       ),
                     ],
                   ),
-                  InkWell(
-                    onTap: () {
-                      navigation.push(const WaitingCallPage());
-                    },
-                    child: const ImageWidget(
-                      imageUrl: Assets.greenCall,
-                      boxFit: BoxFit.scaleDown,
-                      height: 40,
-                      width: 70,
-                    ),
+                  Padding(
+                    padding: 5.right,
+                    child: InkWell(
+                        onTap: () {
+                          navigation.push(const WaitingCallPage());
+                        },
+                        child: const CallHeartBeatButton()),
                   )
                 ],
               ),
