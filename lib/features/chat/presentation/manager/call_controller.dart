@@ -10,6 +10,7 @@ import 'package:messaging_core/core/services/network/websocket/messaging_client.
 import 'package:messaging_core/features/chat/data/data_sources/chat_data_source.dart';
 import 'package:messaging_core/features/chat/data/models/call_content_payload_model.dart';
 import 'package:messaging_core/features/chat/data/models/call_model.dart';
+import 'package:messaging_core/features/chat/domain/entities/category_users.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/pages/call/call_page.dart';
 import 'package:messaging_core/locator.dart';
@@ -25,12 +26,19 @@ class CallController extends GetxController {
   CallType callType = CallType.single;
 
   bool myVideoClosed = false;
+  bool myVoiceClosed = false;
   bool opponentVideoClosed = false;
 
-  bool myVoiceClosed = false;
+  List<CategoryUser> participants = [];
 
   setCallStatus(CallStatus status) {
     callStatus = status;
+    if (status == CallStatus.inCall) {
+      fillParticipants();
+    }
+    if (status == CallStatus.noCall) {
+      participants = [];
+    }
     update(["status", "app_bar"]);
   }
 
@@ -65,6 +73,22 @@ class CallController extends GetxController {
   toggleVoice() {
     myVoiceClosed = !myVoiceClosed;
     update(["status"]);
+  }
+
+  fillParticipants() {
+    participants = [];
+    ChatController chatController = locator<ChatController>();
+    if (chatController.currentChat!.isGroup()) {
+      chatController.currentChat!.groupUsers?.forEach((element) {
+        CategoryUser? categoryUser = chatController.users
+            .firstWhereOrNull((user) => element.id == user.id);
+        if (categoryUser != null) {
+          participants.add(categoryUser);
+        }
+      });
+    } else {
+      participants.add(chatController.currentChat! as CategoryUser);
+    }
   }
 }
 

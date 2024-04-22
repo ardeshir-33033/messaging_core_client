@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:messaging_core/features/chat/presentation/manager/call_controller.dart';
 import 'package:messaging_core/features/chat/presentation/manager/chat_controller.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_list_item.dart';
 import 'package:messaging_core/locator.dart';
 
-class ChatPageDrawer extends StatelessWidget {
-  ChatPageDrawer({
+class CallParticipantsDrawer extends StatelessWidget {
+  CallParticipantsDrawer({
     super.key,
   });
-  final ChatController controller = locator<ChatController>();
+  final CallController controller = locator<CallController>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +24,10 @@ class ChatPageDrawer extends StatelessWidget {
                   bottomRight: Radius.circular(10)),
             ),
             child: ListView.builder(
-                itemCount: controller.users.length,
+                itemCount: controller.participants.length,
                 itemBuilder: (context, index) {
                   return ChatListItem(
-                    chat: controller.users[index],
+                    chat: controller.participants[index],
                     openDrawer: true,
                   );
                 })),

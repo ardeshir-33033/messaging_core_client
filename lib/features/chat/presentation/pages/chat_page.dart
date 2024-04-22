@@ -27,7 +27,7 @@ import 'package:messaging_core/features/chat/presentation/manager/record_voice_c
 import 'package:messaging_core/features/chat/presentation/widgets/animated_app_bar.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_box.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_list_widgets/user_contacts_drawer.dart';
-import 'package:messaging_core/features/chat/presentation/widgets/chat_page_widgets/chat_page_drawer.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/chat_page_widgets/call_participants_drawer.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_page_widgets/chat_page_top_layout.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_page_widgets/pinned_messages_widget.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/content_date_widget.dart';
@@ -128,7 +128,8 @@ class _ChatPageState extends State<ChatPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: ChatPageDrawer(),
+      drawerEnableOpenDragGesture: false,
+      drawer: CallParticipantsDrawer(),
       body: SingleChildScrollView(
         controller: pageScrollController,
         child: Column(
@@ -165,14 +166,13 @@ class _ChatPageState extends State<ChatPage>
                                         GetBuilder<ChatController>(
                                             id: "pin",
                                             builder: (_) {
-                                              if (controller
-                                                      .pinnedMessage !=
+                                              if (controller.pinnedMessage !=
                                                   null) {
                                                 return PinnedMessagesWidget(
-                                                    isGroup: widget.chat
-                                                        .isGroup(),
-                                                    onPinTap: () =>
-                                                        _onPinTap(controller
+                                                    isGroup:
+                                                        widget.chat.isGroup(),
+                                                    onPinTap: () => _onPinTap(
+                                                        controller
                                                             .pinnedMessage));
                                               }
                                               return const SizedBox();
@@ -182,8 +182,7 @@ class _ChatPageState extends State<ChatPage>
                                           child: GetBuilder<ChatController>(
                                               id: "messages",
                                               builder: (_) {
-                                                if (controller
-                                                        .messagesStatus
+                                                if (controller.messagesStatus
                                                         .status ==
                                                     Status.success) {
                                                   return NotificationListener<
@@ -192,8 +191,7 @@ class _ChatPageState extends State<ChatPage>
                                                         (notification) {
                                                       scrollNotificationController
                                                           .sink
-                                                          .add(
-                                                              notification);
+                                                          .add(notification);
                                                       return false;
                                                     },
                                                     child: ScrollablePositionedList
@@ -218,48 +216,63 @@ class _ChatPageState extends State<ChatPage>
                                                                 children: [
                                                                   ContentDateWidget(
                                                                     timeStamp: controller
-                                                                        .messages[index]
+                                                                        .messages[
+                                                                            index]
                                                                         .createdAt,
                                                                     showData: index ==
-                                                                            controller.messages.length - 1
+                                                                            controller.messages.length -
+                                                                                1
                                                                         ? true
-                                                                        : (controller.messages[index].createdAt.isNotSameDateAs(controller.messages[index + 1].createdAt)),
+                                                                        : (controller
+                                                                            .messages[index]
+                                                                            .createdAt
+                                                                            .isNotSameDateAs(controller.messages[index + 1].createdAt)),
                                                                   ),
                                                                   Container(
                                                                     width: double
                                                                         .infinity,
                                                                     color: (controller.messages[index].contentId ==
                                                                             _repliedItemToAnimate)
-                                                                        ? _replyToColorAnimation.value
+                                                                        ? _replyToColorAnimation
+                                                                            .value
                                                                         : null,
                                                                     child:
                                                                         ChatBox(
                                                                       onTap:
                                                                           _showOverlay,
                                                                       opponentProfile:
-                                                                          ContactProfile(userId: "1"),
+                                                                          ContactProfile(
+                                                                              userId: "1"),
                                                                       overlayController:
                                                                           _overlayController,
-                                                                      content:
-                                                                          controller.messages[index],
+                                                                      content: controller
+                                                                              .messages[
+                                                                          index],
                                                                       isGroup: widget
                                                                           .chat
                                                                           .isGroup(),
                                                                       onEditTap:
-                                                                          (String val) {
+                                                                          (String
+                                                                              val) {
                                                                         _sendTextController.text =
                                                                             val;
                                                                         // _sendTextController.f
                                                                       },
                                                                       onReplyTap: () => _onReplyTap(controller
-                                                                          .messages[index]
+                                                                          .messages[
+                                                                              index]
                                                                           .replied),
-                                                                      isFirstSenderContent: index == controller.messages.length - 1
+                                                                      isFirstSenderContent: index ==
+                                                                              controller.messages.length -
+                                                                                  1
                                                                           ? true
-                                                                          : (controller.messages[index + 1].senderId != controller.messages[index].senderId || controller.messages[index + 1].contentType.isGeneralContent),
-                                                                      isLastSenderContent: index == 0
+                                                                          : (controller.messages[index + 1].senderId != controller.messages[index].senderId ||
+                                                                              controller.messages[index + 1].contentType.isGeneralContent),
+                                                                      isLastSenderContent: index ==
+                                                                              0
                                                                           ? true
-                                                                          : (controller.messages[index - 1].senderId != controller.messages[index].senderId || controller.messages[index - 1].contentType.isGeneralContent),
+                                                                          : (controller.messages[index - 1].senderId != controller.messages[index].senderId ||
+                                                                              controller.messages[index - 1].contentType.isGeneralContent),
                                                                     ),
                                                                   ),
                                                                 ],
@@ -268,17 +281,14 @@ class _ChatPageState extends State<ChatPage>
                                                   );
                                                 } else {
                                                   return const Center(
-                                                      child:
-                                                          LoadingWidget());
+                                                      child: LoadingWidget());
                                                 }
                                               }),
                                         ),
                                         SendMessageWidget(
-                                          textController:
-                                              _sendTextController,
+                                          textController: _sendTextController,
                                           chat: widget.chat,
-                                          scrollController:
-                                              _scrollController,
+                                          scrollController: _scrollController,
                                           onUpdateScroll: () {
                                             updateScrollToLastMessage();
                                           },

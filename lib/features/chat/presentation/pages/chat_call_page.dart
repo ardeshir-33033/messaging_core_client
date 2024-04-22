@@ -11,7 +11,7 @@ import 'package:messaging_core/features/chat/presentation/widgets/animated_app_b
 import 'package:messaging_core/features/chat/presentation/widgets/chat_list_widgets/chat_call_top_layout.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_list_widgets/notifications_tab.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/chat_list_widgets/user_contacts_drawer.dart';
-import 'package:messaging_core/features/chat/presentation/widgets/chat_page_widgets/chat_page_drawer.dart';
+import 'package:messaging_core/features/chat/presentation/widgets/chat_page_widgets/call_participants_drawer.dart';
 import 'package:messaging_core/locator.dart';
 
 class ChatCallPage extends StatefulWidget {
