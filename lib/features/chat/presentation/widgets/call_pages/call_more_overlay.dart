@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/overlay_widget.dart';
+import 'package:messaging_core/features/chat/presentation/manager/call_controller.dart';
+import 'package:messaging_core/features/chat/presentation/pages/chat_page.dart';
+import 'package:messaging_core/locator.dart';
 
 class CallMoreOverlay extends StatelessWidget {
   const CallMoreOverlay({super.key, required this.overlayController});
@@ -19,26 +22,40 @@ class CallMoreOverlay extends StatelessWidget {
         height: 210,
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: const BoxDecoration(color: Colors.white),
-        child: const Column(
+        child: Column(
           children: [
-            CallOverlayItems(
+            const CallOverlayItems(
               icon: Assets.mirroring,
               title: "Screen Share",
             ),
-            Divider(),
-            CallOverlayItems(
+            const Divider(),
+            const CallOverlayItems(
               icon: Assets.monitorRecorder,
               title: "Record",
             ),
-            Divider(),
-            CallOverlayItems(
-              icon: Assets.profileAdd,
-              title: "Add To Call",
+            const Divider(),
+            InkWell(
+              onTap: () {
+                overlayController.dismissOverlay();
+                locator<CallController>().addParticipant = true;
+                chatPageKey.currentState!.openDrawer();
+              },
+              child: const CallOverlayItems(
+                icon: Assets.profileAdd,
+                title: "Add To Call",
+              ),
             ),
-            Divider(),
-            CallOverlayItems(
-              icon: Assets.profileUser,
-              title: "Participants",
+            const Divider(),
+            InkWell(
+              onTap: () {
+                overlayController.dismissOverlay();
+                locator<CallController>().addParticipant = false;
+                chatPageKey.currentState!.openDrawer();
+              },
+              child: const CallOverlayItems(
+                icon: Assets.profileUser,
+                title: "Participants",
+              ),
             ),
           ],
         ),

@@ -288,4 +288,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get voiceCall => 'Voice Call';
+
+  @override
+  String get addToCall => 'Add To Call';
 }

@@ -30,6 +30,8 @@ class CallController extends GetxController {
   bool opponentVideoClosed = false;
 
   List<CategoryUser> participants = [];
+  List<CategoryUser> addedParticipants = [];
+  bool addParticipant = false;
 
   setCallStatus(CallStatus status) {
     callStatus = status;
@@ -89,6 +91,20 @@ class CallController extends GetxController {
     } else {
       participants.add(chatController.currentChat! as CategoryUser);
     }
+  }
+
+  addNewParticipants(List<CategoryUser> users) {
+    final ChatController chatController = locator<ChatController>();
+
+    addedParticipants = [];
+    addedParticipants.add(chatController.currentChat as CategoryUser);
+    addedParticipants.addAll(users);
+    update(["participants"]);
+  }
+
+  removeAllParticipants() {
+    addedParticipants = [];
+    update(["participants"]);
   }
 }
 

@@ -3,6 +3,7 @@ import 'package:messaging_core/app/theme/constants.dart';
 import 'package:messaging_core/app/widgets/icon_widget.dart';
 import 'package:messaging_core/app/widgets/overlay_widget.dart';
 import 'package:messaging_core/app/widgets/round_button.dart';
+import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/core/utils/extensions.dart';
 import 'package:messaging_core/features/chat/presentation/manager/call_controller.dart';
 import 'package:messaging_core/features/chat/presentation/widgets/call_pages/call_more_overlay.dart';
@@ -42,6 +43,12 @@ class InCallWidget extends StatelessWidget {
                   iconColor: Colors.white,
                   size: 40,
                   onTap: () {
+                    final Navigation navigation = locator<Navigation>();
+                    if (controller.participants.isNotEmpty) {
+                      navigation.pop();
+                    }
+
+                    controller.removeAllParticipants();
                     controller.setCallStatus(CallStatus.noCall);
                   },
                 ),
@@ -50,7 +57,10 @@ class InCallWidget extends StatelessWidget {
                   return IconWidget(
                     icon: Assets.profileUser,
                     iconColor: Colors.white,
-                    onPressed: () => Scaffold.of(context).openDrawer(),
+                    onPressed: () {
+                      locator<CallController>().addParticipant = false;
+                      Scaffold.of(context).openDrawer();
+                    },
                     size: 25,
                   );
                 }),

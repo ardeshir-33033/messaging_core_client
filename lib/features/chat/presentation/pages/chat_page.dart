@@ -37,6 +37,8 @@ import 'package:messaging_core/features/chat/presentation/widgets/send_message_w
 import 'package:messaging_core/locator.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+final GlobalKey<ScaffoldState> chatPageKey = GlobalKey();
+
 class ChatPage extends StatefulWidget implements CanPop {
   ChatPage({super.key, required this.chat, this.isForwarded});
 
@@ -128,8 +130,9 @@ class _ChatPageState extends State<ChatPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: chatPageKey,
       drawerEnableOpenDragGesture: false,
-      drawer: CallParticipantsDrawer(),
+      drawer: const CallParticipantsDrawer(),
       body: SingleChildScrollView(
         controller: pageScrollController,
         child: Column(
@@ -138,179 +141,150 @@ class _ChatPageState extends State<ChatPage>
                 pageScrollController: pageScrollController,
                 isGroup: widget.chat.isGroup(),
                 chat: widget.chat),
-            SizedBox(
-              height: context.screenHeight - 200,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 15),
-                    Expanded(
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFE7E7E7),
-                        ),
-                        child: Stack(
-                          children: [
-                            Column(
-                              children: [
-                                ConversationAppBar(
-                                  chat: widget.chat,
-                                  size: 40,
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    padding: 8.horizontal,
-                                    child: Column(
-                                      children: [
-                                        GetBuilder<ChatController>(
-                                            id: "pin",
-                                            builder: (_) {
-                                              if (controller.pinnedMessage !=
-                                                  null) {
-                                                return PinnedMessagesWidget(
-                                                    isGroup:
-                                                        widget.chat.isGroup(),
-                                                    onPinTap: () => _onPinTap(
-                                                        controller
-                                                            .pinnedMessage));
-                                              }
-                                              return const SizedBox();
-                                            }),
-                                        // const SizedBox(height: 10),
-                                        Expanded(
-                                          child: GetBuilder<ChatController>(
-                                              id: "messages",
-                                              builder: (_) {
-                                                if (controller.messagesStatus
-                                                        .status ==
-                                                    Status.success) {
-                                                  return NotificationListener<
-                                                      UserScrollNotification>(
-                                                    onNotification:
-                                                        (notification) {
-                                                      scrollNotificationController
-                                                          .sink
-                                                          .add(notification);
-                                                      return false;
-                                                    },
-                                                    child: ScrollablePositionedList
-                                                        .builder(
-                                                            itemCount:
-                                                                controller
-                                                                    .messages
-                                                                    .length,
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        8),
-                                                            reverse: true,
-                                                            itemScrollController:
-                                                                _itemScrollController,
-                                                            itemPositionsListener:
-                                                                _itemPositionsListener,
-                                                            itemBuilder:
-                                                                (_, index) {
-                                                              return Column(
-                                                                children: [
-                                                                  ContentDateWidget(
-                                                                    timeStamp: controller
-                                                                        .messages[
-                                                                            index]
-                                                                        .createdAt,
-                                                                    showData: index ==
-                                                                            controller.messages.length -
-                                                                                1
-                                                                        ? true
-                                                                        : (controller
-                                                                            .messages[index]
-                                                                            .createdAt
-                                                                            .isNotSameDateAs(controller.messages[index + 1].createdAt)),
-                                                                  ),
-                                                                  Container(
-                                                                    width: double
-                                                                        .infinity,
-                                                                    color: (controller.messages[index].contentId ==
-                                                                            _repliedItemToAnimate)
-                                                                        ? _replyToColorAnimation
-                                                                            .value
-                                                                        : null,
-                                                                    child:
-                                                                        ChatBox(
-                                                                      onTap:
-                                                                          _showOverlay,
-                                                                      opponentProfile:
-                                                                          ContactProfile(
-                                                                              userId: "1"),
-                                                                      overlayController:
-                                                                          _overlayController,
-                                                                      content: controller
-                                                                              .messages[
-                                                                          index],
-                                                                      isGroup: widget
-                                                                          .chat
-                                                                          .isGroup(),
-                                                                      onEditTap:
-                                                                          (String
-                                                                              val) {
-                                                                        _sendTextController.text =
-                                                                            val;
-                                                                        // _sendTextController.f
-                                                                      },
-                                                                      onReplyTap: () => _onReplyTap(controller
-                                                                          .messages[
-                                                                              index]
-                                                                          .replied),
-                                                                      isFirstSenderContent: index ==
-                                                                              controller.messages.length -
-                                                                                  1
-                                                                          ? true
-                                                                          : (controller.messages[index + 1].senderId != controller.messages[index].senderId ||
-                                                                              controller.messages[index + 1].contentType.isGeneralContent),
-                                                                      isLastSenderContent: index ==
-                                                                              0
-                                                                          ? true
-                                                                          : (controller.messages[index - 1].senderId != controller.messages[index].senderId ||
-                                                                              controller.messages[index - 1].contentType.isGeneralContent),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            }),
-                                                  );
-                                                } else {
-                                                  return const Center(
-                                                      child: LoadingWidget());
-                                                }
-                                              }),
+            GetBuilder<ChatController>(
+                id: "chatPage",
+                builder: (_) {
+                  return SizedBox(
+                    height: context.screenHeight - 200,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 15),
+                          Expanded(
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                color: Color(0xFFE7E7E7),
+                              ),
+                              child: Stack(
+                                children: [
+                                  Column(
+                                    children: [
+                                      ConversationAppBar(
+                                        chat: widget.chat,
+                                        size: 40,
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          padding: 8.horizontal,
+                                          child: Column(
+                                            children: [
+                                              GetBuilder<ChatController>(
+                                                  id: "pin",
+                                                  builder: (_) {
+                                                    if (controller
+                                                            .pinnedMessage !=
+                                                        null) {
+                                                      return PinnedMessagesWidget(
+                                                          isGroup: widget.chat
+                                                              .isGroup(),
+                                                          onPinTap: () =>
+                                                              _onPinTap(controller
+                                                                  .pinnedMessage));
+                                                    }
+                                                    return const SizedBox();
+                                                  }),
+                                              // const SizedBox(height: 10),
+                                              Expanded(
+                                                child:
+                                                    GetBuilder<ChatController>(
+                                                        id: "messages",
+                                                        builder: (_) {
+                                                          if (controller
+                                                                  .messagesStatus
+                                                                  .status ==
+                                                              Status.success) {
+                                                            return NotificationListener<
+                                                                UserScrollNotification>(
+                                                              onNotification:
+                                                                  (notification) {
+                                                                scrollNotificationController
+                                                                    .sink
+                                                                    .add(
+                                                                        notification);
+                                                                return false;
+                                                              },
+                                                              child: ScrollablePositionedList
+                                                                  .builder(
+                                                                      itemCount: controller
+                                                                          .messages
+                                                                          .length,
+                                                                      padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                          vertical:
+                                                                              8),
+                                                                      reverse:
+                                                                          true,
+                                                                      itemScrollController:
+                                                                          _itemScrollController,
+                                                                      itemPositionsListener:
+                                                                          _itemPositionsListener,
+                                                                      itemBuilder:
+                                                                          (_, index) {
+                                                                        return Column(
+                                                                          children: [
+                                                                            ContentDateWidget(
+                                                                              timeStamp: controller.messages[index].createdAt,
+                                                                              showData: index == controller.messages.length - 1 ? true : (controller.messages[index].createdAt.isNotSameDateAs(controller.messages[index + 1].createdAt)),
+                                                                            ),
+                                                                            Container(
+                                                                              width: double.infinity,
+                                                                              color: (controller.messages[index].contentId == _repliedItemToAnimate) ? _replyToColorAnimation.value : null,
+                                                                              child: ChatBox(
+                                                                                onTap: _showOverlay,
+                                                                                opponentProfile: ContactProfile(userId: "1"),
+                                                                                overlayController: _overlayController,
+                                                                                content: controller.messages[index],
+                                                                                isGroup: widget.chat.isGroup(),
+                                                                                onEditTap: (String val) {
+                                                                                  _sendTextController.text = val;
+                                                                                  // _sendTextController.f
+                                                                                },
+                                                                                onReplyTap: () => _onReplyTap(controller.messages[index].replied),
+                                                                                isFirstSenderContent: index == controller.messages.length - 1 ? true : (controller.messages[index + 1].senderId != controller.messages[index].senderId || controller.messages[index + 1].contentType.isGeneralContent),
+                                                                                isLastSenderContent: index == 0 ? true : (controller.messages[index - 1].senderId != controller.messages[index].senderId || controller.messages[index - 1].contentType.isGeneralContent),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        );
+                                                                      }),
+                                                            );
+                                                          } else {
+                                                            return const Center(
+                                                                child:
+                                                                    LoadingWidget());
+                                                          }
+                                                        }),
+                                              ),
+                                              SendMessageWidget(
+                                                textController:
+                                                    _sendTextController,
+                                                chat: widget.chat,
+                                                scrollController:
+                                                    _scrollController,
+                                                onUpdateScroll: () {
+                                                  updateScrollToLastMessage();
+                                                },
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        SendMessageWidget(
-                                          textController: _sendTextController,
-                                          chat: widget.chat,
-                                          scrollController: _scrollController,
-                                          onUpdateScroll: () {
-                                            updateScrollToLastMessage();
-                                          },
-                                        ),
-                                      ],
-                                    ),
+                                      )
+                                    ],
                                   ),
-                                )
-                              ],
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
+                          ),
+                          EmojiPickerWidget(
+                            textController: _sendTextController,
+                            scrollController: _scrollController,
+                          )
+                        ],
                       ),
                     ),
-                    EmojiPickerWidget(
-                      textController: _sendTextController,
-                      scrollController: _scrollController,
-                    )
-                  ],
-                ),
-              ),
-            ),
+                  );
+                }),
           ],
         ),
       ),

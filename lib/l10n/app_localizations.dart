@@ -660,6 +660,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Voice Call'**
   String get voiceCall;
+
+  /// No description provided for @addToCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Add To Call'**
+  String get addToCall;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

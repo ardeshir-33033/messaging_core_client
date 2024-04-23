@@ -93,5 +93,6 @@
   "contacts": "Contacts",
   "callingTo": "Calling To",
   "videoCall": "Video Call",
-  "voiceCall": "Voice Call"
+  "voiceCall": "Voice Call",
+  "addToCall": "Add To Call"
 }
