@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart' as getx;
@@ -13,7 +14,6 @@ import 'package:messaging_core/core/app_states/app_global_data.dart';
 import 'package:messaging_core/core/env/environment.dart';
 import 'package:messaging_core/core/services/navigation/navigation_controller.dart';
 import 'package:messaging_core/features/chat/presentation/pages/chat_call_page.dart';
-import 'package:messaging_core/features/chat/presentation/pages/chat_list_page.dart';
 import 'package:messaging_core/l10n/app_localizations.dart';
 import 'package:messaging_core/l10n/l10n.dart';
 import 'package:messaging_core/locator.dart';
