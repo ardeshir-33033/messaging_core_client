@@ -63,6 +63,9 @@ dependencies:
   connectivity_plus: ^5.0.0
   google_maps_flutter: ^2.6.0
   location: ^5.0.3
+  flutter_webrtc: 0.9.27
+  flutter_background: ^1.2.0
+
 
 
 
