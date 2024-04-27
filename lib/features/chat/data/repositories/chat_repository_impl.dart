@@ -22,28 +22,29 @@ class ChatRepositoryImpl extends ChatRepository {
   Future<ResponseModel> getAllChats() async {
     try {
       List<ChatParentClass> chats = [];
-      if (locator<ConnectionStatusProvider>().isConnected) {
-        ResponseModel response = await _chatDataSource.getUsersInCategory();
+      // if (locator<ConnectionStatusProvider>().isConnected) {
+      ResponseModel response = await _chatDataSource.getUsersInCategory();
 
-        UsersAndGroupsInCategory usersAndGroupsInCategory = response.data;
+      UsersAndGroupsInCategory usersAndGroupsInCategory = response.data;
 
-        chats.addAll(usersAndGroupsInCategory.users);
-        chats.addAll(usersAndGroupsInCategory.groups);
+      chats.addAll(usersAndGroupsInCategory.users);
+      chats.addAll(usersAndGroupsInCategory.groups);
 
-        chats.sort((a, b) => ((b.updatedAt ?? b.lastMessage?.updatedAt) ??
-                DateTime(1998))
-            .compareTo(
-                ((a.updatedAt ?? a.lastMessage?.updatedAt) ?? DateTime(1998))));
-        _chatStorageRepository.saveChats(chats);
+      chats.sort((a, b) => ((b.updatedAt ?? b.lastMessage?.updatedAt) ??
+              DateTime(1998))
+          .compareTo(
+              ((a.updatedAt ?? a.lastMessage?.updatedAt) ?? DateTime(1998))));
+      _chatStorageRepository.saveChats(chats);
 
-        return response;
-      } else {
-        chats = await _chatStorageRepository.getChats();
-        return ResponseModel(
-          data: chats,
-          result: ResultEnum.success,
-        );
-      }
+      return response;
+      // }
+      // else {
+      // chats = await _chatStorageRepository.getChats();
+      // return ResponseModel(
+      //   data: chats,
+      //   result: ResultEnum.success,
+      // );
+      // }
     } catch (e) {
       return ResponseModel(
         statusCode: 510,

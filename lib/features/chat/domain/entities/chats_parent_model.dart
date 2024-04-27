@@ -47,45 +47,45 @@ class ChatParentClass {
     this.groupUsers = const [],
   });
 
-  factory ChatParentClass.fromChatTable(ChatsTableData chat) {
-    return ChatParentClass(
-        id: chat.id,
-        name: chat.name,
-        createdAt: chat.createdAt,
-        updatedAt: chat.updatedAt,
-        avatar: chat.avatar,
-        categoryId: chat.categoryId,
-        creatorUserId: chat.creatorUserId,
-        groupUsers: chat.groupUsers != null
-            ? GroupUsersModel.listFromJson(jsonDecode(chat.groupUsers!))
-            : null,
-        lastMessage: chat.lastMessage != null
-            ? ContentModel.fromJson(jsonDecode(chat.lastMessage!))
-            : null,
-        lastRead: chat.lastRead != null
-            ? ContentModel.fromJson(jsonDecode(chat.lastRead!))
-            : null,
-        status: chat.status,
-        level: chat.level);
-  }
+  // factory ChatParentClass.fromChatTable(ChatsTableData chat) {
+  //   return ChatParentClass(
+  //       id: chat.id,
+  //       name: chat.name,
+  //       createdAt: chat.createdAt,
+  //       updatedAt: chat.updatedAt,
+  //       avatar: chat.avatar,
+  //       categoryId: chat.categoryId,
+  //       creatorUserId: chat.creatorUserId,
+  //       groupUsers: chat.groupUsers != null
+  //           ? GroupUsersModel.listFromJson(jsonDecode(chat.groupUsers!))
+  //           : null,
+  //       lastMessage: chat.lastMessage != null
+  //           ? ContentModel.fromJson(jsonDecode(chat.lastMessage!))
+  //           : null,
+  //       lastRead: chat.lastRead != null
+  //           ? ContentModel.fromJson(jsonDecode(chat.lastRead!))
+  //           : null,
+  //       status: chat.status,
+  //       level: chat.level);
+  // }
 
-  ChatsTableData toChatTableData() => ChatsTableData(
-      id: id!,
-      name: (name!),
-      createdAt: (createdAt),
-      updatedAt: (updatedAt),
-      avatar: (avatar),
-      categoryId: (categoryId ?? AppGlobalData.categoryId),
-      creatorUserId: (creatorUserId),
-      groupUsers: groupUsers != null
-          ? jsonEncode(
-              groupUsers!.map((groupUser) => groupUser.toJson()).toList())
-          : null,
-      lastMessage:
-          lastMessage != null ? jsonEncode(lastMessage!.toJson()) : null,
-      lastRead: lastRead != null ? jsonEncode(lastRead!.toJson()) : null,
-      status: (status),
-      level: (level ?? 1));
+  // ChatsTableData toChatTableData() => ChatsTableData(
+  //     id: id!,
+  //     name: (name!),
+  //     createdAt: (createdAt),
+  //     updatedAt: (updatedAt),
+  //     avatar: (avatar),
+  //     categoryId: (categoryId ?? AppGlobalData.categoryId),
+  //     creatorUserId: (creatorUserId),
+  //     groupUsers: groupUsers != null
+  //         ? jsonEncode(
+  //             groupUsers!.map((groupUser) => groupUser.toJson()).toList())
+  //         : null,
+  //     lastMessage:
+  //         lastMessage != null ? jsonEncode(lastMessage!.toJson()) : null,
+  //     lastRead: lastRead != null ? jsonEncode(lastRead!.toJson()) : null,
+  //     status: (status),
+  //     level: (level ?? 1));
 
   bool isGroup() => creatorUserId != null;
 

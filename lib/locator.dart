@@ -52,7 +52,7 @@ void dataInjection() {
       .registerLazySingleton<WebSocketConnection>(() => WebSocketConnection());
   locator
       .registerLazySingleton<MessagingClient>(() => MessagingClient(locator()));
-  locator.registerLazySingleton<SQLiteLocalStorage>(() => SQLiteLocalStorage());
+  // locator.registerLazySingleton<SQLiteLocalStorage>(() => SQLiteLocalStorage());
 }
 
 void repositoryInjection() {
@@ -61,7 +61,9 @@ void repositoryInjection() {
   locator
       .registerLazySingleton<ContactsRepository>(() => ContactRepositoryImpl());
   locator.registerLazySingleton<ChatStorageRepository>(
-      () => ChatStorageRepositoryImpl(database: locator()));
+      () => ChatStorageRepositoryImpl(
+          // database: locator()
+          ));
 }
 
 void useCaseInjection() {

@@ -5,10 +5,10 @@ abstract class ChatStorageRepository {
   Future<void> saveChats(List<ChatParentClass> chats);
   Future<void> saveChat(ChatParentClass chat);
 
-  Future<void> saveMessages(List<ContentModel> messages, String roomIdentifier);
+  // Future<void> saveMessages(List<ContentModel> messages, String roomIdentifier);
 
-  Future<List<ChatParentClass>> getChats();
+  // Future<List<ChatParentClass>> getChats();
   Future<ChatParentClass?> getChat(int chatId);
 
-  Future<List<ContentModel>> getMessages(String roomIdentifier);
+  // Future<List<ContentModel>> getMessages(String roomIdentifier);
 }

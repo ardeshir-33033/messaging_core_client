@@ -151,7 +151,7 @@ class ChatController extends GetxController {
           update(["messages"]);
         }
       } else {
-        messages = await getMessagesTable();
+        // messages = await getMessagesTable();
         messages = messages.reversed.toList();
         messagesStatus.success();
         update(["messages"]);
@@ -498,15 +498,15 @@ class ChatController extends GetxController {
     resetState();
   }
 
-  Future<List<ContentModel>> getMessagesTable() async {
-    List<ContentModel> contents =
-        await chatStorageRepository.getMessages(_roomIdentifier!);
-    return contents;
-  }
+  // Future<List<ContentModel>> getMessagesTable() async {
+  // List<ContentModel> contents =
+  //     await chatStorageRepository.getMessages(_roomIdentifier!);
+  // return contents;
+  // }
 
   saveMessages() async {
-    print(messages);
-    await chatStorageRepository.saveMessages(messages, _roomIdentifier!);
+    // print(messages);
+    // await chatStorageRepository.saveMessages(messages, _roomIdentifier!);
   }
 
   String? getRoomId() {

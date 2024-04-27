@@ -54,52 +54,52 @@ class ContentModel {
         .sent, // we didn't store message status on server. but keep in mind that if content is received to server, it's definitely 'sent'
   });
 
-  factory ContentModel.fromMessagesTable(MessageTableData data) {
-    var contentType = ContentTypeEnum.fromString(data.messageType);
-    var contentPayload =
-        ContentPayloadModel.create(contentType, data.messageText);
-
-    return ContentModel(
-        contentId: data.id,
-        receiverId: data.receiverId,
-        contentType: ContentTypeEnum.fromString(data.messageType),
-        contentPayload: contentPayload,
-        senderId: data.senderId,
-        pinned: data.pinned,
-        messageText: data.messageText,
-        receiverType: ReceiverType.fromString(data.receiverType),
-        categoryId: data.categoryId,
-        isForwarded: data.isForwarded,
-        createdAt: data.createdAt,
-        updatedAt: data.updatedAt,
-        filePath: data.filePath,
-        replied: data.replied != null
-            ? ContentModel.fromJson(jsonDecode(data.replied!))
-            : null,
-        readAt: data.readedAt,
-        sender: data.sender != null
-            ? CategoryUser.fromJson(jsonDecode(data.sender!))
-            : null);
-  }
-
-  MessageTableData toMessagesTableData(String roomIdentifier) =>
-      MessageTableData(
-          roomIdentifier: roomIdentifier,
-          id: contentId,
-          receiverId: receiverId,
-          categoryId: categoryId,
-          receiverType: receiverType.name,
-          messageText: messageText,
-          senderId: senderId,
-          pinned: pinned,
-          replied: replied != null ? jsonEncode(replied!.toJson()) : null,
-          messageType: contentType.name,
-          isForwarded: isForwarded,
-          filePath: filePath,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-          readedAt: readAt,
-          sender: sender != null ? jsonEncode(sender!.toJson()) : null);
+  // factory ContentModel.fromMessagesTable(MessageTableData data) {
+  //   var contentType = ContentTypeEnum.fromString(data.messageType);
+  //   var contentPayload =
+  //       ContentPayloadModel.create(contentType, data.messageText);
+  //
+  //   return ContentModel(
+  //       contentId: data.id,
+  //       receiverId: data.receiverId,
+  //       contentType: ContentTypeEnum.fromString(data.messageType),
+  //       contentPayload: contentPayload,
+  //       senderId: data.senderId,
+  //       pinned: data.pinned,
+  //       messageText: data.messageText,
+  //       receiverType: ReceiverType.fromString(data.receiverType),
+  //       categoryId: data.categoryId,
+  //       isForwarded: data.isForwarded,
+  //       createdAt: data.createdAt,
+  //       updatedAt: data.updatedAt,
+  //       filePath: data.filePath,
+  //       replied: data.replied != null
+  //           ? ContentModel.fromJson(jsonDecode(data.replied!))
+  //           : null,
+  //       readAt: data.readedAt,
+  //       sender: data.sender != null
+  //           ? CategoryUser.fromJson(jsonDecode(data.sender!))
+  //           : null);
+  // }
+  //
+  // MessageTableData toMessagesTableData(String roomIdentifier) =>
+  //     MessageTableData(
+  //         roomIdentifier: roomIdentifier,
+  //         id: contentId,
+  //         receiverId: receiverId,
+  //         categoryId: categoryId,
+  //         receiverType: receiverType.name,
+  //         messageText: messageText,
+  //         senderId: senderId,
+  //         pinned: pinned,
+  //         replied: replied != null ? jsonEncode(replied!.toJson()) : null,
+  //         messageType: contentType.name,
+  //         isForwarded: isForwarded,
+  //         filePath: filePath,
+  //         createdAt: createdAt,
+  //         updatedAt: updatedAt,
+  //         readedAt: readAt,
+  //         sender: sender != null ? jsonEncode(sender!.toJson()) : null);
 
   static ContentModel fromJson(Map<String, dynamic> json,
       {bool mainContent = true}) {
