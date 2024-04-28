@@ -118,7 +118,7 @@ flutter:
     - packages/messaging_core/assets/images/
     - packages/messaging_core/assets/icons/
     - packages/messaging_core/assets/tones/
-    - packages/messaging_core/assets/
+#    - packages/messaging_core/assets/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
