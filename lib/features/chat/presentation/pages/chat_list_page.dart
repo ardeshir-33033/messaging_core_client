@@ -44,6 +44,7 @@ class _ChatListPageState extends State<ChatListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       floatingActionButton: ChatListFloatingButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Padding(

@@ -130,6 +130,7 @@ class _ChatPageState extends State<ChatPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       key: chatPageKey,
       drawerEnableOpenDragGesture: false,
       drawer: const CallParticipantsDrawer(),

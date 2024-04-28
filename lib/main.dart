@@ -131,6 +131,7 @@ class _ApplicationHomePageState extends State<ApplicationHomePage> {
       return WillPopScope(
         onWillPop: navigation.pop,
         child: Scaffold(
+          backgroundColor: Colors.white,
           body: navigation.pages.last,
         ),
       );

@@ -47,6 +47,7 @@ class _ChatCallPageState extends State<ChatCallPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         controller: pageScrollController,
         child: Column(
