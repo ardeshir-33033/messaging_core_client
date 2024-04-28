@@ -60,13 +60,13 @@ class ConnectionStatusProvider extends GetxController {
     //     notifyListeners();
     //   });
     //
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      hasNetwork = result != ConnectivityResult.none;
-      isConnected = hasNetwork && isConnected;
-      updated = hasNetwork && isConnected && updated;
-      // _handleNewStatus();
-      // notifyListeners();
-    });
+    // Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    //   hasNetwork = result != ConnectivityResult.none;
+    //   isConnected = hasNetwork && isConnected;
+    //   updated = hasNetwork && isConnected && updated;
+    //   // _handleNewStatus();
+    //   // notifyListeners();
+    // });
   }
   //
   // _handleNewStatus() {
