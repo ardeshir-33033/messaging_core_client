@@ -111,7 +111,7 @@ class _ChatPageState extends State<ChatPage>
 
   @override
   void initState() {
-    voiceController.initialRecording();
+    // voiceController.initialRecording();
     controller.setCurrentChat(widget.chat);
     callController.callType =
         widget.chat.isGroup() ? CallType.group : CallType.single;
