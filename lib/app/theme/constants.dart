@@ -12,7 +12,7 @@ class Assets {
   static const String light = "$fontFamily-light";
 
   /// -----------------------Icons Assets -------------------------
-  static const String _baseIconPath = "packages/messaging_core/lib/assets/icons";
+  static const String _baseIconPath = "packages/messaging_core/assets/icons";
   // static const String _baseIconPath = "assets/icons";
 
   static const String copy = "$_baseIconPath/copy.svg";
